@@ -1,0 +1,701 @@
+###############################################################################
+#
+# IAR ELF Linker V9.30.1.335/W64 for ARM                  05/Mar/2024  15:00:43
+# Copyright 2007-2022 IAR Systems AB.
+#
+#    Output file  =
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Exe\Rover-Coin-Game.out
+#    Map file     =
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\List\Rover-Coin-Game.map
+#    Command line =
+#        -f
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Exe\Rover-Coin-Game.out.rsp
+#        (C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Application\User\Modules\background\background.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Application\User\Modules\roverGame\game_obj\coin_obj.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Application\User\Modules\displayST7735\displayST7735.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Application\User\Modules\generic_game\generic_game.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Application\User\Modules\joystick\joystick.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Application\User\main.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Application\User\Modules\roverGame\rover_game.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Application\User\Modules\roverGame\game_obj\rover_obj.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Application\EWARM\startup_stm32l432xx.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Drivers\STM32L4xx_HAL_Driver\stm32l4xx_hal.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Drivers\STM32L4xx_HAL_Driver\stm32l4xx_hal_adc.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Drivers\STM32L4xx_HAL_Driver\stm32l4xx_hal_adc_ex.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Drivers\STM32L4xx_HAL_Driver\stm32l4xx_hal_cortex.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Drivers\STM32L4xx_HAL_Driver\stm32l4xx_hal_dma.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Drivers\STM32L4xx_HAL_Driver\stm32l4xx_hal_dma_ex.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Drivers\STM32L4xx_HAL_Driver\stm32l4xx_hal_exti.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Drivers\STM32L4xx_HAL_Driver\stm32l4xx_hal_flash.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Drivers\STM32L4xx_HAL_Driver\stm32l4xx_hal_flash_ex.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Drivers\STM32L4xx_HAL_Driver\stm32l4xx_hal_flash_ramfunc.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Drivers\STM32L4xx_HAL_Driver\stm32l4xx_hal_gpio.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Drivers\STM32L4xx_HAL_Driver\stm32l4xx_hal_i2c.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Drivers\STM32L4xx_HAL_Driver\stm32l4xx_hal_i2c_ex.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Application\User\stm32l4xx_hal_msp.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Drivers\STM32L4xx_HAL_Driver\stm32l4xx_hal_pwr.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Drivers\STM32L4xx_HAL_Driver\stm32l4xx_hal_pwr_ex.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Drivers\STM32L4xx_HAL_Driver\stm32l4xx_hal_rcc.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Drivers\STM32L4xx_HAL_Driver\stm32l4xx_hal_rcc_ex.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Drivers\STM32L4xx_HAL_Driver\stm32l4xx_hal_spi.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Drivers\STM32L4xx_HAL_Driver\stm32l4xx_hal_spi_ex.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Drivers\STM32L4xx_HAL_Driver\stm32l4xx_hal_tim.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Drivers\STM32L4xx_HAL_Driver\stm32l4xx_hal_tim_ex.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Drivers\STM32L4xx_HAL_Driver\stm32l4xx_hal_uart.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Drivers\STM32L4xx_HAL_Driver\stm32l4xx_hal_uart_ex.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Application\User\stm32l4xx_it.o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Drivers\CMSIS\system_stm32l4xx.o
+#        --redirect _Printf=_PrintfFull --redirect _Scanf=_ScanfFull
+#        --no_out_extension -o
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Exe\Rover-Coin-Game.out
+#        --map
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\List\Rover-Coin-Game.map
+#        --config
+#        C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM/stm32l432xx_flash.icf
+#        --semihosting --entry __iar_program_start --vfe --text_out locale
+#        --cpu=Cortex-M4 --fpu=VFPv4_sp)
+#
+###############################################################################
+
+*******************************************************************************
+*** RUNTIME MODEL ATTRIBUTES
+***
+
+CppFlavor       = *
+__CPP_Runtime   = 1
+__SystemLibrary = DLib
+__dlib_version  = 6
+
+
+*******************************************************************************
+*** HEAP SELECTION
+***
+
+The basic heap was selected because --advanced_heap
+was not specified and the application did not appear to
+be primarily optimized for speed.
+
+
+*******************************************************************************
+*** PLACEMENT SUMMARY
+***
+
+"A0":  place at address 0x800'0000 { ro section .intvec };
+"P1":  place in [from 0x800'0000 to 0x803'ffff] { ro };
+define block CSTACK with size = 1K, alignment = 8 { };
+define block HEAP with size = 512, alignment = 8 { };
+"P2":  place in [from 0x2000'0000 to 0x2000'ffff] {
+          rw, block CSTACK, block HEAP };
+initialize by copy { rw };
+
+  Section            Kind         Address    Size  Object
+  -------            ----         -------    ----  ------
+"A0":                                       0x18c
+  .intvec            ro code   0x800'0000   0x18c  startup_stm32l432xx.o [1]
+                             - 0x800'018c   0x18c
+
+"P1":                                      0x3bde
+  .text              ro code   0x800'018c   0x730  stm32l4xx_hal_rcc.o [10]
+  .text              ro code   0x800'08bc    0x44  stm32l4xx_hal.o [10]
+  .text              ro code   0x800'0900     0xc  stm32l4xx_hal.o [10]
+  .text              ro code   0x800'090c    0x7c  stm32l4xx_hal_pwr_ex.o [10]
+  .text              ro code   0x800'0988    0xc4  stm32l4xx_hal_cortex.o [10]
+  .text              ro code   0x800'0a4c   0x726  stm32l4xx_hal_adc.o [10]
+  .text              ro code   0x800'1172    0x7e  lz77_init_single.o [13]
+  .text              ro code   0x800'11f0   0x1d0  stm32l4xx_hal_msp.o [2]
+  .text              ro code   0x800'13c0   0x226  stm32l4xx_hal_dma.o [10]
+  .text              ro code   0x800'15e6     0x2  stm32l4xx_hal_adc.o [10]
+  .text              ro code   0x800'15e8     0x2  stm32l4xx_hal_adc.o [10]
+  .text              ro code   0x800'15ea     0x2  stm32l4xx_hal_adc.o [10]
+  .text              ro code   0x800'15ec   0x1b8  stm32l4xx_hal_gpio.o [10]
+  .text              ro code   0x800'17a4   0x348  main.o [2]
+  .text              ro code   0x800'1aec    0x14  memset.o [13]
+  .text              ro code   0x800'1b00    0x1e  stm32l4xx_hal.o [10]
+  .text              ro code   0x800'1b20   0x3de  stm32l4xx_hal_spi.o [10]
+  .text              ro code   0x800'1f00   0x48a  stm32l4xx_hal_uart.o [10]
+  .text              ro code   0x800'238c   0x158  displayST7735.o [4]
+  .text              ro code   0x800'24e4   0x508  rover_game.o [7]
+  .text              ro code   0x800'29ec    0xe0  joystick.o [6]
+  .text              ro code   0x800'2acc    0x10  stm32l4xx_hal_pwr.o [10]
+  .text              ro code   0x800'2adc   0x364  stm32l4xx_hal_rcc_ex.o [10]
+  .text              ro code   0x800'2e40    0x66  ABImemset.o [13]
+  .text              ro code   0x800'2ea8   0x106  I64DivMod_small.o [13]
+  .text              ro code   0x800'2fb0    0x28  stm32l4xx_hal.o [10]
+  .text              ro code   0x800'2fd8   0x1c2  generic_game.o [5]
+  .text              ro code   0x800'319c   0x244  rover_obj.o [8]
+  .text              ro code   0x800'33e0    0x26  coin_obj.o [8]
+  .text              ro code   0x800'3408    0x28  background.o [3]
+  .text              ro code   0x800'3430     0x2  I64DivZer.o [13]
+  .text              ro code   0x800'3434    0x22  S32ToDbl.o [12]
+  .text              ro code   0x800'3458    0x1c  U32ToDbl.o [12]
+  .text              ro code   0x800'3474   0x1aa  DblMul.o [12]
+  .text              ro code   0x800'3620   0x24e  DblAddSub.o [12]
+  .text              ro code   0x800'3870    0x68  DblToFlt.o [12]
+  .text              ro code   0x800'38d8    0xcc  stm32l4xx_it.o [2]
+  .text              ro code   0x800'39a4    0x10  stm32l4xx_hal.o [10]
+  .text              ro code   0x800'39b4    0x5c  system_stm32l4xx.o [9]
+  .text              ro code   0x800'3a10    0x38  zero_init3.o [13]
+  .rodata            const     0x800'3a48    0x30  system_stm32l4xx.o [9]
+  .text              ro code   0x800'3a78    0x28  data_init.o [13]
+  .text              ro code   0x800'3aa0    0x22  fpinit_M.o [12]
+  .iar.init_table    const     0x800'3ac4    0x20  - Linker created -
+  .text              ro code   0x800'3ae4    0x1e  cmain.o [13]
+  .text              ro code   0x800'3b02     0x4  low_level_init.o [11]
+  .text              ro code   0x800'3b06     0x4  exit.o [11]
+  .text              ro code   0x800'3b0c     0xa  cexit.o [13]
+  .text              ro code   0x800'3b18    0x14  exit.o [14]
+  .text              ro code   0x800'3b2c    0x1c  cstartup_M.o [13]
+  .text              ro code   0x800'3b48    0x10  startup_stm32l432xx.o [1]
+  .rodata            const     0x800'3b58     0x8  system_stm32l4xx.o [9]
+  .text              ro code   0x800'3b60     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3b64     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3b68     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3b6c     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3b70     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3b74     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3b78     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3b7c     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3b80     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3b84     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3b88     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3b8c     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3b90     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3b94     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3b98     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3b9c     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3ba0     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3ba4     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3ba8     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3bac     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3bb0     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3bb4     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3bb8     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3bbc     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3bc0     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3bc4     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3bc8     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3bcc     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3bd0     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3bd4     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3bd8     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3bdc     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3be0     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3be4     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3be8     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3bec     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3bf0     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3bf4     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3bf8     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3bfc     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3c00     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3c04     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3c08     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3c0c     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3c10     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3c14     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3c18     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3c1c     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3c20     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3c24     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3c28     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3c2c     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3c30     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3c34     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3c38     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3c3c     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3c40     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3c44     0x4  startup_stm32l432xx.o [1]
+  .text              ro code   0x800'3c48     0x4  startup_stm32l432xx.o [1]
+  .rodata            const     0x800'3c4c     0x0  zero_init3.o [13]
+  .rodata            const     0x800'3c4c     0x0  lz77_init_single.o [13]
+  Initializer bytes  const     0x800'3c4c   0x11e  <for P2-1>
+                             - 0x800'3d6a  0x3bde
+
+"P2", part 1 of 3:                          0x4dd
+  P2-1                        0x2000'0000   0x4dd  <Init block>
+    .data            inited   0x2000'0000     0xc  background.o [3]
+    .data            inited   0x2000'000c    0x34  coin_obj.o [8]
+    .data            inited   0x2000'0040    0x1c  coin_obj.o [8]
+    .data            inited   0x2000'005c    0x1c  coin_obj.o [8]
+    .data            inited   0x2000'0078     0x8  coin_obj.o [8]
+    .data            inited   0x2000'0080   0x258  rover_game.o [7]
+    .data            inited   0x2000'02d8    0x38  rover_game.o [7]
+    .data            inited   0x2000'0310    0x1c  rover_obj.o [8]
+    .data            inited   0x2000'032c    0xc4  rover_obj.o [8]
+    .data            inited   0x2000'03f0    0xc4  rover_obj.o [8]
+    .data            inited   0x2000'04b4     0x8  rover_obj.o [8]
+    .data            inited   0x2000'04bc    0x10  rover_obj.o [8]
+    .data            inited   0x2000'04cc     0xc  stm32l4xx_hal.o [10]
+    .data            inited   0x2000'04d8     0x4  system_stm32l4xx.o [9]
+    .data            inited   0x2000'04dc     0x1  rover_game.o [7]
+                            - 0x2000'04dd   0x4dd
+
+"P2", part 2 of 3:                          0x8a8
+  .bss               zero     0x2000'04e0   0x320  rover_game.o [7]
+  .bss               zero     0x2000'0800   0x258  displayST7735.o [4]
+  .bss               zero     0x2000'0a58   0x12c  rover_game.o [7]
+  .bss               zero     0x2000'0b84    0xe8  main.o [2]
+  .bss               zero     0x2000'0c6c    0x64  main.o [2]
+  .bss               zero     0x2000'0cd0    0x48  main.o [2]
+  .bss               zero     0x2000'0d18    0x34  joystick.o [6]
+  .bss               zero     0x2000'0d4c    0x16  stm32l4xx_it.o [2]
+  .bss               zero     0x2000'0d62     0x2  main.o [2]
+  .bss               zero     0x2000'0d64    0x15  displayST7735.o [4]
+  .bss               zero     0x2000'0d79     0x1  stm32l4xx_it.o [2]
+  .bss               zero     0x2000'0d7c     0x8  joystick.o [6]
+  .bss               zero     0x2000'0d84     0x4  rover_game.o [7]
+                            - 0x2000'0d88   0x8a8
+
+"P2", part 3 of 3:                          0x400
+  CSTACK                      0x2000'0d88   0x400  <Block>
+    CSTACK           uninit   0x2000'0d88   0x400  <Block tail>
+                            - 0x2000'1188   0x400
+
+Unused ranges:
+
+         From           To      Size
+         ----           --      ----
+   0x800'3d6a   0x803'ffff  0x3'c296
+  0x2000'04dd  0x2000'04df       0x3
+  0x2000'1188  0x2000'ffff    0xee78
+
+
+*******************************************************************************
+*** INIT TABLE
+***
+
+          Address      Size
+          -------      ----
+Zero (__iar_zero_init3)
+    1 destination range, total size 0x8a8:
+          0x2000'04e0  0x8a8
+
+Copy/lz77 (__iar_lz77_init_single3)
+    1 source range, total size 0x11e (22% of destination):
+           0x800'3c4c  0x11e
+    1 destination range, total size 0x4dd:
+          0x2000'0000  0x4dd
+
+
+
+*******************************************************************************
+*** MODULE SUMMARY
+***
+
+    Module                  ro code  ro data  rw data
+    ------                  -------  -------  -------
+command line/config:
+    -------------------------------------------------
+    Total:
+
+C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Application\EWARM: [1]
+    startup_stm32l432xx.o       648
+    -------------------------------------------------
+    Total:                      648
+
+C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Application\User: [2]
+    main.o                      840               406
+    stm32l4xx_hal_msp.o         464
+    stm32l4xx_it.o              204                23
+    -------------------------------------------------
+    Total:                    1'508               429
+
+C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Application\User\Modules\background: [3]
+    background.o                 40        2       12
+    -------------------------------------------------
+    Total:                       40        2       12
+
+C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Application\User\Modules\displayST7735: [4]
+    displayST7735.o             344               621
+    -------------------------------------------------
+    Total:                      344               621
+
+C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Application\User\Modules\generic_game: [5]
+    generic_game.o              450
+    -------------------------------------------------
+    Total:                      450
+
+C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Application\User\Modules\joystick: [6]
+    joystick.o                  224                60
+    -------------------------------------------------
+    Total:                      224                60
+
+C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Application\User\Modules\roverGame: [7]
+    rover_game.o              1'288      152    1'761
+    -------------------------------------------------
+    Total:                    1'288      152    1'761
+
+C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Application\User\Modules\roverGame\game_obj: [8]
+    coin_obj.o                   38       27      116
+    rover_obj.o                 580      102      444
+    -------------------------------------------------
+    Total:                      618      129      560
+
+C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Drivers\CMSIS: [9]
+    system_stm32l4xx.o           92       57        4
+    -------------------------------------------------
+    Total:                       92       57        4
+
+C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Drivers\STM32L4xx_HAL_Driver: [10]
+    stm32l4xx_hal.o             166        2       12
+    stm32l4xx_hal_adc.o       1'836
+    stm32l4xx_hal_cortex.o      196
+    stm32l4xx_hal_dma.o         550
+    stm32l4xx_hal_gpio.o        440
+    stm32l4xx_hal_pwr.o          16
+    stm32l4xx_hal_pwr_ex.o      124
+    stm32l4xx_hal_rcc.o       1'840
+    stm32l4xx_hal_rcc_ex.o      868
+    stm32l4xx_hal_spi.o         990
+    stm32l4xx_hal_uart.o      1'162
+    -------------------------------------------------
+    Total:                    8'188        2       12
+
+dl7M_tln.a: [11]
+    exit.o                        4
+    low_level_init.o              4
+    -------------------------------------------------
+    Total:                        8
+
+m7M_tls.a: [12]
+    DblAddSub.o                 590
+    DblMul.o                    426
+    DblToFlt.o                  104
+    S32ToDbl.o                   34
+    U32ToDbl.o                   28
+    fpinit_M.o                   34
+    -------------------------------------------------
+    Total:                    1'216
+
+rt7M_tl.a: [13]
+    ABImemset.o                 102
+    I64DivMod_small.o           262
+    I64DivZer.o                   2
+    cexit.o                      10
+    cmain.o                      30
+    cstartup_M.o                 28
+    data_init.o                  40
+    lz77_init_single.o          126
+    memset.o                     20
+    zero_init3.o                 56
+    -------------------------------------------------
+    Total:                      676
+
+shb_l.a: [14]
+    exit.o                       20
+    -------------------------------------------------
+    Total:                       20
+
+    Gaps                         26        2        2
+    Linker created                        32    1'024
+-----------------------------------------------------
+    Grand Total:             15'346      376    4'485
+
+
+*******************************************************************************
+*** ENTRY LIST
+***
+
+Entry                       Address   Size  Type      Object
+-----                       -------   ----  ----      ------
+.iar.init_table$$Base    0x800'3ac4          --   Gb  - Linker created -
+.iar.init_table$$Limit   0x800'3ae4          --   Gb  - Linker created -
+?main                    0x800'3ae5         Code  Gb  cmain.o [13]
+ADC1_IRQHandler          0x800'3ba5         Code  Wk  startup_stm32l432xx.o [1]
+ADC_DMAConvCplt          0x800'10e9   0x6c  Code  Gb  stm32l4xx_hal_adc.o [10]
+ADC_DMAError             0x800'115d   0x16  Code  Gb  stm32l4xx_hal_adc.o [10]
+ADC_DMAHalfConvCplt      0x800'1155    0x6  Code  Gb  stm32l4xx_hal_adc.o [10]
+ADC_Enable               0x800'1059   0x50  Code  Gb  stm32l4xx_hal_adc.o [10]
+AHBPrescTable            0x800'3a00   0x10  Data  Gb  system_stm32l4xx.o [9]
+APBPrescTable            0x800'3b58    0x8  Data  Gb  system_stm32l4xx.o [9]
+BackgroundColorPixel     0x800'2fd9    0x4  Code  Gb  generic_game.o [5]
+BackgroundFillBox        0x800'2fdd   0x72  Code  Gb  generic_game.o [5]
+BusFault_Handler         0x800'38df    0x2  Code  Gb  stm32l4xx_it.o [2]
+CAN1_RX0_IRQHandler      0x800'3bad         Code  Wk  startup_stm32l432xx.o [1]
+CAN1_RX1_IRQHandler      0x800'3bb1         Code  Wk  startup_stm32l432xx.o [1]
+CAN1_SCE_IRQHandler      0x800'3bb5         Code  Wk  startup_stm32l432xx.o [1]
+CAN1_TX_IRQHandler       0x800'3ba9         Code  Wk  startup_stm32l432xx.o [1]
+COMP_IRQHandler          0x800'3c0d         Code  Wk  startup_stm32l432xx.o [1]
+CRS_IRQHandler           0x800'3c49         Code  Wk  startup_stm32l432xx.o [1]
+CSTACK$$Base            0x2000'0d88          --   Gb  - Linker created -
+CSTACK$$Limit           0x2000'1188          --   Gb  - Linker created -
+CosSim                   0x800'31f1   0x1c  Code  Gb  rover_obj.o [8]
+DMA1_Channel1_IRQHandler
+                         0x800'3987   0x10  Code  Gb  stm32l4xx_it.o [2]
+DMA1_Channel2_IRQHandler
+                         0x800'3b8d         Code  Wk  startup_stm32l432xx.o [1]
+DMA1_Channel3_IRQHandler
+                         0x800'3b91         Code  Wk  startup_stm32l432xx.o [1]
+DMA1_Channel4_IRQHandler
+                         0x800'3b95         Code  Wk  startup_stm32l432xx.o [1]
+DMA1_Channel5_IRQHandler
+                         0x800'3b99         Code  Wk  startup_stm32l432xx.o [1]
+DMA1_Channel6_IRQHandler
+                         0x800'3b9d         Code  Wk  startup_stm32l432xx.o [1]
+DMA1_Channel7_IRQHandler
+                         0x800'3ba1         Code  Wk  startup_stm32l432xx.o [1]
+DMA2_Channel1_IRQHandler
+                         0x800'3bf9         Code  Wk  startup_stm32l432xx.o [1]
+DMA2_Channel2_IRQHandler
+                         0x800'3bfd         Code  Wk  startup_stm32l432xx.o [1]
+DMA2_Channel3_IRQHandler
+                         0x800'3c01         Code  Wk  startup_stm32l432xx.o [1]
+DMA2_Channel4_IRQHandler
+                         0x800'3c05         Code  Wk  startup_stm32l432xx.o [1]
+DMA2_Channel5_IRQHandler
+                         0x800'3c09         Code  Wk  startup_stm32l432xx.o [1]
+DMA2_Channel6_IRQHandler
+                         0x800'3c1d         Code  Wk  startup_stm32l432xx.o [1]
+DMA2_Channel7_IRQHandler
+                         0x800'3c21         Code  Wk  startup_stm32l432xx.o [1]
+DMA_SetConfig            0x800'15bf   0x28  Code  Lc  stm32l4xx_hal_dma.o [10]
+DebugMon_Handler         0x800'38e5    0x2  Code  Gb  stm32l4xx_it.o [2]
+DisplayObjectLoc         0x800'2913   0x74  Code  Gb  rover_game.o [7]
+EXTI0_IRQHandler         0x800'3b79         Code  Wk  startup_stm32l432xx.o [1]
+EXTI15_10_IRQHandler     0x800'3be5         Code  Wk  startup_stm32l432xx.o [1]
+EXTI1_IRQHandler         0x800'3b7d         Code  Wk  startup_stm32l432xx.o [1]
+EXTI2_IRQHandler         0x800'3b81         Code  Wk  startup_stm32l432xx.o [1]
+EXTI3_IRQHandler         0x800'3b85         Code  Wk  startup_stm32l432xx.o [1]
+EXTI4_IRQHandler         0x800'3b89         Code  Wk  startup_stm32l432xx.o [1]
+EXTI9_5_IRQHandler       0x800'3bb9         Code  Wk  startup_stm32l432xx.o [1]
+Error_Handler            0x800'1a95    0x8  Code  Gb  main.o [2]
+FLASH_IRQHandler         0x800'3b71         Code  Wk  startup_stm32l432xx.o [1]
+FPU_IRQHandler           0x800'3c45         Code  Wk  startup_stm32l432xx.o [1]
+FillNewBackgroundObj     0x800'304f  0x134  Code  Gb  generic_game.o [5]
+HAL_ADC_ConfigChannel    0x800'0cd9  0x334  Code  Gb  stm32l4xx_hal_adc.o [10]
+HAL_ADC_ConvCpltCallback
+                         0x800'15e7    0x2  Code  Wk  stm32l4xx_hal_adc.o [10]
+HAL_ADC_ConvHalfCpltCallback
+                         0x800'15eb    0x2  Code  Wk  stm32l4xx_hal_adc.o [10]
+HAL_ADC_ErrorCallback    0x800'15e9    0x2  Code  Wk  stm32l4xx_hal_adc.o [10]
+HAL_ADC_Init             0x800'0a9f  0x18a  Code  Gb  stm32l4xx_hal_adc.o [10]
+HAL_ADC_MspInit          0x800'121d   0x9e  Code  Gb  stm32l4xx_hal_msp.o [2]
+HAL_ADC_Start_DMA        0x800'0c29   0xa6  Code  Gb  stm32l4xx_hal_adc.o [10]
+HAL_DMA_IRQHandler       0x800'14fd   0xb2  Code  Gb  stm32l4xx_hal_dma.o [10]
+HAL_DMA_Init             0x800'13c1   0xaa  Code  Gb  stm32l4xx_hal_dma.o [10]
+HAL_DMA_Start_IT         0x800'1489   0x74  Code  Gb  stm32l4xx_hal_dma.o [10]
+HAL_Delay                0x800'2fb1   0x28  Code  Wk  stm32l4xx_hal.o [10]
+HAL_GPIO_Init            0x800'15ed  0x19a  Code  Gb  stm32l4xx_hal_gpio.o [10]
+HAL_GPIO_WritePin        0x800'1787    0xa  Code  Gb  stm32l4xx_hal_gpio.o [10]
+HAL_GetTick              0x800'0901    0xc  Code  Wk  stm32l4xx_hal.o [10]
+HAL_IncTick              0x800'39a5   0x10  Code  Wk  stm32l4xx_hal.o [10]
+HAL_Init                 0x800'1b01   0x1e  Code  Gb  stm32l4xx_hal.o [10]
+HAL_InitTick             0x800'08bd   0x44  Code  Wk  stm32l4xx_hal.o [10]
+HAL_MspInit              0x800'11f1   0x2c  Code  Gb  stm32l4xx_hal_msp.o [2]
+HAL_NVIC_EnableIRQ       0x800'09f7   0x16  Code  Gb  stm32l4xx_hal_cortex.o [10]
+HAL_NVIC_SetPriority     0x800'09bd   0x3a  Code  Gb  stm32l4xx_hal_cortex.o [10]
+HAL_NVIC_SetPriorityGrouping
+                         0x800'09a3   0x1a  Code  Gb  stm32l4xx_hal_cortex.o [10]
+HAL_PWREx_ControlVoltageScaling
+                         0x800'0919   0x62  Code  Gb  stm32l4xx_hal_pwr_ex.o [10]
+HAL_PWREx_GetVoltageRange
+                         0x800'090d    0xc  Code  Gb  stm32l4xx_hal_pwr_ex.o [10]
+HAL_PWR_EnableBkUpAccess
+                         0x800'2acd    0xc  Code  Gb  stm32l4xx_hal_pwr.o [10]
+HAL_RCCEx_EnableMSIPLLMode
+                         0x800'2d0f    0xc  Code  Gb  stm32l4xx_hal_rcc_ex.o [10]
+HAL_RCCEx_PeriphCLKConfig
+                         0x800'2add  0x22c  Code  Gb  stm32l4xx_hal_rcc_ex.o [10]
+HAL_RCC_ClockConfig      0x800'0637  0x100  Code  Gb  stm32l4xx_hal_rcc.o [10]
+HAL_RCC_GetPCLK1Freq     0x800'07dd   0x10  Code  Gb  stm32l4xx_hal_rcc.o [10]
+HAL_RCC_GetPCLK2Freq     0x800'07ed    0xe  Code  Gb  stm32l4xx_hal_rcc.o [10]
+HAL_RCC_GetSysClockFreq
+                         0x800'074b   0x92  Code  Gb  stm32l4xx_hal_rcc.o [10]
+HAL_RCC_OscConfig        0x800'018d  0x47e  Code  Gb  stm32l4xx_hal_rcc.o [10]
+HAL_SPI_Init             0x800'1b21   0xa2  Code  Gb  stm32l4xx_hal_spi.o [10]
+HAL_SPI_MspInit          0x800'12c7   0x48  Code  Gb  stm32l4xx_hal_msp.o [2]
+HAL_SPI_Transmit         0x800'1bcf  0x15e  Code  Gb  stm32l4xx_hal_spi.o [10]
+HAL_SYSTICK_Config       0x800'0a0d   0x22  Code  Gb  stm32l4xx_hal_cortex.o [10]
+HAL_UART_Init            0x800'1f01   0x30  Code  Gb  stm32l4xx_hal_uart.o [10]
+HAL_UART_MspInit         0x800'1327   0x6e  Code  Gb  stm32l4xx_hal_msp.o [2]
+HardFault_Handler        0x800'38db    0x2  Code  Gb  stm32l4xx_it.o [2]
+I2C1_ER_IRQHandler       0x800'3bd5         Code  Wk  startup_stm32l432xx.o [1]
+I2C1_EV_IRQHandler       0x800'3bd1         Code  Wk  startup_stm32l432xx.o [1]
+I2C3_ER_IRQHandler       0x800'3c31         Code  Wk  startup_stm32l432xx.o [1]
+I2C3_EV_IRQHandler       0x800'3c2d         Code  Wk  startup_stm32l432xx.o [1]
+InitializeObjDisp        0x800'26f5  0x17c  Code  Gb  rover_game.o [7]
+LL_ADC_GetOffsetChannel
+                         0x800'0a4d    0xe  Code  Lc  stm32l4xx_hal_adc.o [10]
+LL_ADC_REG_IsTriggerSourceSWStart
+                         0x800'0a6d    0xe  Code  Lc  stm32l4xx_hal_adc.o [10]
+LL_ADC_SetChannelSamplingTime
+                         0x800'0a7b   0x24  Code  Lc  stm32l4xx_hal_adc.o [10]
+LL_ADC_SetOffsetState    0x800'0a5b   0x12  Code  Lc  stm32l4xx_hal_adc.o [10]
+LPTIM1_IRQHandler        0x800'3c11         Code  Wk  startup_stm32l432xx.o [1]
+LPTIM2_IRQHandler        0x800'3c15         Code  Wk  startup_stm32l432xx.o [1]
+LPUART1_IRQHandler       0x800'3c25         Code  Wk  startup_stm32l432xx.o [1]
+MSIRangeTable            0x800'3a48   0x30  Data  Gb  system_stm32l4xx.o [9]
+MemManage_Handler        0x800'38dd    0x2  Code  Gb  stm32l4xx_it.o [2]
+MultMatrix               0x800'325b   0x3a  Code  Gb  rover_obj.o [8]
+NMI_Handler              0x800'38d9    0x2  Code  Gb  stm32l4xx_it.o [2]
+ObjectPositionCalc       0x800'28e1   0x32  Code  Gb  rover_game.o [7]
+PVD_PVM_IRQHandler       0x800'3b65         Code  Wk  startup_stm32l432xx.o [1]
+PendSV_Handler           0x800'38e7    0x2  Code  Gb  stm32l4xx_it.o [2]
+QUADSPI_IRQHandler       0x800'3c29         Code  Wk  startup_stm32l432xx.o [1]
+RCCEx_PLLSAI1_Config     0x800'2d1b   0xfa  Code  Lc  stm32l4xx_hal_rcc_ex.o [10]
+RCC_IRQHandler           0x800'3b75         Code  Wk  startup_stm32l432xx.o [1]
+RCC_SetFlashLatencyFromMSIRange
+                         0x800'0805   0x74  Code  Lc  stm32l4xx_hal_rcc.o [10]
+RNG_IRQHandler           0x800'3c41         Code  Wk  startup_stm32l432xx.o [1]
+RTC_Alarm_IRQHandler     0x800'3be9         Code  Wk  startup_stm32l432xx.o [1]
+RTC_WKUP_IRQHandler      0x800'3b6d         Code  Wk  startup_stm32l432xx.o [1]
+RefreshObjectDetails     0x800'2987   0x10  Code  Gb  rover_game.o [7]
+Region$$Table$$Base      0x800'3ac4          --   Gb  - Linker created -
+Region$$Table$$Limit     0x800'3ae4          --   Gb  - Linker created -
+Reset_Handler            0x800'3b49         Code  Wk  startup_stm32l432xx.o [1]
+RoverController          0x800'3295  0x126  Code  Gb  rover_obj.o [8]
+RoverLimitLoc            0x800'319d   0x36  Code  Gb  rover_obj.o [8]
+SAI1_IRQHandler          0x800'3c35         Code  Wk  startup_stm32l432xx.o [1]
+SPI1_IRQHandler          0x800'3bd9         Code  Wk  startup_stm32l432xx.o [1]
+SPI3_IRQHandler          0x800'3bed         Code  Wk  startup_stm32l432xx.o [1]
+SPI_EndRxTxTransaction   0x800'1eb7   0x2e  Code  Lc  stm32l4xx_hal_spi.o [10]
+SPI_WaitFifoStateUntilTimeout
+                         0x800'1e15   0x8a  Code  Lc  stm32l4xx_hal_spi.o [10]
+SPI_WaitFlagStateUntilTimeout
+                         0x800'1d8f   0x86  Code  Lc  stm32l4xx_hal_spi.o [10]
+SVC_Handler              0x800'38e3    0x2  Code  Gb  stm32l4xx_it.o [2]
+SWPMI1_IRQHandler        0x800'3c39         Code  Wk  startup_stm32l432xx.o [1]
+SetObjectColor           0x800'24e5  0x210  Code  Gb  rover_game.o [7]
+SinSim                   0x800'31d3   0x1e  Code  Gb  rover_obj.o [8]
+SysTick_Handler          0x800'38e9   0x9e  Code  Gb  stm32l4xx_it.o [2]
+SystemClock_Config       0x800'19c3   0xd2  Code  Gb  main.o [2]
+SystemCoreClock         0x2000'04d8    0x4  Data  Gb  system_stm32l4xx.o [9]
+SystemInit               0x800'39b5   0x3c  Code  Gb  system_stm32l4xx.o [9]
+TAMP_STAMP_IRQHandler    0x800'3b69         Code  Wk  startup_stm32l432xx.o [1]
+TIM1_BRK_TIM15_IRQHandler
+                         0x800'3bbd         Code  Wk  startup_stm32l432xx.o [1]
+TIM1_CC_IRQHandler       0x800'3bc9         Code  Wk  startup_stm32l432xx.o [1]
+TIM1_TRG_COM_IRQHandler
+                         0x800'3bc5         Code  Wk  startup_stm32l432xx.o [1]
+TIM1_UP_TIM16_IRQHandler
+                         0x800'3bc1         Code  Wk  startup_stm32l432xx.o [1]
+TIM2_IRQHandler          0x800'3bcd         Code  Wk  startup_stm32l432xx.o [1]
+TIM6_DAC_IRQHandler      0x800'3bf1         Code  Wk  startup_stm32l432xx.o [1]
+TIM7_IRQHandler          0x800'3bf5         Code  Wk  startup_stm32l432xx.o [1]
+TSC_IRQHandler           0x800'3c3d         Code  Wk  startup_stm32l432xx.o [1]
+UART_AdvFeatureConfig    0x800'21d5   0xc6  Code  Gb  stm32l4xx_hal_uart.o [10]
+UART_CheckIdleState      0x800'229b   0x5c  Code  Gb  stm32l4xx_hal_uart.o [10]
+UART_SetConfig           0x800'1f81  0x224  Code  Gb  stm32l4xx_hal_uart.o [10]
+UART_WaitOnFlagUntilTimeout
+                         0x800'22f7   0x72  Code  Gb  stm32l4xx_hal_uart.o [10]
+USART1_IRQHandler        0x800'3bdd         Code  Wk  startup_stm32l432xx.o [1]
+USART2_IRQHandler        0x800'3be1         Code  Wk  startup_stm32l432xx.o [1]
+USB_IRQHandler           0x800'3c19         Code  Wk  startup_stm32l432xx.o [1]
+UpdateObjectPosition     0x800'2871   0x5c  Code  Gb  rover_game.o [7]
+UsageFault_Handler       0x800'38e1    0x2  Code  Gb  stm32l4xx_it.o [2]
+WWDG_IRQHandler          0x800'3b61         Code  Wk  startup_stm32l432xx.o [1]
+__NVIC_SetPriority       0x800'0989   0x1a  Code  Lc  stm32l4xx_hal_cortex.o [10]
+__aeabi_d2f              0x800'3871         Code  Gb  DblToFlt.o [12]
+__aeabi_dadd             0x800'3621         Code  Gb  DblAddSub.o [12]
+__aeabi_dmul             0x800'3475         Code  Gb  DblMul.o [12]
+__aeabi_i2d              0x800'3435         Code  Gb  S32ToDbl.o [12]
+__aeabi_ldiv0            0x800'3431         Code  Gb  I64DivZer.o [13]
+__aeabi_memset           0x800'2e41         Code  Gb  ABImemset.o [13]
+__aeabi_ui2d             0x800'3459         Code  Gb  U32ToDbl.o [12]
+__cmain                  0x800'3ae5         Code  Gb  cmain.o [13]
+__exit                   0x800'3b19   0x14  Code  Gb  exit.o [14]
+__iar_Memset             0x800'2e41         Code  Gb  ABImemset.o [13]
+__iar_Memset_word        0x800'2e49         Code  Gb  ABImemset.o [13]
+__iar_data_init3         0x800'3a79   0x28  Code  Gb  data_init.o [13]
+__iar_init_vfp           0x800'3aa1         Code  Gb  fpinit_M.o [12]
+__iar_lz77_init_single3
+                         0x800'1173   0x7e  Code  Gb  lz77_init_single.o [13]
+__iar_program_start      0x800'3b2d         Code  Gb  cstartup_M.o [13]
+__iar_small_uldivmod     0x800'2ea9         Code  Gb  I64DivMod_small.o [13]
+__iar_zero_init3         0x800'3a11   0x38  Code  Gb  zero_init3.o [13]
+__low_level_init         0x800'3b03    0x4  Code  Gb  low_level_init.o [11]
+__vector_table           0x800'0000         Data  Gb  startup_stm32l432xx.o [1]
+_call_main               0x800'3af1         Code  Gb  cmain.o [13]
+_exit                    0x800'3b0d         Code  Gb  cexit.o [13]
+adcFlag                 0x2000'0d79    0x1  Data  Gb  stm32l4xx_it.o [2]
+adcResults              0x2000'0d1c    0x8  Data  Gb  joystick.o [6]
+allAdcResults           0x2000'0d24   0x28  Data  Gb  joystick.o [6]
+allObjColorTypes        0x2000'02bc    0x8  Data  Gb  rover_game.o [7]
+allObjColors            0x2000'02c4    0x8  Data  Gb  rover_game.o [7]
+arrayValid              0x2000'0d19    0x1  Data  Gb  joystick.o [6]
+checkerBoard             0x800'3409   0x28  Code  Gb  background.o [3]
+checkerColors           0x2000'0004    0x8  Data  Gb  background.o [3]
+circularCounter         0x2000'0d18    0x1  Data  Gb  joystick.o [6]
+coin1                   0x2000'0040   0x1c  Data  Gb  coin_obj.o [8]
+coinColorTypes          0x2000'0078    0x8  Data  Gb  coin_obj.o [8]
+coinColors              0x2000'000c   0x34  Data  Gb  coin_obj.o [8]
+coininterval            0x2000'04dc    0x1  Data  Gb  rover_game.o [7]
+coinsObj                0x2000'02cc    0xc  Data  Gb  rover_game.o [7]
+countFlag1000Ms         0x2000'0d5e    0x2  Data  Gb  stm32l4xx_it.o [2]
+countFlag100Ms          0x2000'0d5a    0x2  Data  Gb  stm32l4xx_it.o [2]
+countFlag10Ms           0x2000'0d56    0x2  Data  Gb  stm32l4xx_it.o [2]
+countFlag25Ms           0x2000'0d58    0x2  Data  Gb  stm32l4xx_it.o [2]
+countFlag3Ms            0x2000'0d54    0x2  Data  Gb  stm32l4xx_it.o [2]
+countFlag500Ms          0x2000'0d5c    0x2  Data  Gb  stm32l4xx_it.o [2]
+dispObjects             0x2000'0080  0x21c  Data  Gb  rover_game.o [7]
+exit                     0x800'3b07    0x4  Code  Gb  exit.o [11]
+finalADCResults         0x2000'0d7c    0x8  Data  Gb  joystick.o [6]
+flag1000MsPassed        0x2000'0d51    0x1  Data  Gb  stm32l4xx_it.o [2]
+flag100MsPassed         0x2000'0d4f    0x1  Data  Gb  stm32l4xx_it.o [2]
+flag10MsPassed          0x2000'0d4d    0x1  Data  Gb  stm32l4xx_it.o [2]
+flag25MsPassed          0x2000'0d4e    0x1  Data  Gb  stm32l4xx_it.o [2]
+flag3MsPassed           0x2000'0d4c    0x1  Data  Gb  stm32l4xx_it.o [2]
+flag500MsPassed         0x2000'0d50    0x1  Data  Gb  stm32l4xx_it.o [2]
+gameObjects             0x2000'0a58  0x12c  Data  Gb  rover_game.o [7]
+hadc1                   0x2000'0c6c   0x64  Data  Gb  main.o [2]
+hdma_adc1               0x2000'0cd0   0x48  Data  Gb  main.o [2]
+hspi1                   0x2000'0b88   0x64  Data  Gb  main.o [2]
+huart2                  0x2000'0bec   0x80  Data  Gb  main.o [2]
+initADC                  0x800'2a79    0x4  Code  Gb  joystick.o [6]
+initDisplay              0x800'2411   0x46  Code  Gb  displayST7735.o [4]
+initRoverGame            0x800'2997   0x3c  Code  Gb  rover_game.o [7]
+joystickVal             0x2000'0d84    0x4  Data  Gb  rover_game.o [7]
+leftTopCorner           0x2000'029c    0x2  Data  Gb  rover_game.o [7]
+main                     0x800'17a5  0x21e  Code  Gb  main.o [2]
+memset                   0x800'1aed   0x14  Code  Gb  memset.o [13]
+objPixelSpace           0x2000'04e0  0x320  Data  Gb  rover_game.o [7]
+objPxHeight             0x2000'02f4   0x1c  Data  Gb  rover_game.o [7]
+objPxWidth              0x2000'02d8   0x1c  Data  Gb  rover_game.o [7]
+orgCoin1                0x2000'005c   0x1c  Data  Gb  coin_obj.o [8]
+rov1Obj                 0x2000'02a0   0x18  Data  Gb  rover_game.o [7]
+roverAngle              0x2000'02b8    0x2  Data  Gb  rover_game.o [7]
+roverAngledColorType    0x2000'03f0   0xc4  Data  Gb  rover_obj.o [8]
+roverColorTypes         0x2000'04b4    0x8  Data  Gb  rover_obj.o [8]
+roverColors             0x2000'0310   0x1c  Data  Gb  rover_obj.o [8]
+roverJoyGain            0x2000'04bc   0x10  Data  Gb  rover_obj.o [8]
+roverStraightColorType  0x2000'032c   0xc4  Data  Gb  rover_obj.o [8]
+runADC                   0x800'29ed   0x8c  Code  Gb  joystick.o [6]
+runJoystick              0x800'2a83   0x36  Code  Gb  joystick.o [6]
+runningTrue             0x2000'0d52    0x1  Data  Gb  stm32l4xx_it.o [2]
+setCoinColor             0x800'33e1   0x26  Code  Gb  coin_obj.o [8]
+setColumnRowRange        0x800'238d   0x5a  Code  Gb  displayST7735.o [4]
+setDisplay              0x2000'0b84    0x1  Data  Gb  main.o [2]
+speedColorArr           0x2000'0800  0x258  Data  Gb  displayST7735.o [4]
+thickness               0x2000'0000    0x1  Data  Gb  background.o [3]
+timeDisp                0x2000'0d62    0x2  Data  Gb  main.o [2]
+timeDisplayMS           0x2000'0d60    0x2  Data  Gb  stm32l4xx_it.o [2]
+transmitArr             0x2000'0d64   0x14  Data  Gb  displayST7735.o [4]
+uwTick                  0x2000'04cc    0x4  Data  Gb  stm32l4xx_hal.o [10]
+uwTickFreq              0x2000'04d4    0x4  Data  Gb  stm32l4xx_hal.o [10]
+uwTickPrio              0x2000'04d0    0x4  Data  Gb  stm32l4xx_hal.o [10]
+writeColorArray          0x800'2457   0x72  Code  Gb  displayST7735.o [4]
+writeDisplayCommand      0x800'23e7   0x2a  Code  Gb  displayST7735.o [4]
+zeroNum                 0x2000'0d78    0x1  Data  Gb  displayST7735.o [4]
+
+
+[1] = C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Application\EWARM
+[2] = C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Application\User
+[3] = C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Application\User\Modules\background
+[4] = C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Application\User\Modules\displayST7735
+[5] = C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Application\User\Modules\generic_game
+[6] = C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Application\User\Modules\joystick
+[7] = C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Application\User\Modules\roverGame
+[8] = C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Application\User\Modules\roverGame\game_obj
+[9] = C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Drivers\CMSIS
+[10] = C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\Obj\Drivers\STM32L4xx_HAL_Driver
+[11] = dl7M_tln.a
+[12] = m7M_tls.a
+[13] = rt7M_tl.a
+[14] = shb_l.a
+
+  15'346 bytes of readonly  code memory
+     376 bytes of readonly  data memory
+   4'485 bytes of readwrite data memory
+
+Errors: none
+Warnings: none
