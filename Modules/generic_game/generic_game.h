@@ -2,6 +2,9 @@
 #define __GENERIC_GAME_H
 #include "background.h"
 #include "main.h"
+
+#define MAX(a,b) a>b? a :b
+#define MIN(a,b) a>b? b :a
 //#include "coin_obj.h"
 //#include "rover_obj.h"
 

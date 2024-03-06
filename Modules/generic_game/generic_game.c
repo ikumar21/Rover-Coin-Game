@@ -61,6 +61,7 @@ void FillNewBackgroundObj(){
 
 
 uint8_t inFrame(Game_Obj *gObj1, Game_Obj *gObj2){
+  //Returns if object is in frame of another
   //Faster if gObj2 is smaller than gObj1
   Obj_Disp *dObj1= gObj1->dObj; Obj_Disp *dObj2 = gObj2->dObj;
   uint8_t toLeft = dObj1->xLoc+dObj1->width>=dObj2->xLoc; //Object 1 is to left of object 2 (no intersection)
@@ -68,5 +69,33 @@ uint8_t inFrame(Game_Obj *gObj1, Game_Obj *gObj2){
   uint8_t toTop = dObj1->yLoc+dObj1->height>=dObj2->yLoc; //Object 1 is to top of object 2 (no intersection)
   uint8_t toBottom = dObj2->yLoc+dObj2->height>=dObj1->yLoc; //Object 1 is to bottom of object 2 (no intersection)
   return !(toLeft || toRight || toTop || toBottom);
+  
+}
+
+uint8_t collisionThere(Game_Obj *gObj1, Game_Obj *gObj2){
+  //Detects if two objects are intersecting ->returns true or false
+  Obj_Disp *dObj1= gObj1->dObj; Obj_Disp *dObj2 = gObj2->dObj;
+  
+  if(inFrame(gObj1,gObj2)){
+    return false; //No intersection if they aren't in frame
+  }
+  //Start looking at right/down most left/top edge of objects:
+  uint16_t xStart = MAX(dObj1->xLoc, dObj2->xLoc);
+  uint16_t yStart = MAX(dObj1->yLoc, dObj2->yLoc);
+  //End looking at left/top most right/bottom edge of objects:
+  uint16_t xEnd = MIN(dObj1->xLoc+dObj1->width, dObj2->xLoc+dObj2->width)-1;
+  uint16_t yEnd = MIN(dObj1->yLoc+dObj1->height, dObj2->yLoc+dObj2->height)-1;
+  
+  uint8_t collision = false;
+  //Go through intersection of objects and make sure overlapped values aren't background
+  for(uint16_t x = xStart; x<=xEnd;x++){
+    for(uint16_t y = yStart; y<=yEnd; y++){
+      uint8_t colorType1 = dObj1->objColorTypes[]
+    
+    }
+  }
+  
+     
+  
   
 }
