@@ -134,26 +134,10 @@ void SetObjectColor(uint32_t *destColorArr, Obj_Disp *obj){
 
 }
 
-
-uint8_t inFrame(Game_Obj *gObj1, Game_Obj *gObj2){
-  //Returns if object is in frame of another
-  //Faster if gObj2 is smaller than gObj1
-  Obj_Disp *dObj1= gObj1->dObj; Obj_Disp *dObj2 = gObj2->dObj;
-  uint8_t toLeft = dObj1->xLoc+dObj1->width>=dObj2->xLoc; //Object 1 is to left of object 2 (no intersection)
-  uint8_t toRight = dObj2->xLoc+dObj2->width>=dObj1->xLoc; //Object 1 is to right of object 2 (no intersection)
-  uint8_t toTop = dObj1->yLoc+dObj1->height>=dObj2->yLoc; //Object 1 is to top of object 2 (no intersection)
-  uint8_t toBottom = dObj2->yLoc+dObj2->height>=dObj1->yLoc; //Object 1 is to bottom of object 2 (no intersection)
-  return !(toLeft || toRight || toTop || toBottom);
-  
-}
-
 uint8_t collisionThere(Game_Obj *gObj1, Game_Obj *gObj2){
   //Detects if two objects are intersecting ->returns true or false
   Obj_Disp *dObj1= gObj1->dObj; Obj_Disp *dObj2 = gObj2->dObj;
   
-  if(inFrame(gObj1,gObj2)){
-    return false; //No intersection if they aren't in frame
-  }
   //Start looking at right/down most left/top edge of objects:
   uint16_t xStart = MAX(dObj1->xLoc, dObj2->xLoc);
   uint16_t yStart = MAX(dObj1->yLoc, dObj2->yLoc);

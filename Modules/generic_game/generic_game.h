@@ -51,6 +51,5 @@ void BackgroundFillBox(uint16_t xS, uint16_t xE, uint16_t yS, uint16_t yE, uint8
 void FillNewBackgroundObj();
 void SetObjectColor(uint32_t *destColorArr, Obj_Disp *obj);
 uint8_t collisionThere(Game_Obj *gObj1, Game_Obj *gObj2);
-uint8_t inFrame(Game_Obj *gObj1, Game_Obj *gObj2);
 
 #endif
