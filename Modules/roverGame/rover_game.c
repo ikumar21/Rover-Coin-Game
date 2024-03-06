@@ -6,6 +6,7 @@
 
 uint32_t objPixelSpace[200];
 
+uint8_t roverGotCoin = false;
 //All Objects:
 Game_Obj gameObjects[MAX_NUM_OBJ];
 Obj_Disp dispObjects[MAX_NUM_OBJ];
@@ -110,6 +111,16 @@ void UpdateObjectPosition(){
     if(gObj->active)
       ObjectPositionCalc(gObj);//Calculate new position of object
   }
+  //See if any collisions
+  uint8_t collision = false;
+  for(uint8_t i = 0; i<MAX_NUM_OBJ; i++){
+    if(gameObjects[i].objType==COIN){
+      if(collisionThere(&gameObjects[i], &gameObjects[0]))
+         collision = true;
+    }
+  }
+  roverGotCoin=collision;
+  
   for(uint8_t i = 0; i<MAX_NUM_OBJ; i++){
     Game_Obj *gObj = &gameObjects[i];
     if(gObj->active)

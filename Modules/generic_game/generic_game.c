@@ -172,7 +172,7 @@ uint8_t collisionThere(Game_Obj *gObj1, Game_Obj *gObj2){
     for(uint16_t y = yStart; y<=yEnd; y++){
       //row*width+col;
       uint8_t colorType1 = colorArr1[(x-dObj1->xLoc)*dObj1->width+y-dObj1->yLoc];
-      uint8_t colorType2 = colorArr2[(x-dObj1->xLoc)*dObj1->width+y-dObj1->yLoc];
+      uint8_t colorType2 = colorArr2[(x-dObj2->xLoc)*dObj2->width+y-dObj2->yLoc];
       //If both pixels aren't background-> collision
       if(colorType1!=0 && colorType2!=0){
         collision = true;
