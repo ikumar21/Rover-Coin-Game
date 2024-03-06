@@ -36,9 +36,6 @@ struct Obj_Disp{
     ObjectDispType objType;
     uint32_t *objColors;
     uint8_t **objColorTypes;
-    
-
-
 };
 
 struct Game_Obj{
@@ -52,6 +49,8 @@ struct Game_Obj{
 uint32_t BackgroundColorPixel(uint16_t x,uint16_t y,uint8_t objIndex);
 void BackgroundFillBox(uint16_t xS, uint16_t xE, uint16_t yS, uint16_t yE, uint8_t objIndex);
 void FillNewBackgroundObj();
+void SetObjectColor(uint32_t *destColorArr, Obj_Disp *obj);
+uint8_t collisionThere(Game_Obj *gObj1, Game_Obj *gObj2);
 uint8_t inFrame(Game_Obj *gObj1, Game_Obj *gObj2);
 
 #endif
