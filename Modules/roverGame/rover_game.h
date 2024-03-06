@@ -11,6 +11,7 @@ extern Game_Obj gameObjects[15];
 //Joystick
 extern int16_t joystickVal[2];
 
+//Generic Game
 extern uint32_t BackgroundColorPixel(uint16_t x,uint16_t y,uint8_t objIndex);
 extern void BackgroundFillBox(uint16_t xS, uint16_t xE, uint16_t yS, uint16_t yE, uint8_t objIndex);
 extern void FillNewBackgroundObj();

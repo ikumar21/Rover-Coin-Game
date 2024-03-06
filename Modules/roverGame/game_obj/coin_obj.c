@@ -1,5 +1,5 @@
 #include "coin_obj.h"
-
+#include "rover_math.h"
 
 uint32_t coinColors[13] = {0xF8F8F8,0xFC0000,0xFC7A00,0xFCFC00,0x7AFC00, 
                             0x00FC00,0x00FC7A,0x00FCFC,0x007AFC,

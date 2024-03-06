@@ -1,4 +1,5 @@
 #include "rover_obj.h"
+#include "rover_math.h"
 
 //0xF8F8F8 is background color
 uint32_t roverColors[7] = {0xF8F8F8,0x040404,0x9C281C,0x00CC00,0x1C2828,0xFCFC00,0xA80000};
@@ -48,26 +49,6 @@ void RoverLimitLoc(int16_t *x, int16_t *y){
     *y=0;
   if(*y>14700)
     *y=14700;
-}
-float SinSim(uint16_t angle){
-  uint8_t O = angle%2;//Odd
-  uint8_t N = angle>180; //Negative
-  uint8_t A = angle==90 || angle ==270;
-    
-  return (N*-1+!N)*(0.7071*O+A);
-}
-
-float CosSim(uint16_t angle){
-  uint8_t O = angle%2;//Odd
-  uint8_t N = angle>90 && angle<270; //Negative
-  uint8_t B = angle==0 || angle ==180;
-    
-  return (N*-1+!N)*(0.7071*O+B);
-}
-
-void MultMatrix(float* ans, float M[2][2], float *V){
-  ans[0]=M[0][0]*V[0]+M[0][1]*V[1];
-  ans[1]=M[1][0]*V[0]+M[1][1]*V[1];
 }
 
 void RoverController(Game_Obj *gObj, int16_t joyX, int16_t joyY){
