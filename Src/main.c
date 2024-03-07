@@ -26,6 +26,7 @@
 #include "displayST7735.h"
 #include "rover_game.h"
 #include "joystick.h"
+#include "rover_math.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -60,6 +61,8 @@ extern uint8_t flag500MsPassed;
 extern uint8_t flag1000MsPassed;
 
 uint8_t ledStatus = false;
+//Random Num
+uint32_t ranNum = 0;
 
 //Display Testing
 
@@ -113,6 +116,9 @@ static void MX_SPI1_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_ADC1_Init(void);
 /* USER CODE BEGIN PFP */
+
+void initRNG();//RNG
+
 void testObject(uint16_t angle, ObjectDispType objType);
 uint32_t returnAnalog(uint8_t pin);
 
@@ -166,6 +172,8 @@ uint32_t returnAnalog(uint8_t pin);
   //writeRectangle(0,0,128, 160, DISP_AQUA);
   initADC();
   InitializeObjDisp(6);
+  //Initialize RNG:
+  initRNG();
   
   /* USER CODE END 2 */
  
@@ -252,6 +260,7 @@ uint32_t returnAnalog(uint8_t pin);
     if(flag1000MsPassed){
       flag1000MsPassed=false;
       //Every 1000 ms Task:
+      ranNum=getRandNum(20,163);
 //      leftTopCorner[1]++;
 //
 //      if(leftTopCorner[1]>=147)
@@ -564,6 +573,26 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void initRNG(){
+  //Reset RNG:
+  RCC->AHB2RSTR|=0x1<<18;
+  RCC->AHB2RSTR&=~(0x1<<18);
+  
+  //Enable PLL48M2 Clock:
+  RCC->PLLSAI1CFGR|=0x1<<20;
+  
+  //Select PLL48M2 Clock as clock source for CLK48 (RNG)
+  RCC->CCIPR&=~(0x3<<26);
+  RCC->CCIPR|=(0x3<<26);
+  //Enable RNG Clock:
+  RCC->AHB2ENR|=0x1<<18;
+  RCC->AHB2SMENR|=0x1<<18; //Enable clock even in sleep/stop mode
+  
+  HAL_Delay(2);//Wait to access RNG again
+  //Enable Clock detection, diable interrupt and RNG
+  RNG->CR&=~(0x2C);
+}
+
 void testObject(uint16_t angle, ObjectDispType objType){
   obj1.angle=angle;
 //  obj1.objType =objType;

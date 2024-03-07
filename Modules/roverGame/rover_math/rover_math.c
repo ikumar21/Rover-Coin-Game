@@ -6,7 +6,17 @@ uint32_t getRandNum(uint32_t min, uint32_t max){
 }
 
 uint32_t randSTM32L4x(){
-  
+  //Enable RNG
+  RNG->CR |= 0x1<<2;
+  uint32_t statusReg = RNG->SR;
+  //Keep waiting until data is ready, no faulty sequence, and RNG clock is fast enough 
+  while((RNG->SR>>5)&0x3 || !(RNG->SR&0x1)){
+    RNG->SR&=~(0x3); //Reset error interrupt statuses
+    RNG->SR&=~(0x1); //Reset DRDY->data ready
+  };
+  //Disable RNG:
+  RNG->CR &= ~(0x1<<2);
+  return RNG->DR;
 }
 
 float SinSim(uint16_t angle){
