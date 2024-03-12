@@ -193,7 +193,7 @@ uint32_t returnAnalog(uint8_t pin);
       flag10MsPassed=false;
       //Every 10 ms Task:
       
-      UpdateObjectPosition();
+      RunGamePlay();
 //      writeRectangle(leftTopCorner[0],leftTopCorner[1],12,1,DISP_WHITE);
 //      INCRE_CIRC_COUNTER(leftTopCorner[1],160-11);
       

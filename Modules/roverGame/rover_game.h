@@ -17,9 +17,11 @@ extern void BackgroundFillBox(uint16_t xS, uint16_t xE, uint16_t yS, uint16_t yE
 extern void FillNewBackgroundObj();
 extern void SetObjectColor(uint32_t *destColorArr, Obj_Disp *obj);
 
+//Coin 
+extern uint8_t numActiveCoins;
 void InitializeObjDisp(uint8_t numObjs);
 
-void UpdateObjectPosition();
+void RunGamePlay();
 void ObjectPositionCalc(Game_Obj *gObj);//Calculate new position of object
 void DisplayObjectLoc(Game_Obj *gObj); //Display object in new place
 void RefreshObjectDetails(Game_Obj *gObj); //Refresh object details from movement

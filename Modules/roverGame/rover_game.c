@@ -6,12 +6,14 @@
 
 uint32_t objPixelSpace[200];
 
-uint8_t roverGotCoin = false;
+uint16_t roverGameScore = 0;
+
+//uint8_t roverGotCoin = false;
 //All Objects:
 Game_Obj gameObjects[MAX_NUM_OBJ];
 Obj_Disp dispObjects[MAX_NUM_OBJ];
 Rover_Obj rov1Obj;
-Coin_Obj coinsObj[4];
+Coin_Obj coinsObj[5];
 //Joystick:
 int16_t joystickVal[2] = {0,0};
 
@@ -46,16 +48,16 @@ void InitializeObjDisp(uint8_t numObjs){
   gameObjects[0].rovObj->pT_G[1]=leftTopCorner[1]*100;
   
   //Init Coins
-  for(uint8_t i = 1; i<5;i++){
-    dispObjects[i].xLoc=i*20;
-    dispObjects[i].yLoc=i*25+10;
+  for(uint8_t i = 1; i<6;i++){
+//    dispObjects[i].xLoc=i*20;
+//    dispObjects[i].yLoc=i*25+10;
     gameObjects[i].dObj=&dispObjects[i];
     gameObjects[i].objType=COIN;
     dispObjects[i].objType=COIN;
     gameObjects[i].coinObj=&coinsObj[i-1];
-    gameObjects[i].active=true;
-    gameObjects[i].coinObj->colorChangeCounter=0;
-    gameObjects[i].coinObj->currentColor=0;
+//    gameObjects[i].active=true;
+//    gameObjects[i].coinObj->colorChangeCounter=0;
+//    gameObjects[i].coinObj->currentColor=0;
     
   }
   
@@ -104,37 +106,42 @@ void InitializeObjDisp(uint8_t numObjs){
 
 }
 
-void UpdateObjectPosition(){
+void RunGamePlay(){
   for(uint8_t i = 0; i<MAX_NUM_OBJ; i++){
     Game_Obj *gObj = &gameObjects[i];
-    //First see if object is active:
-    if(gObj->active)
+//    //First see if object is active:
+//    if(gObj->active)
       ObjectPositionCalc(gObj);//Calculate new position of object
   }
-  //See if any collisions
-  uint8_t collision = false;
+  //See if any collisions 
   for(uint8_t i = 0; i<MAX_NUM_OBJ; i++){
-    if(gameObjects[i].objType==COIN){
-      if(collisionThere(&gameObjects[i], &gameObjects[0]))
-         collision = true;
+    Game_Obj *gObj = &gameObjects[i];
+    if(gObj->objType==COIN){
+      //If rover hits coin, increase score and make coin unactive
+      if(collisionThere(&gameObjects[i], &gameObjects[0])){
+         roverGameScore++;
+         gObj->active=false;
+         numActiveCoins--;
+      }
     }
   }
-  roverGotCoin=collision;
-  
+  //Display objects in new place
   for(uint8_t i = 0; i<MAX_NUM_OBJ; i++){
     Game_Obj *gObj = &gameObjects[i];
     if(gObj->active)
-      DisplayObjectLoc(gObj); //Display object in new place
+      DisplayObjectLoc(gObj); 
   }
+  //Fill in new background gap caused by object moving
   for(uint8_t i = 0; i<MAX_NUM_OBJ; i++){
     Game_Obj *gObj = &gameObjects[i];
     if(gObj->active)
-      FillNewBackgroundObj();//Fill new background gap caused by object moving
+      FillNewBackgroundObj();
   }
+  //Refresh object details from movement
   for(uint8_t i = 0; i<MAX_NUM_OBJ; i++){
     Game_Obj *gObj = &gameObjects[i];
     if(gObj->active)
-      RefreshObjectDetails(gObj); //Refresh object details from movement
+      RefreshObjectDetails(gObj);
   }
 
 }
@@ -145,6 +152,7 @@ void ObjectPositionCalc(Game_Obj *gObj){
   if(gObj->objType==ROVER){
     RoverController(gObj, joystickVal[0],joystickVal[1]);
   }else if (gObj->objType==COIN){
+    CoinController(gObj);
   }else{
     INCRE_CIRC_COUNTER(dObj->yLoc,160-11);
     INCRE_CIRC_COUNTER(dObj->xLoc,128-11);
@@ -157,8 +165,8 @@ void DisplayObjectLoc(Game_Obj *gObj){
   
   if(gObj->objType==COIN){ //Do Rainbow Color
       Coin_Obj *cObj = gObj->coinObj;
+      //Change color every coininterval*10 ms 
       INCRE_CIRC_COUNTER(cObj->colorChangeCounter,coininterval);
-      
       if(cObj->colorChangeCounter==0){
         INCRE_CIRC_COUNTER(cObj->currentColor,COIN_NUM_COLOR);
         setCoinColor(dObj->objColorTypes[0] , dObj->objColorTypes[1], cObj->currentColor);
