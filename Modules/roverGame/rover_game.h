@@ -18,7 +18,9 @@ extern void FillNewBackgroundObj();
 extern void SetObjectColor(uint32_t *destColorArr, Obj_Disp *obj);
 
 //Coin 
-extern uint8_t numActiveCoins;
+extern void deactivateCoin(Game_Obj *gObj);
+
+
 void InitializeObjDisp(uint8_t numObjs);
 
 void RunGamePlay();

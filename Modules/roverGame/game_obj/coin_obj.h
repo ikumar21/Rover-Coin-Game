@@ -19,5 +19,6 @@ extern uint8_t *coinColorTypes[2];
 
 extern void setCoinColor(uint8_t arr[], uint8_t orArr[], uint8_t color);
 extern void CoinController(Game_Obj *gObj);
+extern void deactivateCoin(Game_Obj *gObj);
 
 #endif

@@ -62,7 +62,7 @@ void InitializeObjDisp(uint8_t numObjs){
   }
   
     //Initialize object data based on object type and angle
-    for(uint8_t i = 0; i<numObjs;i++){
+    for(uint8_t i = 0; i<=numObjs;i++){
         Game_Obj *gObj = &gameObjects[i];
         Obj_Disp *obj = gObj->dObj;
 
@@ -116,12 +116,11 @@ void RunGamePlay(){
   //See if any collisions 
   for(uint8_t i = 0; i<MAX_NUM_OBJ; i++){
     Game_Obj *gObj = &gameObjects[i];
-    if(gObj->objType==COIN){
+    if(gObj->objType==COIN && gObj->active==true){
       //If rover hits coin, increase score and make coin unactive
       if(collisionThere(&gameObjects[i], &gameObjects[0])){
          roverGameScore++;
-         gObj->active=false;
-         numActiveCoins--;
+         deactivateCoin(gObj);
       }
     }
   }
@@ -165,13 +164,12 @@ void DisplayObjectLoc(Game_Obj *gObj){
   
   if(gObj->objType==COIN){ //Do Rainbow Color
       Coin_Obj *cObj = gObj->coinObj;
-      //Change color every coininterval*10 ms 
+      //Change color every coinInterval*10 ms 
       INCRE_CIRC_COUNTER(cObj->colorChangeCounter,coininterval);
       if(cObj->colorChangeCounter==0){
         INCRE_CIRC_COUNTER(cObj->currentColor,COIN_NUM_COLOR);
-        setCoinColor(dObj->objColorTypes[0] , dObj->objColorTypes[1], cObj->currentColor);
-      
       }
+      setCoinColor(dObj->objColorTypes[0] , dObj->objColorTypes[1], cObj->currentColor);
   }
 
   SetObjectColor(objPixelSpace,dObj);
