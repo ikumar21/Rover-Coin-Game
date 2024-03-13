@@ -1470,6 +1470,12 @@
                             <name>$PROJ_DIR$\..\Modules\roverGame\game_obj\rover_obj.c</name>
                         </file>
                     </group>
+                    <group>
+                        <name>rover_math</name>
+                        <file>
+                            <name>$PROJ_DIR$\..\Modules\roverGame\rover_math\rover_math.c</name>
+                        </file>
+                    </group>
                     <file>
                         <name>$PROJ_DIR$\..\Modules\roverGame\rover_game.c</name>
                     </file>

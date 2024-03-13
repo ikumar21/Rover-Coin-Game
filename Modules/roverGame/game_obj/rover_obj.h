@@ -3,9 +3,6 @@
 
 #include "generic_game.h"
 
-//typedef struct Game_Obj Game_Obj;
-//typedef struct Obj_Disp Obj_Disp;
-
 struct Rover_Obj{
     float pA_R[2];//Additional vector to be added in Rover frame
     int16_t pT_R[2];//Total vector that's been added in Rover frame
@@ -21,6 +18,6 @@ extern uint8_t roverStraightColorType[14][14];
 extern uint8_t roverAngledColorType[14][14];
 extern uint8_t *roverColorTypes[2];
 
-extern void RoverLimitLoc(int16_t *x, int16_t *y);
-extern void RoverController(Game_Obj *gObj, int16_t joyX, int16_t joyY);
+void RoverLimitLoc(int16_t *x, int16_t *y);
+void RoverController(Game_Obj *gObj, int16_t joyX, int16_t joyY);
 #endif
