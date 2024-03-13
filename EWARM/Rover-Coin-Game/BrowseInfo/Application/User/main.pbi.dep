@@ -51,4 +51,6 @@ C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\Rover-Coin-Game\BrowseInfo\Ap
   C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\..\Modules\background\background.h \
   C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\..\Modules\roverGame\game_obj\coin_obj.h \
   C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\..\Modules\roverGame\game_obj\rover_obj.h \
-  C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\..\Modules\joystick\joystick.h
+  C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\..\Modules\joystick\joystick.h \
+  C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\..\Modules\roverGame\rover_math\rover_math.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.1\arm\inc\c\inttypes.h
