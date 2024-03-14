@@ -1,47 +1,12 @@
 #include "displayST7735.h"
-
+#include "font8x8_basic.h"
 extern SPI_HandleTypeDef hspi1;
 
 uint8_t zeroNum = 0;
 
 uint8_t speedColorArr[600];
 
-
-//uint32_t carColors[7] = {0xA80000,0x040404,0x9C281C,0x00CC00,0x1C2828,0xFCFC00,0xFCFCFC};
-//
-//uint32_t carRectColor[144];
-//
-//uint8_t carRectColorType[144] = {6,6,6,5,5,0,0,5,5,6,6,6,
-//6,6,0,5,5,0,0,5,5,0,6,6,
-//1,1,0,0,0,0,0,0,0,0,1,1,
-//1,1,0,0,0,0,0,0,0,0,1,1,
-//1,1,0,0,0,3,3,0,0,0,1,1,
-//6,6,0,0,0,3,3,0,0,0,6,6,
-//6,6,0,0,2,3,3,2,0,0,6,6,
-//6,6,0,0,2,3,3,2,0,0,6,6,
-//1,1,0,0,2,2,2,2,0,0,1,1,
-//1,1,0,0,2,2,2,2,0,0,1,1,
-//1,1,0,0,0,0,0,0,0,0,1,1,
-//6,6,0,0,0,0,0,0,0,0,6,6};
-
 uint8_t transmitArr[20];
-
-//uint32_t spiderColors[4] = {0x040404,0xFCFC00,0x2C2C2C,0xFCFCFC};
-//
-//uint32_t spiderRectColor[150];
-
-//uint8_t spiderRectColorType[150] = {3,3,0,0,0,3,0,0,0,3,0,0,0,3,3,
-//3,3,0,3,0,0,0,0,0,0,0,3,0,3,3,
-//3,3,3,0,0,0,0,0,0,0,0,0,3,3,3,
-//0,0,0,0,0,1,1,0,1,1,0,0,0,0,0,
-//0,3,3,3,0,1,1,0,1,1,0,3,3,3,0,
-//3,3,3,3,0,0,0,0,0,0,0,3,3,3,3,
-//3,0,0,0,0,0,0,0,0,0,0,0,0,0,3,
-//3,0,3,3,0,0,3,2,3,0,0,3,3,0,3,
-//3,3,3,0,0,3,3,3,3,3,0,0,3,3,3,
-//3,3,3,0,3,3,3,3,3,3,3,0,3,3,3
-//};
-
 
 void setColumnRowRange(uint8_t columnStart, uint8_t columnEnd, uint8_t rowStart, uint8_t rowEnd){
   //Account for display offsets
@@ -212,18 +177,4 @@ void writeColorArray(uint32_t *colorArr, uint16_t pixelCount){
   HAL_SPI_Transmit(&hspi1,speedColorArr,(pixelCount%200)*3,1000);
   
 }
-
-//
-//void SetCarArr(){
-//  for (uint8_t i=0;i<144;i++){
-//    carRectColor[i]=carColors[carRectColorType[i]];
-//  }
-//}
-//
-//void SetSpiderArr(){
-//  for (uint8_t i=0;i<150;i++){
-//    spiderRectColor[i]=spiderColors[spiderRectColorType[i]];
-//  }
-//}
-
 
