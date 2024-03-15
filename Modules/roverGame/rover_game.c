@@ -34,7 +34,7 @@ uint8_t leftTopCorner[2] = {50,50};
 
 //Font Struct:
 extern uint8_t font8x8_basic[128][8];
-Text_Info font8by8 = {0,0,msgDisp,0,'\0',DISP_BLACK, BackgroundColorPixel, 7,8,objPixelSpace, (uint8_t *)font8x8_basic, 128, 8};
+Text_Info font8by8 = {0,0,msgDisp,0,'\0',DISP_BLACK, BackgroundColorPixel, 7,7,objPixelSpace, (uint8_t *)font8x8_basic, 128, 8};
 void InitializeObjDisp(uint8_t numObjs){  
   roverTime = 60;
   //Init Rover:
@@ -207,8 +207,10 @@ void DisplayScore(){
   font8by8.y=1;
   font8by8.numChrs=9;
   static uint16_t prevScore = 999;
+  
   if(prevScore==roverGameScore)
     return;
+  writeRectangle(0, 8, 128,1, 0x0);
   prevScore=roverGameScore;
   msgDisp[0]='S';msgDisp[1]='c';msgDisp[2]='o';msgDisp[3]='r'; msgDisp[4]='e';msgDisp[5]=':';
   msgDisp[6]= roverGameScore/100+48;
