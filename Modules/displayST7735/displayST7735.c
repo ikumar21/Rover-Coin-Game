@@ -188,7 +188,7 @@ void writeText(Text_Info *tInfo){
   uint8_t cWidth = tInfo->cWidth;
   while(chrsRemain>0){
     //Number of Chars to send at one time(color array can hold at max 200 pixels):
-    uint8_t nChrs = MIN(200/(tInfo->cHeight*cWidth), totalChrs);
+    uint8_t nChrs = MIN(200/(tInfo->cHeight*cWidth), chrsRemain);
     
     //Starting x pos. of data being written:
     uint8_t x = tInfo->x+(totalChrs-chrsRemain)*cWidth;

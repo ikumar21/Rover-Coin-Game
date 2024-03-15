@@ -5,8 +5,9 @@
 #include "coin_obj.h"
 #include "rover_obj.h"
 
-extern uint32_t objPixelSpace[200];
-extern Game_Obj gameObjects[15];
+//uint32_t objPixelSpace[200];
+//Game_Obj gameObjects[15];
+
 
 //Joystick
 extern int16_t joystickVal[2];
@@ -20,6 +21,8 @@ extern void SetObjectColor(uint32_t *destColorArr, Obj_Disp *obj);
 //Coin 
 extern void deactivateCoin(Game_Obj *gObj);
 
+//Rover Game:
+extern uint16_t roverTime;
 
 void InitializeObjDisp(uint8_t numObjs);
 
@@ -28,6 +31,7 @@ void ObjectPositionCalc(Game_Obj *gObj);//Calculate new position of object
 void DisplayObjectLoc(Game_Obj *gObj); //Display object in new place
 void RefreshObjectDetails(Game_Obj *gObj); //Refresh object details from movement
 void initRoverGame();
-
+void DisplayScore();
+void DisplayTime();
 
 #endif

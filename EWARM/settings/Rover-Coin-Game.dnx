@@ -28,7 +28,7 @@
         <EnforceMemoryConfiguration>1</EnforceMemoryConfiguration>
     </ArmDriver>
     <DebugChecksum>
-        <Checksum>159467640</Checksum>
+        <Checksum>343152694</Checksum>
     </DebugChecksum>
     <Exceptions>
         <StopOnUncaught>_ 0</StopOnUncaught>
@@ -70,6 +70,7 @@
     </LogFile>
     <array_types>
         <Fmt0>uint32_t[200]	4	0</Fmt0>
+        <Fmt1>uint8_t[20]	3	0</Fmt1>
     </array_types>
     <watch_formats>
         <Fmt0>{W}42:numActiveCoins	3	0</Fmt0>
@@ -123,10 +124,7 @@
         <mode>0</mode>
     </DisassembleMode>
     <Breakpoints2>
-        <Bp0>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Modules\generic_game\generic_game.c}.45.9" 0 0 1 "" 0 "" 0</Bp0>
-        <Bp1>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Modules\generic_game\generic_game.c}.51.9" 0 0 1 "" 0 "" 0</Bp1>
-        <Bp2>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Modules\generic_game\generic_game.c}.57.9" 0 0 1 "" 0 "" 0</Bp2>
-        <Count>3</Count>
+        <Count>0</Count>
     </Breakpoints2>
     <TermIOLog>
         <LoggingEnabled>_ 0</LoggingEnabled>

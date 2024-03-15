@@ -92,7 +92,7 @@ extern uint8_t runningTrue;
 uint16_t timeDisp = 0;
 
 //Analog Joystick
-extern int16_t joystickVal[2];
+//extern int16_t joystickVal[2];
 
 
 extern uint8_t adcFlag;
@@ -104,7 +104,8 @@ uint16_t joyMag=0;
 Obj_Disp obj1 = {0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 
-
+//Rover Game:
+extern uint16_t roverTime;
 
 /* USER CODE END PV */
 
@@ -122,6 +123,9 @@ void initRNG();//RNG
 void testObject(uint16_t angle, ObjectDispType objType);
 uint32_t returnAnalog(uint8_t pin);
 
+//Rover Game:
+void DisplayTime();
+void DisplayScore();
 
 /* USER CODE END PFP */
 
@@ -212,6 +216,7 @@ uint32_t returnAnalog(uint8_t pin);
       flag25MsPassed=false;
       //Every 25 ms Task:
       runJoystick(joystickVal);
+      DisplayScore();
       
       
 //      timeDisplayMS=10;
@@ -237,6 +242,7 @@ uint32_t returnAnalog(uint8_t pin);
       //Every 100 ms Task:
       
       
+      
 //      writeRectangle(leftTopCorner[0],leftTopCorner[1],12,1,DISP_WHITE);
 //      leftTopCorner[1]++;
 //      testObject(angle, objType);
@@ -255,12 +261,16 @@ uint32_t returnAnalog(uint8_t pin);
       flag500MsPassed=false;
       //Every 500 ms Task:
       
+      
                 
     }
     if(flag1000MsPassed){
       flag1000MsPassed=false;
       //Every 1000 ms Task:
       ranNum=getRandNum(20,163);
+      roverTime--;
+      DisplayTime();
+      
 //      leftTopCorner[1]++;
 //
 //      if(leftTopCorner[1]>=147)

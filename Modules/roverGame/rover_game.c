@@ -5,8 +5,10 @@
 
 
 uint32_t objPixelSpace[200];
+uint8_t msgDisp[20]="Hello";
 
 uint16_t roverGameScore = 0;
+uint16_t roverTime = 0;
 
 //uint8_t roverGotCoin = false;
 //All Objects:
@@ -32,20 +34,12 @@ uint8_t leftTopCorner[2] = {50,50};
 
 //Font Struct:
 extern uint8_t font8x8_basic[128][8];
-Text_Info font8by8 = {0,0,0,0,'\0',DISP_BLACK, BackgroundColorPixel, 7,8,objPixelSpace, (uint8_t *)font8x8_basic, 128, 8};
-void InitializeObjDisp(uint8_t numObjs){
-  
-  
-  //Init Font:
-  uint8_t msgSend[6] = "Hello";
-  font8by8.x=0;
-  font8by8.y=0;
-  font8by8.msg=msgSend;
-  font8by8.numChrs=5;
-  writeText(&font8by8);
-  
+Text_Info font8by8 = {0,0,msgDisp,0,'\0',DISP_BLACK, BackgroundColorPixel, 7,7,objPixelSpace, (uint8_t *)font8x8_basic, 128, 8};
+void InitializeObjDisp(uint8_t numObjs){  
+  roverTime = 60;
   //Init Rover:
   dispObjects[0].angle=roverAngle;
+  
 
   dispObjects[0].xLoc=leftTopCorner[0];
   dispObjects[0].yLoc=leftTopCorner[1];
@@ -206,4 +200,34 @@ void initRoverGame(){
   }
 }
 
+
+void DisplayScore(){
+  
+  font8by8.x=64;
+  font8by8.y=1;
+  font8by8.numChrs=9;
+  static uint16_t prevScore = 999;
+  
+  if(prevScore==roverGameScore)
+    return;
+  writeRectangle(0, 8, 128,1, 0x0);
+  prevScore=roverGameScore;
+  msgDisp[0]='S';msgDisp[1]='c';msgDisp[2]='o';msgDisp[3]='r'; msgDisp[4]='e';msgDisp[5]=':';
+  msgDisp[6]= roverGameScore/100+48;
+  msgDisp[7]= (roverGameScore/10)%10+48;
+  msgDisp[8]= (roverGameScore)%10+48;
+  writeText(&font8by8);
+
+}
+
+void DisplayTime(){
+  font8by8.x=1;
+  font8by8.y=1;
+  font8by8.numChrs=7;
+  msgDisp[0]='T';msgDisp[1]='i';msgDisp[2]='m';msgDisp[3]='e'; msgDisp[4]=':';
+  msgDisp[5]=(roverTime/10)%10+48;
+  msgDisp[6]=(roverTime)%10+48;
+  writeText(&font8by8);
+
+}
   
