@@ -43,6 +43,8 @@ void CoinController(Game_Obj *gObj){
     numActiveCoins++;
     gObj->dObj->xLoc=getRandNum(5, 105);
     gObj->dObj->yLoc = getRandNum(5,135);
+    gObj->dObj->prevXLoc=gObj->dObj->xLoc;
+    gObj->dObj->prevYLoc=gObj->dObj->yLoc;
     gObj->coinObj->currentColor=getRandNum(1,12);
   } 
 }

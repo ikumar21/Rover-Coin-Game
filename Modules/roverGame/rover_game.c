@@ -30,9 +30,20 @@ uint16_t objPxHeight[14] = {14,14,5,5,5,5,5,5,5,5,5,5,3,3};
 uint16_t roverAngle;
 uint8_t leftTopCorner[2] = {50,50};
 
-
-
+//Font Struct:
+extern uint8_t font8x8_basic[128][8];
+Text_Info font8by8 = {0,0,0,0,'\0',DISP_BLACK, BackgroundColorPixel, 7,8,objPixelSpace, (uint8_t *)font8x8_basic, 128, 8};
 void InitializeObjDisp(uint8_t numObjs){
+  
+  
+  //Init Font:
+  uint8_t msgSend[6] = "Hello";
+  font8by8.x=0;
+  font8by8.y=0;
+  font8by8.msg=msgSend;
+  font8by8.numChrs=5;
+  writeText(&font8by8);
+  
   //Init Rover:
   dispObjects[0].angle=roverAngle;
 
@@ -131,11 +142,7 @@ void RunGamePlay(){
       DisplayObjectLoc(gObj); 
   }
   //Fill in new background gap caused by object moving
-  for(uint8_t i = 0; i<MAX_NUM_OBJ; i++){
-    Game_Obj *gObj = &gameObjects[i];
-    if(gObj->active)
-      FillNewBackgroundObj();
-  }
+  FillNewBackgroundObj();
   //Refresh object details from movement
   for(uint8_t i = 0; i<MAX_NUM_OBJ; i++){
     Game_Obj *gObj = &gameObjects[i];

@@ -1,47 +1,16 @@
 #include "displayST7735.h"
+#include "font8x8_basic.h"
 
+#define MIN(a,b) a>b? b:a;
 extern SPI_HandleTypeDef hspi1;
 
 uint8_t zeroNum = 0;
 
 uint8_t speedColorArr[600];
-
-
-//uint32_t carColors[7] = {0xA80000,0x040404,0x9C281C,0x00CC00,0x1C2828,0xFCFC00,0xFCFCFC};
-//
-//uint32_t carRectColor[144];
-//
-//uint8_t carRectColorType[144] = {6,6,6,5,5,0,0,5,5,6,6,6,
-//6,6,0,5,5,0,0,5,5,0,6,6,
-//1,1,0,0,0,0,0,0,0,0,1,1,
-//1,1,0,0,0,0,0,0,0,0,1,1,
-//1,1,0,0,0,3,3,0,0,0,1,1,
-//6,6,0,0,0,3,3,0,0,0,6,6,
-//6,6,0,0,2,3,3,2,0,0,6,6,
-//6,6,0,0,2,3,3,2,0,0,6,6,
-//1,1,0,0,2,2,2,2,0,0,1,1,
-//1,1,0,0,2,2,2,2,0,0,1,1,
-//1,1,0,0,0,0,0,0,0,0,1,1,
-//6,6,0,0,0,0,0,0,0,0,6,6};
+uint32_t cArr[200];
 
 uint8_t transmitArr[20];
-
-//uint32_t spiderColors[4] = {0x040404,0xFCFC00,0x2C2C2C,0xFCFCFC};
-//
-//uint32_t spiderRectColor[150];
-
-//uint8_t spiderRectColorType[150] = {3,3,0,0,0,3,0,0,0,3,0,0,0,3,3,
-//3,3,0,3,0,0,0,0,0,0,0,3,0,3,3,
-//3,3,3,0,0,0,0,0,0,0,0,0,3,3,3,
-//0,0,0,0,0,1,1,0,1,1,0,0,0,0,0,
-//0,3,3,3,0,1,1,0,1,1,0,3,3,3,0,
-//3,3,3,3,0,0,0,0,0,0,0,3,3,3,3,
-//3,0,0,0,0,0,0,0,0,0,0,0,0,0,3,
-//3,0,3,3,0,0,3,2,3,0,0,3,3,0,3,
-//3,3,3,0,0,3,3,3,3,3,0,0,3,3,3,
-//3,3,3,0,3,3,3,3,3,3,3,0,3,3,3
-//};
-
+uint8_t rowData;
 
 void setColumnRowRange(uint8_t columnStart, uint8_t columnEnd, uint8_t rowStart, uint8_t rowEnd){
   //Account for display offsets
@@ -213,17 +182,41 @@ void writeColorArray(uint32_t *colorArr, uint16_t pixelCount){
   
 }
 
-//
-//void SetCarArr(){
-//  for (uint8_t i=0;i<144;i++){
-//    carRectColor[i]=carColors[carRectColorType[i]];
-//  }
-//}
-//
-//void SetSpiderArr(){
-//  for (uint8_t i=0;i<150;i++){
-//    spiderRectColor[i]=spiderColors[spiderRectColorType[i]];
-//  }
-//}
-
+void writeText(Text_Info *tInfo){
+  int16_t totalChrs = tInfo->numChrs;
+  int16_t chrsRemain = totalChrs;
+  uint8_t cWidth = tInfo->cWidth;
+  while(chrsRemain>0){
+    //Number of Chars to send at one time(color array can hold at max 200 pixels):
+    uint8_t nChrs = MIN(200/(tInfo->cHeight*cWidth), totalChrs);
+    
+    //Starting x pos. of data being written:
+    uint8_t x = tInfo->x+(totalChrs-chrsRemain)*cWidth;
+    //For each row:
+    for(uint8_t row = 0; row<tInfo->cHeight; row++){
+      //For each char. being sent:
+      for(uint8_t c = 0; c<nChrs; c++){
+        uint8_t charSending = tInfo->msg[totalChrs-chrsRemain+c];
+        rowData = tInfo->fontArr[(uint32_t)charSending*tInfo->fCols+ row];
+        //For the row, fill the colorArr with the correct pixel color in each col:
+        for(uint8_t col = 0; col<cWidth;col++){
+          if(rowData &0x01){//1->Pixel should be text color:
+            tInfo->colorArr[nChrs*cWidth*row+c*cWidth+col]=tInfo->colorRGB;
+          }else{ //0->Pixel should be background color
+            tInfo->colorArr[nChrs*cWidth*row+c*cWidth+col]=tInfo->BGndFnc(x+c*cWidth+col ,tInfo->y+row);
+          }
+          rowData>>=1;
+        }
+      }
+    }
+    //Send the color data to display:
+    setColumnRowRange(x, x+nChrs*cWidth-1, tInfo->y, tInfo->y+tInfo->cHeight-1);
+    writeColorArray(tInfo->colorArr,nChrs*cWidth*tInfo->cHeight);
+    chrsRemain-=nChrs;
+  
+  }
+  
+  
+  
+}
 

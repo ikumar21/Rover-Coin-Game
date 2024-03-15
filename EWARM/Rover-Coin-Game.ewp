@@ -1106,6 +1106,9 @@
                     <file>
                         <name>$PROJ_DIR$\..\Modules\displayST7735\displayST7735.c</name>
                     </file>
+                    <file>
+                        <name>$PROJ_DIR$\..\Modules\displayST7735\font8x8_basic.h</name>
+                    </file>
                 </group>
                 <group>
                     <name>generic_game</name>

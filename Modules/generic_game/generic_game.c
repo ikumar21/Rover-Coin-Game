@@ -5,7 +5,7 @@
 extern uint32_t objPixelSpace[200];
 extern Game_Obj gameObjects[15];
 extern Obj_Disp dispObjects[MAX_NUM_OBJ];
-uint32_t BackgroundColorPixel(uint16_t x,uint16_t y,uint8_t objIndex){ 
+uint32_t BackgroundColorPixel(uint16_t x,uint16_t y){ 
  return checkerBoard(x,y);
 }
 
@@ -15,7 +15,7 @@ void BackgroundFillBox(uint16_t xS, uint16_t xE, uint16_t yS, uint16_t yE, uint8
   uint16_t i = 0;
   for(uint16_t row = yS; row<yE+1; row++){
     for(uint16_t col = xS; col<xE+1; col++){
-      objPixelSpace[i++]= BackgroundColorPixel(col,row,objIndex);
+      objPixelSpace[i++]= BackgroundColorPixel(col,row);
     }
   }
   setColumnRowRange(xS,xE,yS,yE);
@@ -116,7 +116,7 @@ void SetObjectColor(uint32_t *destColorArr, Obj_Disp *obj){
     for(uint16_t col = 0; col<obj->width;col++){
       uint16_t i = row*obj->width+col;
       if(destColorArr[i]==0){
-        destColorArr[i]=BackgroundColorPixel(obj->xLoc+col,obj->yLoc+row, 0);
+        destColorArr[i]=BackgroundColorPixel(obj->xLoc+col,obj->yLoc+row);
       }else{
         destColorArr[i]=obj->objColors[destColorArr[i]];
       }
