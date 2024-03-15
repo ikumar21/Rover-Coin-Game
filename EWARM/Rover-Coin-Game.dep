@@ -460,7 +460,7 @@
             <outputs>
                 <tool>
                     <name>ILINK</name>
-                    <file> 85 13</file>
+                    <file> 13 85</file>
                 </tool>
             </outputs>
         </file>
@@ -713,9 +713,5 @@
                 </tool>
             </inputs>
         </file>
-        <forcedrebuild>
-            <name>[MULTI_TOOL]</name>
-            <tool>ILINK</tool>
-        </forcedrebuild>
     </configuration>
 </project>
