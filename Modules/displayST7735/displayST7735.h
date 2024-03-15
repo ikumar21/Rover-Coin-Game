@@ -30,6 +30,27 @@
 #define DISP_COL_OFFSET 2
 
 
+typedef struct Text_Info Text_Info;
+//Text Info Struct:
+//writeText(uint16_t x, uint16_t y, char *msg, uint8_t nChrs, uint8_t tChr, uint32_t colorRGB, void *bGndFc(uint16_t, uint16_t))
+
+struct Text_Info{
+  uint16_t x;
+  uint16_t y;
+  uint8_t *msg;
+  uint8_t numChrs;
+  uint8_t termChr;
+  uint32_t colorRGB;
+  uint32_t (*BGndFnc)(uint16_t, uint16_t);
+  uint8_t cWidth;
+  uint8_t cHeight;  
+  uint32_t *colorArr;
+  uint8_t *fontArr;
+  uint8_t fRows;
+  uint8_t fCols;
+};
+
+
 void setColumnRowRange(uint8_t columnStart, uint8_t columnEnd, uint8_t rowStart, uint8_t rowEnd);
 
 void setColor(uint32_t colorRGB, uint16_t pixelCount);
@@ -48,9 +69,7 @@ void drawLine(int16_t xCoor1, int16_t yCoor1, int16_t xCoor2, int16_t yCoor2, ui
 
 
 
-
 void writeColorArray(uint32_t *colorArr, uint16_t size);
+void writeText(Text_Info *tInfo);
 
 #endif
-//void SetCarArr();
-//void SetSpiderArr();
