@@ -38,8 +38,8 @@ void InitializeObjDisp(uint8_t numObjs){
   
   //Init Font:
   uint8_t msgSend[6] = "Hello";
-  font8by8.x=50;
-  font8by8.y=10;
+  font8by8.x=0;
+  font8by8.y=0;
   font8by8.msg=msgSend;
   font8by8.numChrs=5;
   writeText(&font8by8);
