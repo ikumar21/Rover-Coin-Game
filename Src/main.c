@@ -185,8 +185,7 @@ void DisplayScore();
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
+  while (1){
     
     if(flag3MsPassed){
       flag3MsPassed=false;
@@ -196,19 +195,7 @@ void DisplayScore();
     if(flag10MsPassed){
       flag10MsPassed=false;
       //Every 10 ms Task:
-      
       RunGamePlay();
-//      writeRectangle(leftTopCorner[0],leftTopCorner[1],12,1,DISP_WHITE);
-//      INCRE_CIRC_COUNTER(leftTopCorner[1],160-11);
-      
-//      testObject(angle, objType);
-//          writeRectangle(leftTopCorner[0],leftTopCorner[1],12,1,DISP_WHITE);
-//          leftTopCorner[1]++;
-//          leftTopCorner[1]++;
-//          leftTopCorner[1]++;
-//          testObject(angle, objType); 
-      
-      
                 
     }
     if(flag25MsPassed){
@@ -217,50 +204,17 @@ void DisplayScore();
       //Every 25 ms Task:
       runJoystick(joystickVal);
       DisplayScore();
-      
-      
-//      timeDisplayMS=10;
-//      HAL_ADC_Start(&hadc1);
-//      
-//      
-//      while(((hadc1.Instance->ISR >>2) & 0x1) == 0){
-//      }
-//      joystickX=HAL_ADC_GetValue(&hadc1);
-//      while(((hadc1.Instance->ISR >>2) & 0x1) == 0){
-//      }
-//      joystickY=HAL_ADC_GetValue(&hadc1);  
-//      joystickY=HAL_ADC_GetValue(&hadc1);
-
-
-     
-                
     }
 
     if(flag100MsPassed){
       flag100MsPassed=false;
       
       //Every 100 ms Task:
-      
-      
-      
-//      writeRectangle(leftTopCorner[0],leftTopCorner[1],12,1,DISP_WHITE);
-//      leftTopCorner[1]++;
-//      testObject(angle, objType);
-//      SetCarArr();
-//      writeRectangle(prevPlace[0],prevPlace[1],12, 12, rgbColor32);
-//      setColumnRowRange(leftTopCorner[0],leftTopCorner[0]+11,leftTopCorner[1],leftTopCorner[1]+11);      
-//      writeColorArray(carRectColor,144);
-//      
-      
-      
-//      prevPlace[0]=leftTopCorner[0];
-//      prevPlace[1]=leftTopCorner[1];
                 
     }
     if(flag500MsPassed){
       flag500MsPassed=false;
       //Every 500 ms Task:
-      
       
                 
     }
@@ -269,20 +223,7 @@ void DisplayScore();
       //Every 1000 ms Task:
       ranNum=getRandNum(20,163);
       roverTime--;
-      DisplayTime();
-      
-//      leftTopCorner[1]++;
-//
-//      if(leftTopCorner[1]>=147)
-//        leftTopCorner[1]=0;
-      
-//      setColumnRowRange(80,80+14,80 ,80+9);
-//      SetSpiderArr();
-//      writeColorArray(spiderRectColor,150);
-      
-    
-        
-               
+      DisplayTime();         
     }
     
     if(setDisplay){
@@ -290,36 +231,8 @@ void DisplayScore();
       runningTrue=true;
       setDisplay=false;
       for(uint16_t i = 0; i<1000;i++){
-//          writeRectangle(leftTopCorner[0],leftTopCorner[1],12,12,DISP_WHITE);
-//          HAL_SPI_Transmit(&hspi1,line1,10,1000);
-//        writeRectangle(leftTopCorner[0],leftTopCorner[1],12,1,DISP_WHITE);
-//        writeRectangle(leftTopCorner[0]-3,leftTopCorner[1],1,12,DISP_WHITE);
-//        leftTopCorner[1]++;
-//        testObject(angle, objType);
+        //Test
       }
-      
-//      testObject(angle, objType);
-      
-//      writeRectangle(prevPlace[0],prevPlace[1],12, 12, rgbColor32);
-//      setColumnRowRange(leftTopCorner[0],leftTopCorner[0]+11,leftTopCorner[1],leftTopCorner[1]+11);
-//      prevPlace[0]=leftTopCorner[0];
-//      prevPlace[1]=leftTopCorner[1];
-//      SetCarArr();
-//      writeColorArray(carRectColor,144);
-      
-      
-//      writeRectangle(0,0,128, 160, rgbColor32);
-//      setColumnRowRange(leftTopCorner[0],leftTopCorner[0]+11,leftTopCorner[1],leftTopCorner[1]+11);
-//      SetCarArr();
-//      writeColorArray(carRectColor,144);
-//      
-//      drawLine((int16_t) line1[0],(int16_t) line1[1],(int16_t) line1[2],(int16_t) line1[3],DISP_PURPLE);
-//      
-//      writeRectangle(leftTopCorner[0],leftTopCorner[1],width, height, rgbColor32);
-//      writePixel(leftTopCorner[0],leftTopCorner[1], 255<<16);
-      
-//      setColumnRowRange(colStart, colEnd, rowStart, rowEnd);
-//      setColor(rgbColor[0], rgbColor[1], rgbColor[2], (1+colEnd-colStart)*(1+rowEnd-rowStart));
       timeDisp = timeDisplayMS;
       runningTrue=false;
     }
