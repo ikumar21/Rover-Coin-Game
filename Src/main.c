@@ -222,7 +222,8 @@ void DisplayScore();
       timeDisplayMS=0;
       runningTrue=true;
       setDisplay=false;
-      for(uint16_t i = 0; i<1000;i++){
+      for(uint16_t i = 0; i<20;i++){
+        
         //Test
       }
       timeDisp = timeDisplayMS;

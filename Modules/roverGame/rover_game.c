@@ -2,26 +2,27 @@
 
 #define MAX_NUM_OBJ 15
 #define COIN_NUM_COLOR 12
+#define COIN_INTV 5
 
+#define ROVER_STRT_X 50
+#define ROVER_STRT_Y 50
 
-uint32_t objPixelSpace[200];
-uint8_t msgDisp[20]="Hello";
-
+//Score and Time
 uint16_t roverGameScore = 0;
 int16_t roverTime = 0;
 
-//uint8_t roverGotCoin = false;
 //All Objects:
+uint32_t objPixelSpace[200];
 Game_Obj gameObjects[MAX_NUM_OBJ];
 Obj_Disp dispObjects[MAX_NUM_OBJ];
 Rover_Obj rov1Obj;
 Coin_Obj coinsObj[5];
+
 //Joystick:
 int16_t joystickVal[2] = {0,0};
 extern void runJoystick(int16_t *joyVal);
 
-uint8_t coininterval=5;
-
+//Colors
 uint8_t **allObjColorTypes[2]={roverColorTypes,coinColorTypes};
 uint32_t *allObjColors[2]  = {roverColors, coinColors};
 
@@ -29,29 +30,27 @@ uint32_t *allObjColors[2]  = {roverColors, coinColors};
 uint16_t objPxWidth[14] = {14,14,5,5,5,5,5,5,5,5,5,5,3,3};
 uint16_t objPxHeight[14] = {14,14,5,5,5,5,5,5,5,5,5,5,3,3};
 
-//Testing:
-uint16_t roverAngle;
-uint8_t leftTopCorner[2] = {50,50};
-
 //Font Struct:
 extern uint8_t font8x8_basic[128][8];
+uint8_t msgDisp[20]="Hello";
 Text_Info font8by8 = {0,0,msgDisp,0,'\0',DISP_BLACK, BackgroundColorPixel, 7,7,objPixelSpace, (uint8_t *)font8x8_basic, 128, 8};
 void InitializeObjDisp(uint8_t numObjs){  
+  writeRectangle(0, 8, 128,1, 0x0); //Display a bar underneath score and time
   roverTime = -1; //-1 notes start of game
   //Init Rover:
-  dispObjects[0].angle=roverAngle;
+  dispObjects[0].angle=0;
   
 
-  dispObjects[0].xLoc=leftTopCorner[0];
-  dispObjects[0].yLoc=leftTopCorner[1];
+  dispObjects[0].xLoc=ROVER_STRT_X;
+  dispObjects[0].yLoc=ROVER_STRT_Y;
   dispObjects[0].objType=ROVER;
   
   gameObjects[0].dObj=&dispObjects[0];
   gameObjects[0].objType=ROVER;
   gameObjects[0].active=true;
   gameObjects[0].rovObj=&rov1Obj;
-  gameObjects[0].rovObj->pT_G[0]=leftTopCorner[0]*100;
-  gameObjects[0].rovObj->pT_G[1]=leftTopCorner[1]*100;
+  gameObjects[0].rovObj->pT_G[0]=ROVER_STRT_X*100;
+  gameObjects[0].rovObj->pT_G[1]=ROVER_STRT_Y*100;
   
   //Init Coins
   for(uint8_t i = 1; i<6;i++){
@@ -109,6 +108,10 @@ void InitializeObjDisp(uint8_t numObjs){
 
     }
 
+
+}
+
+void runRoverGame(){
 
 }
 
@@ -171,7 +174,7 @@ void DisplayObjectLoc(Game_Obj *gObj){
   if(gObj->objType==COIN){ //Do Rainbow Color
       Coin_Obj *cObj = gObj->coinObj;
       //Change color every coinInterval*10 ms 
-      INCRE_CIRC_COUNTER(cObj->colorChangeCounter,coininterval);
+      INCRE_CIRC_COUNTER(cObj->colorChangeCounter,COIN_INTV);
       if(cObj->colorChangeCounter==0){
         INCRE_CIRC_COUNTER(cObj->currentColor,COIN_NUM_COLOR);
       }
@@ -207,15 +210,13 @@ void initRoverGame(){
 
 
 void DisplayScore(){
-  font8by8.x=64;
-  font8by8.y=1;
-  font8by8.numChrs=9;
   static uint16_t prevScore = 999;
-  
   if(prevScore==roverGameScore)
     return;
-  writeRectangle(0, 8, 128,1, 0x0);
+  //Only display score if it changed
   prevScore=roverGameScore;
+  font8by8.x=64; font8by8.y=1;
+  font8by8.numChrs=9; //Num of characters of string
   msgDisp[0]='S';msgDisp[1]='c';msgDisp[2]='o';msgDisp[3]='r'; msgDisp[4]='e';msgDisp[5]=':';
   msgDisp[6]= roverGameScore/100+48;
   msgDisp[7]= (roverGameScore/10)%10+48;
@@ -243,9 +244,8 @@ void DisplayTime(){
     return;
   }
   //Display Time:
-  font8by8.x=1;
-  font8by8.y=1;
-  font8by8.numChrs=7;
+  font8by8.x=1; font8by8.y=1;
+  font8by8.numChrs=7; //Num of characters of string
   msgDisp[0]='T';msgDisp[1]='i';msgDisp[2]='m';msgDisp[3]='e'; msgDisp[4]=':';
   msgDisp[5]=(roverTime/10)%10+48;
   msgDisp[6]=(roverTime)%10+48;
