@@ -7,7 +7,13 @@
 
 //uint32_t objPixelSpace[200];
 //Game_Obj gameObjects[15];
+enum Game_Status{
+  TITLE_SCREEN,
+  SELECT_MODE,
+  RUNNING_GAME,
+  FINISHED,
 
+};
 
 //Joystick
 extern int16_t joystickVal[2];
@@ -22,7 +28,7 @@ extern void SetObjectColor(uint32_t *destColorArr, Obj_Disp *obj);
 extern void deactivateCoin(Game_Obj *gObj);
 
 //Rover Game:
-extern uint16_t roverTime;
+extern int16_t roverTime;
 
 void InitializeObjDisp(uint8_t numObjs);
 

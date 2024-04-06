@@ -8,7 +8,7 @@ uint32_t objPixelSpace[200];
 uint8_t msgDisp[20]="Hello";
 
 uint16_t roverGameScore = 0;
-uint16_t roverTime = 0;
+int16_t roverTime = 0;
 
 //uint8_t roverGotCoin = false;
 //All Objects:
@@ -18,6 +18,7 @@ Rover_Obj rov1Obj;
 Coin_Obj coinsObj[5];
 //Joystick:
 int16_t joystickVal[2] = {0,0};
+extern void runJoystick(int16_t *joyVal);
 
 uint8_t coininterval=5;
 
@@ -36,7 +37,7 @@ uint8_t leftTopCorner[2] = {50,50};
 extern uint8_t font8x8_basic[128][8];
 Text_Info font8by8 = {0,0,msgDisp,0,'\0',DISP_BLACK, BackgroundColorPixel, 7,7,objPixelSpace, (uint8_t *)font8x8_basic, 128, 8};
 void InitializeObjDisp(uint8_t numObjs){  
-  roverTime = 60;
+  roverTime = -1; //-1 notes start of game
   //Init Rover:
   dispObjects[0].angle=roverAngle;
   
@@ -112,6 +113,10 @@ void InitializeObjDisp(uint8_t numObjs){
 }
 
 void RunGamePlay(){
+  DisplayScore();
+  DisplayTime();
+  runJoystick(joystickVal);
+  
   for(uint8_t i = 0; i<MAX_NUM_OBJ; i++){
     Game_Obj *gObj = &gameObjects[i];
 //    //First see if object is active:
@@ -202,7 +207,6 @@ void initRoverGame(){
 
 
 void DisplayScore(){
-  
   font8by8.x=64;
   font8by8.y=1;
   font8by8.numChrs=9;
@@ -221,6 +225,24 @@ void DisplayScore(){
 }
 
 void DisplayTime(){
+  static uint8_t decrementTime = 0;
+  uint8_t displayTime=false;
+  if(roverTime==-1){ //Start of Game
+    decrementTime=0;
+    roverTime=60;
+    displayTime=true;
+  }
+  //Once it reaches 99->1000 ms has passed
+  if(decrementTime==99){
+    roverTime--;
+    displayTime=true;
+  }
+  //Increment Counter
+  decrementTime=decrementTime>=99? 0: decrementTime+1; 
+  if(!displayTime){
+    return;
+  }
+  //Display Time:
   font8by8.x=1;
   font8by8.y=1;
   font8by8.numChrs=7;
@@ -228,6 +250,5 @@ void DisplayTime(){
   msgDisp[5]=(roverTime/10)%10+48;
   msgDisp[6]=(roverTime)%10+48;
   writeText(&font8by8);
-
 }
   

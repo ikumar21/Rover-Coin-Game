@@ -104,9 +104,6 @@ uint16_t joyMag=0;
 Obj_Disp obj1 = {0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 
-//Rover Game:
-extern uint16_t roverTime;
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -202,8 +199,6 @@ void DisplayScore();
       
       flag25MsPassed=false;
       //Every 25 ms Task:
-      runJoystick(joystickVal);
-      DisplayScore();
     }
 
     if(flag100MsPassed){
@@ -220,10 +215,7 @@ void DisplayScore();
     }
     if(flag1000MsPassed){
       flag1000MsPassed=false;
-      //Every 1000 ms Task:
-      ranNum=getRandNum(20,163);
-      roverTime--;
-      DisplayTime();         
+      //Every 1000 ms Task:    
     }
     
     if(setDisplay){
