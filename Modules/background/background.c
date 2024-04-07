@@ -38,12 +38,10 @@ uint32_t checkerBoard(uint16_t x, uint16_t y){
   
 }
 uint32_t gradientVertical(uint16_t x, uint16_t y){
-  uint8_t rValue = (0xFF & gradColors[0]>>16)*(y/160)+(0xFF & gradColors[1]>>16)*((160-y)/160);
-  uint8_t gValue = (0xFF & gradColors[0]>>8)*(y/160)+(0xFF & gradColors[1]>>8)*((160-y)/160);
-  uint8_t bValue = (0xFF & gradColors[0]>>0)*(y/160)+(0xFF & gradColors[1]>>0)*((160-y)/160);
-  
-  return rValue<<16 | gValue<<8 | bValue;
+  uint8_t rValue = (0xFF & gradColors[0]>>16) + (y-160)*((0xFF & gradColors[0]>>16)-(0xFF & gradColors[1]>>16))/160;
+  uint8_t gValue = (0xFF & gradColors[0]>>8) + (y-160)*((0xFF & gradColors[0]>>8)-(0xFF & gradColors[1]>>8))/160;
+  uint8_t bValue = (0xFF & gradColors[0]) - (160-y)*((0xFF & gradColors[0])-(0xFF & gradColors[1]))/160;
+  return (0xFC &rValue) <<16 | (0xFC &gValue)<<8 | (0xFC &bValue);
   
 }
-
 
