@@ -1,11 +1,17 @@
 #include "rover_game.h"
+#include "main.h"
 
 #define MAX_NUM_OBJ 15
+
+//COIN
 #define COIN_NUM_COLOR 12
 #define COIN_INTV 5
-
+//Rover starting Location
 #define ROVER_STRT_X 50
 #define ROVER_STRT_Y 50
+//Location of start
+#define X_LOC_START 85
+#define Y_LOC_START 127
 
 //Score and Time
 uint16_t roverGameScore = 0;
@@ -22,18 +28,12 @@ Coin_Obj coinsObj[5];
 int16_t joystickVal[2] = {0,0};
 extern void runJoystick(int16_t *joyVal);
 
-//Colors
-uint8_t **allObjColorTypes[2]={roverColorTypes,coinColorTypes};
-uint32_t *allObjColors[2]  = {roverColors, coinColors};
-
-//Width in pixels of each object-> {RoverStraight, roverAngled, spiderStraight, spiderAngled,.. }
-uint16_t objPxWidth[14] = {14,14,5,5,5,5,5,5,5,5,5,5,3,3};
-uint16_t objPxHeight[14] = {14,14,5,5,5,5,5,5,5,5,5,5,3,3};
+//Button:
+uint8_t buttonPressed = false;
 
 //Font Text:
 extern uint8_t font8x8_basic[128][8];
-uint8_t msgDisp[20]="Hello";
-Text_Info font8by8 = {0,0,msgDisp,0,'\0',DISP_BLACK, BackgroundColorPixel, 7,7,objPixelSpace, (uint8_t *)font8x8_basic, 128, 8};
+Text_Info font8by8 = {0,0,NULL,0,'\0',DISP_BLACK, BackgroundColorPixel, 7,7,objPixelSpace, (uint8_t *)font8x8_basic, 128, 8};
 
 
 //Rover Game State
@@ -47,6 +47,11 @@ void InitMode();
 void InitRunning();
 void InitFinished();
 
+//Continuously running function for state:
+void RunTitle();
+void RunMode();
+void RunGamePlay();
+void RunFinished();
 
 void setBackground(){
   //Set the background:
@@ -60,6 +65,13 @@ void setBackground(){
 }
 
 void InitializeObjDisp(uint8_t numObjs){  
+  //Colors
+  static uint8_t **allObjColorTypes[2]={roverColorTypes,coinColorTypes};
+  static uint32_t *allObjColors[2]  = {roverColors, coinColors};
+
+  //Width in pixels of each object-> {RoverStraight, roverAngled, spiderStraight, spiderAngled,.. }
+  static uint16_t objPxWidth[14] = {14,14,5,5,5,5,5,5,5,5,5,5,3,3};
+  static uint16_t objPxHeight[14] = {14,14,5,5,5,5,5,5,5,5,5,5,3,3};
   writeRectangle(0, 8, 128,1, 0x0); //Display a bar underneath score and time
   roverTime = -1; //-1 notes start of game
   //Init Rover:
@@ -136,87 +148,6 @@ void InitializeObjDisp(uint8_t numObjs){
 
 }
 
-void InitializeStateChange(){
-  //Initialize state only if state change
-  if(prevState==curState){
-    return;
-  }
-  prevState = curState;
-  setBackground();
-  switch(curState){
-    case TITLE_SCREEN:
-      InitTitle();
-      break;
-    case SELECT_MODE:
-      InitMode();
-      break;
-    case RUNNING_GAME:
-      InitRunning();
-      break;
-    case FINISHED:
-      InitFinished();
-      break;
-  }
-}
-
-void RunRoverGame(){
-  //Initialize State if state change
-  InitializeStateChange();
-  switch(curState){
-    case TITLE_SCREEN:
-      break;
-    case SELECT_MODE:
-      break;
-    case RUNNING_GAME:
-      RunGamePlay();
-      break;
-    case FINISHED:
-      break;
-  }
-  
-
-}
-
-void RunGamePlay(){
-  DisplayScore();
-  DisplayTime();
-  runJoystick(joystickVal);
-  
-  for(uint8_t i = 0; i<MAX_NUM_OBJ; i++){
-    Game_Obj *gObj = &gameObjects[i];
-//    //First see if object is active:
-//    if(gObj->active)
-      ObjectPositionCalc(gObj);//Calculate new position of object
-  }
-  //See if any collisions 
-  for(uint8_t i = 0; i<MAX_NUM_OBJ; i++){
-    Game_Obj *gObj = &gameObjects[i];
-    if(gObj->objType==COIN && gObj->active==true){
-      //If rover hits coin, increase score and make coin unactive
-      if(collisionThere(&gameObjects[i], &gameObjects[0])){
-         roverGameScore++;
-         deactivateCoin(gObj);
-      }
-    }
-  }
-  //Display objects in new place
-  for(uint8_t i = 0; i<MAX_NUM_OBJ; i++){
-    Game_Obj *gObj = &gameObjects[i];
-    if(gObj->active)
-      DisplayObjectLoc(gObj); 
-  }
-  //Fill in new background gap caused by object moving
-  FillNewBackgroundObj();
-  //Refresh object details from movement
-  for(uint8_t i = 0; i<MAX_NUM_OBJ; i++){
-    Game_Obj *gObj = &gameObjects[i];
-    if(gObj->active)
-      RefreshObjectDetails(gObj);
-  }
-
-}
-
-
 void ObjectPositionCalc(Game_Obj *gObj){
   Obj_Disp *dObj = gObj->dObj;
   if(gObj->objType==ROVER){
@@ -259,25 +190,36 @@ void RefreshObjectDetails(Game_Obj *gObj){
   
 }
 
-
+void UpdateButton(){
+  static uint8_t buttonStatus = false;
+  uint8_t curButton = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_3);
+  if(curButton & !buttonStatus)
+    buttonPressed=true;
+  buttonStatus=curButton;
+  
+  
+    
+}
 void DisplayScore(){
   static uint16_t prevScore = 999;
+  static uint8_t scoreStr[10] = "Score:___";
   if(prevScore==roverGameScore)
     return;
   //Only display score if it changed
   prevScore=roverGameScore;
   font8by8.x=64; font8by8.y=1;
   font8by8.numChrs=9; //Num of characters of string
-  msgDisp[0]='S';msgDisp[1]='c';msgDisp[2]='o';msgDisp[3]='r'; msgDisp[4]='e';msgDisp[5]=':';
-  msgDisp[6]= roverGameScore/100+48;
-  msgDisp[7]= (roverGameScore/10)%10+48;
-  msgDisp[8]= (roverGameScore)%10+48;
+  font8by8.msg= scoreStr;
+  scoreStr[6]= roverGameScore/100+48;
+  scoreStr[7]= (roverGameScore/10)%10+48;
+  scoreStr[8]= (roverGameScore)%10+48;
   writeText(&font8by8);
 
 }
 
 void DisplayTime(){
   static uint8_t decrementTime = 0;
+  static uint8_t timeStr[8] = "Time:__";
   uint8_t displayTime=false;
   if(roverTime==-1){ //Start of Game
     decrementTime=0;
@@ -297,16 +239,18 @@ void DisplayTime(){
   //Display Time:
   font8by8.x=1; font8by8.y=1;
   font8by8.numChrs=7; //Num of characters of string
-  msgDisp[0]='T';msgDisp[1]='i';msgDisp[2]='m';msgDisp[3]='e'; msgDisp[4]=':';
-  msgDisp[5]=(roverTime/10)%10+48;
-  msgDisp[6]=(roverTime)%10+48;
+  timeStr[5]=(roverTime/10)%10+48;
+  timeStr[6]=(roverTime)%10+48;
+  font8by8.msg= timeStr;
   writeText(&font8by8);
+ 
 }
   
 void InitTitle(){
   const uint8_t *titleName = "ROVER COIN DASH";
   const uint8_t *byStr = "BY";
   const uint8_t *name = "ISHAN KUMAR";
+  
   //Put Rover title
   font8by8.x=12; font8by8.y=50; font8by8.numChrs=15;
   font8by8.msg= (uint8_t*)titleName;
@@ -321,6 +265,14 @@ void InitTitle(){
   font8by8.x=25; font8by8.y=100; font8by8.numChrs=11;
   font8by8.msg= (uint8_t*)name;
   writeText(&font8by8);
+  
+  //Draw Start Shape:
+  drawLine(X_LOC_START,Y_LOC_START,X_LOC_START+38, Y_LOC_START, DISP_BLACK); //Top Hor Line
+  drawLine(X_LOC_START,Y_LOC_START+10,X_LOC_START+38, Y_LOC_START+10, DISP_BLACK); //Bottom Hor Line
+  drawLine(X_LOC_START,Y_LOC_START,X_LOC_START, Y_LOC_START+10, DISP_BLACK); //Left Vert. Line
+  drawLine(X_LOC_START+38,Y_LOC_START,X_LOC_START+43, Y_LOC_START+5, DISP_BLACK); //Top Slanted Line
+  drawLine(X_LOC_START+38,Y_LOC_START+10,X_LOC_START+43, Y_LOC_START+5, DISP_BLACK); //Bottom Slanted Line
+  
 }
 
 void InitMode(){
@@ -331,4 +283,124 @@ void InitRunning(){
 }
 
 void InitFinished(){
+}
+
+void RunTitle(){
+  const uint8_t *strtStr = "START"; 
+  static uint8_t changeColorCounter = 29;
+  static uint32_t curColor = DISP_YELLOW;
+  
+  //Check if button pressed (user wants to start):
+  UpdateButton();
+  if(buttonPressed){
+    buttonPressed=false;
+    curState=RUNNING_GAME;
+    return;
+  }
+  
+  changeColorCounter=changeColorCounter>=29? 0: changeColorCounter+1; //Increment
+  if(changeColorCounter!=0) //Change color every 300 ms
+    return;
+  
+  //Alternate between yellow and white
+  curColor=curColor==DISP_YELLOW? DISP_BLACK:DISP_YELLOW; 
+  font8by8.colorRGB=curColor;
+  //Write START to display
+  font8by8.x=X_LOC_START+2; font8by8.y=Y_LOC_START+2; font8by8.numChrs=5;
+  font8by8.msg= (uint8_t*)strtStr;
+  writeText(&font8by8);
+  //Change color back to black since most text is black
+  font8by8.colorRGB = DISP_BLACK;
+}
+
+void RunGamePlay(){
+  //Calculate new position of object
+  for(uint8_t i = 0; i<MAX_NUM_OBJ; i++){
+    Game_Obj *gObj = &gameObjects[i];
+//    //First see if object is active:
+//    if(gObj->active)
+      ObjectPositionCalc(gObj);
+  }
+  //See if any collisions 
+  for(uint8_t i = 0; i<MAX_NUM_OBJ; i++){
+    Game_Obj *gObj = &gameObjects[i];
+    if(gObj->objType==COIN && gObj->active==true){
+      //If rover hits coin, increase score and make coin unactive
+      if(collisionThere(&gameObjects[i], &gameObjects[0])){
+         roverGameScore++;
+         deactivateCoin(gObj);
+      }
+    }
+  }
+  //Display objects in new place
+  for(uint8_t i = 0; i<MAX_NUM_OBJ; i++){
+    Game_Obj *gObj = &gameObjects[i];
+    if(gObj->active)
+      DisplayObjectLoc(gObj); 
+  }
+  //Fill in new background gap caused by object moving
+  FillNewBackgroundObj();
+  //Refresh object details from movement
+  for(uint8_t i = 0; i<MAX_NUM_OBJ; i++){
+    Game_Obj *gObj = &gameObjects[i];
+    if(gObj->active)
+      RefreshObjectDetails(gObj);
+  }
+  runJoystick(joystickVal);
+  DisplayScore();
+  DisplayTime();
+  //Change state to finished if time is done:
+  if(roverTime==0){
+    curState=FINISHED;
+  }
+}
+
+void RunMode(){
+}
+
+void RunFinished(){
+
+}
+
+void InitializeStateChange(){
+  //Initialize state only if state change
+  if(prevState==curState){
+    return;
+  }
+  prevState = curState;
+  setBackground();
+  switch(curState){
+    case TITLE_SCREEN:
+      InitTitle();
+      break;
+    case SELECT_MODE:
+      InitMode();
+      break;
+    case RUNNING_GAME:
+      InitRunning();
+      break;
+    case FINISHED:
+      InitFinished();
+      break;
+  }
+}
+
+void RunRoverGame(){
+  //Initialize State if state change
+  InitializeStateChange();
+  switch(curState){
+    case TITLE_SCREEN:
+      RunTitle();
+      break;
+    case SELECT_MODE:
+      RunMode();
+      break;
+    case RUNNING_GAME:
+      RunGamePlay();
+      break;
+    case FINISHED:
+      RunFinished();
+      break;
+  }
+  
 }
