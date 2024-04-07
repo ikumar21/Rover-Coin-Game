@@ -5,9 +5,6 @@
 extern uint32_t objPixelSpace[200];
 extern Game_Obj gameObjects[15];
 extern Obj_Disp dispObjects[MAX_NUM_OBJ];
-uint32_t BackgroundColorPixel(uint16_t x,uint16_t y){ 
- return checkerBoard(x,y);
-}
 
 void BackgroundFillBox(uint16_t xS, uint16_t xE, uint16_t yS, uint16_t yE, uint8_t objIndex){
   //Limit 200 pixels
