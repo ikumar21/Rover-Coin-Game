@@ -19,7 +19,6 @@ enum Game_Status{
 extern int16_t joystickVal[2];
 
 //Generic Game
-extern uint32_t BackgroundColorPixel(uint16_t x,uint16_t y);
 extern void BackgroundFillBox(uint16_t xS, uint16_t xE, uint16_t yS, uint16_t yE, uint8_t objIndex);
 extern void FillNewBackgroundObj();
 extern void SetObjectColor(uint32_t *destColorArr, Obj_Disp *obj);

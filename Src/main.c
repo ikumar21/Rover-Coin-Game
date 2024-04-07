@@ -169,8 +169,6 @@ void DisplayScore();
   //Turn off reset pin
   HAL_GPIO_WritePin(RST_PIN,GPIO_PIN_SET);
   initDisplay();
-  initRoverGame();
-  //writeRectangle(0,0,128, 160, DISP_AQUA);
   initADC();
   InitializeObjDisp(6);
   //Initialize RNG:
@@ -192,7 +190,7 @@ void DisplayScore();
     if(flag10MsPassed){
       flag10MsPassed=false;
       //Every 10 ms Task:
-      RunGamePlay();
+      RunRoverGame();
                 
     }
     if(flag25MsPassed){

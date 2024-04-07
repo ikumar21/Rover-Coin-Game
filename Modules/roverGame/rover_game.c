@@ -30,10 +30,35 @@ uint32_t *allObjColors[2]  = {roverColors, coinColors};
 uint16_t objPxWidth[14] = {14,14,5,5,5,5,5,5,5,5,5,5,3,3};
 uint16_t objPxHeight[14] = {14,14,5,5,5,5,5,5,5,5,5,5,3,3};
 
-//Font Struct:
+//Font Text:
 extern uint8_t font8x8_basic[128][8];
 uint8_t msgDisp[20]="Hello";
 Text_Info font8by8 = {0,0,msgDisp,0,'\0',DISP_BLACK, BackgroundColorPixel, 7,7,objPixelSpace, (uint8_t *)font8x8_basic, 128, 8};
+
+
+//Rover Game State
+enum Game_Status curState = TITLE_SCREEN;
+enum Game_Status prevState = FINISHED; //Should be different at start to signal state change
+uint8_t gameMode = 0; //0->easy, 1->medium, 2->hard
+
+//Init States:
+void InitTitle();
+void InitMode();
+void InitRunning();
+void InitFinished();
+
+
+void setBackground(){
+  //Set the background:
+  for(uint16_t col = 0; col<128;col++){
+    for(uint16_t row = 0; row<160;row++){
+      objPixelSpace[row]=BackgroundColorPixel(col,row);
+    }
+      setColumnRowRange(col, col, 0,  159);
+      writeColorArray(objPixelSpace, 160);
+  }
+}
+
 void InitializeObjDisp(uint8_t numObjs){  
   writeRectangle(0, 8, 128,1, 0x0); //Display a bar underneath score and time
   roverTime = -1; //-1 notes start of game
@@ -111,7 +136,44 @@ void InitializeObjDisp(uint8_t numObjs){
 
 }
 
-void runRoverGame(){
+void InitializeStateChange(){
+  //Initialize state only if state change
+  if(prevState==curState){
+    return;
+  }
+  prevState = curState;
+  setBackground();
+  switch(curState){
+    case TITLE_SCREEN:
+      InitTitle();
+      break;
+    case SELECT_MODE:
+      InitMode();
+      break;
+    case RUNNING_GAME:
+      InitRunning();
+      break;
+    case FINISHED:
+      InitFinished();
+      break;
+  }
+}
+
+void RunRoverGame(){
+  //Initialize State if state change
+  InitializeStateChange();
+  switch(curState){
+    case TITLE_SCREEN:
+      break;
+    case SELECT_MODE:
+      break;
+    case RUNNING_GAME:
+      RunGamePlay();
+      break;
+    case FINISHED:
+      break;
+  }
+  
 
 }
 
@@ -197,17 +259,6 @@ void RefreshObjectDetails(Game_Obj *gObj){
   
 }
 
-void initRoverGame(){
-  //Set the background:
-  for(uint16_t col = 0; col<128;col++){
-    for(uint16_t row = 0; row<160;row++){
-      objPixelSpace[row]=checkerBoard(row,col);
-    }
-      setColumnRowRange(col, col, 0,  159);
-      writeColorArray(objPixelSpace, 160);
-  }
-}
-
 
 void DisplayScore(){
   static uint16_t prevScore = 999;
@@ -252,3 +303,32 @@ void DisplayTime(){
   writeText(&font8by8);
 }
   
+void InitTitle(){
+  const uint8_t *titleName = "ROVER COIN DASH";
+  const uint8_t *byStr = "BY";
+  const uint8_t *name = "ISHAN KUMAR";
+  //Put Rover title
+  font8by8.x=12; font8by8.y=50; font8by8.numChrs=15;
+  font8by8.msg= (uint8_t*)titleName;
+  writeText(&font8by8);
+  
+  //Put BY
+  font8by8.x=57; font8by8.y=85; font8by8.numChrs=2;
+  font8by8.msg= (uint8_t*)byStr;
+  writeText(&font8by8);
+  
+  //Put my own name
+  font8by8.x=25; font8by8.y=100; font8by8.numChrs=11;
+  font8by8.msg= (uint8_t*)name;
+  writeText(&font8by8);
+}
+
+void InitMode(){
+}
+
+void InitRunning(){
+  InitializeObjDisp(6);
+}
+
+void InitFinished(){
+}
