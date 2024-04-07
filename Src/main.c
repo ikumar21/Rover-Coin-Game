@@ -130,7 +130,7 @@ extern void RunRoverGame();
   * @brief  The application entry point.
   * @retval int
   */
-int main(void)
+  int main(void)
 {
 
   /* USER CODE BEGIN 1 */

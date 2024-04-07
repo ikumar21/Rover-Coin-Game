@@ -23,7 +23,7 @@ uint32_t BackgroundColorPixel(uint16_t x,uint16_t y){
       return checkerBoard(x,y);
       break;
     case FINISHED:
-      return checkerBoard(x,y);
+      return DISP_WHITE;
       break;
   }
   return 0;

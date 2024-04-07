@@ -37,6 +37,6 @@ void DisplayObjectLoc(Game_Obj *gObj); //Display object in new place
 void RefreshObjectDetails(Game_Obj *gObj); //Refresh object details from movement
 void initRoverGame();
 void DisplayScore();
-void DisplayTime();
+void DisplayTime(int16_t *curTime, uint16_t maxTime, uint8_t x, uint8_t y);
 
 #endif

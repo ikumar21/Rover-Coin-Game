@@ -12,10 +12,15 @@
 //Location of start
 #define X_LOC_START 85
 #define Y_LOC_START 127
+//Location of Finish Box
+#define X_LOC_FINISH 14
+#define Y_LOC_FINISH 55
 
 //Score and Time
+uint16_t prevScore = 999;
 uint16_t roverGameScore = 0;
 int16_t roverTime = 0;
+uint16_t highestScore = 0;
 
 //All Objects:
 uint32_t objPixelSpace[200];
@@ -200,35 +205,36 @@ void UpdateButton(){
   
     
 }
+
+void DisplayNumber(int16_t num, uint8_t numDig, uint16_t x, uint16_t y){
+  //Max digits 5
+  static uint8_t numStr[6] = "12345";
+  
+  font8by8.x=x; font8by8.y=y;font8by8.numChrs=numDig; font8by8.msg= numStr;
+  for(int16_t i = numDig-1; i>=0;i--, num/=10){
+    numStr[i]= num%10+48;
+  }
+  writeText(&font8by8);
+}
 void DisplayScore(){
-  static uint16_t prevScore = 999;
-  static uint8_t scoreStr[10] = "Score:___";
   if(prevScore==roverGameScore)
     return;
   //Only display score if it changed
   prevScore=roverGameScore;
-  font8by8.x=64; font8by8.y=1;
-  font8by8.numChrs=9; //Num of characters of string
-  font8by8.msg= scoreStr;
-  scoreStr[6]= roverGameScore/100+48;
-  scoreStr[7]= (roverGameScore/10)%10+48;
-  scoreStr[8]= (roverGameScore)%10+48;
-  writeText(&font8by8);
-
+  DisplayNumber(roverGameScore,3,106, 1);
 }
 
-void DisplayTime(){
+void DisplayTime(int16_t *curTime, uint16_t maxTime, uint8_t x, uint8_t y){
   static uint8_t decrementTime = 0;
-  static uint8_t timeStr[8] = "Time:__";
   uint8_t displayTime=false;
-  if(roverTime==-1){ //Start of Game
+  if(*curTime==-1){ //Start of Game
     decrementTime=0;
-    roverTime=60;
+    *curTime=maxTime;
     displayTime=true;
   }
   //Once it reaches 99->1000 ms has passed
   if(decrementTime==99){
-    roverTime--;
+    *curTime=*curTime-1;
     displayTime=true;
   }
   //Increment Counter
@@ -237,12 +243,7 @@ void DisplayTime(){
     return;
   }
   //Display Time:
-  font8by8.x=1; font8by8.y=1;
-  font8by8.numChrs=7; //Num of characters of string
-  timeStr[5]=(roverTime/10)%10+48;
-  timeStr[6]=(roverTime)%10+48;
-  font8by8.msg= timeStr;
-  writeText(&font8by8);
+  DisplayNumber(*curTime, 2, x, y);
  
 }
   
@@ -252,6 +253,7 @@ void InitTitle(){
   const uint8_t *name = "ISHAN KUMAR";
   
   //Put Rover title
+  setBackground();
   font8by8.x=12; font8by8.y=50; font8by8.numChrs=15;
   font8by8.msg= (uint8_t*)titleName;
   writeText(&font8by8);
@@ -279,10 +281,59 @@ void InitMode(){
 }
 
 void InitRunning(){
+  const uint8_t *timeStr = "Time:";
+  const uint8_t *scoreStr = "Score:";
+  
+  setBackground();
+  
+  //Put Time, Score 
+  font8by8.x=1; font8by8.y=1; font8by8.numChrs=5;font8by8.msg= (uint8_t*)timeStr;
+  writeText(&font8by8);
+  font8by8.x=64; font8by8.y=1; font8by8.numChrs=6;font8by8.msg= (uint8_t*)scoreStr;
+  writeText(&font8by8);
+  //Set score
+  prevScore=999; 
+  roverGameScore=0;
+  
   InitializeObjDisp(6);
+  
+  
+  
+  
 }
 
 void InitFinished(){
+  
+  const uint8_t finStr[15] = "Game Finished!";
+  const uint8_t urScore[12] = "Your Score:";
+  const uint8_t highStr[15] = "Highest Score:";
+  static uint8_t mainStr[13] = "Going Main:_";
+  uint8_t bWidth = 128-X_LOC_FINISH*2;
+  uint8_t bHeight = 60;
+  //Create White Box:
+  writeRectangle(X_LOC_FINISH, Y_LOC_FINISH,bWidth, bHeight, DISP_WHITE);
+  //Create black border:
+  drawLine(X_LOC_FINISH,Y_LOC_FINISH,X_LOC_FINISH+bWidth, Y_LOC_FINISH, DISP_BLACK); //Top Hor Line
+  drawLine(X_LOC_FINISH,Y_LOC_FINISH+bHeight,X_LOC_FINISH+bWidth, Y_LOC_FINISH+bHeight, DISP_BLACK); //Bottom Hor Line
+  drawLine(X_LOC_FINISH,Y_LOC_FINISH,X_LOC_FINISH, Y_LOC_FINISH+bHeight, DISP_BLACK); //Left Vert Line
+  drawLine(X_LOC_FINISH+bWidth,Y_LOC_FINISH,X_LOC_FINISH+bWidth, Y_LOC_FINISH+bHeight, DISP_BLACK); //Right Vert Line
+  
+  //Write Text:
+  font8by8.x=X_LOC_FINISH+2; font8by8.y=Y_LOC_FINISH+2; font8by8.numChrs=14;font8by8.msg= (uint8_t*)finStr;
+  writeText(&font8by8);
+  font8by8.x=X_LOC_FINISH+2; font8by8.y=Y_LOC_FINISH+2+9; font8by8.numChrs=11;font8by8.msg= (uint8_t*)urScore;
+  writeText(&font8by8);
+  font8by8.x=X_LOC_FINISH+2; font8by8.y=Y_LOC_FINISH+2+9*3; font8by8.numChrs=14;font8by8.msg= (uint8_t*)highStr;
+  writeText(&font8by8);
+  font8by8.x=X_LOC_FINISH+2; font8by8.y=Y_LOC_FINISH+2+9*5; font8by8.numChrs=12;font8by8.msg= (uint8_t*)mainStr;
+  writeText(&font8by8);
+  
+  //Write Scores:
+  highestScore=MAX(highestScore, roverGameScore);
+  DisplayNumber(roverGameScore, 3, X_LOC_FINISH+2, Y_LOC_FINISH+2+9*2);
+  DisplayNumber(highestScore, 3, X_LOC_FINISH+2, Y_LOC_FINISH+2+9*4);
+  roverTime = -1;
+  
 }
 
 void RunTitle(){
@@ -348,10 +399,11 @@ void RunGamePlay(){
   }
   runJoystick(joystickVal);
   DisplayScore();
-  DisplayTime();
+  DisplayTime(&roverTime, 60, 36, 1);
   //Change state to finished if time is done:
-  if(roverTime==0){
+  if(roverTime==55){
     curState=FINISHED;
+    
   }
 }
 
@@ -359,6 +411,11 @@ void RunMode(){
 }
 
 void RunFinished(){
+  DisplayTime(&roverTime, 5, X_LOC_FINISH+2+7*11, Y_LOC_FINISH+2+9*5);
+  //Change state to TITLE if time is done:
+  if(roverTime==0){
+    curState=TITLE_SCREEN;
+  }
 
 }
 
@@ -368,7 +425,6 @@ void InitializeStateChange(){
     return;
   }
   prevState = curState;
-  setBackground();
   switch(curState){
     case TITLE_SCREEN:
       InitTitle();
