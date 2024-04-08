@@ -17,7 +17,6 @@
   ******************************************************************************
   */
 /* USER CODE END Header */
-
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
@@ -90,9 +89,10 @@ extern uint32_t spiderRectColor[150];
 extern uint16_t timeDisplayMS;
 extern uint8_t runningTrue;
 uint16_t timeDisp = 0;
-
-//Analog Joystick
-//extern int16_t joystickVal[2];
+uint32_t timeElasped[10];
+uint8_t timeCntr = 0;
+uint8_t iterCntr = 0;
+uint32_t timeHolder = 0;
 
 
 extern uint8_t adcFlag;
@@ -103,9 +103,6 @@ uint16_t joyMag=0;
 //Display Objects:
 Obj_Disp obj1 = {0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
-
-//Rover Game:
-extern uint16_t roverTime;
 
 /* USER CODE END PV */
 
@@ -124,8 +121,7 @@ void testObject(uint16_t angle, ObjectDispType objType);
 uint32_t returnAnalog(uint8_t pin);
 
 //Rover Game:
-void DisplayTime();
-void DisplayScore();
+extern void RunRoverGame();
 
 /* USER CODE END PFP */
 
@@ -138,12 +134,12 @@ void DisplayScore();
   * @brief  The application entry point.
   * @retval int
   */
- int main(void)
+  int main(void)
 {
+
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
-  
 
   /* MCU Configuration--------------------------------------------------------*/
 
@@ -172,21 +168,16 @@ void DisplayScore();
   //Turn off reset pin
   HAL_GPIO_WritePin(RST_PIN,GPIO_PIN_SET);
   initDisplay();
-  initRoverGame();
-  //writeRectangle(0,0,128, 160, DISP_AQUA);
   initADC();
   InitializeObjDisp(6);
   //Initialize RNG:
   initRNG();
   
   /* USER CODE END 2 */
- 
- 
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
+  while (1){
     
     if(flag3MsPassed){
       flag3MsPassed=false;
@@ -196,130 +187,43 @@ void DisplayScore();
     if(flag10MsPassed){
       flag10MsPassed=false;
       //Every 10 ms Task:
-      
-      RunGamePlay();
-//      writeRectangle(leftTopCorner[0],leftTopCorner[1],12,1,DISP_WHITE);
-//      INCRE_CIRC_COUNTER(leftTopCorner[1],160-11);
-      
-//      testObject(angle, objType);
-//          writeRectangle(leftTopCorner[0],leftTopCorner[1],12,1,DISP_WHITE);
-//          leftTopCorner[1]++;
-//          leftTopCorner[1]++;
-//          leftTopCorner[1]++;
-//          testObject(angle, objType); 
-      
-      
+      timeHolder= HAL_GetTick();
+      RunRoverGame();
+      timeElasped[timeCntr] = MAX(HAL_GetTick()-timeHolder, timeElasped[timeCntr]);
+      INCRE_CIRC_COUNTER(timeCntr, 10); 
                 
     }
     if(flag25MsPassed){
       
       flag25MsPassed=false;
       //Every 25 ms Task:
-      runJoystick(joystickVal);
-      DisplayScore();
-      
-      
-//      timeDisplayMS=10;
-//      HAL_ADC_Start(&hadc1);
-//      
-//      
-//      while(((hadc1.Instance->ISR >>2) & 0x1) == 0){
-//      }
-//      joystickX=HAL_ADC_GetValue(&hadc1);
-//      while(((hadc1.Instance->ISR >>2) & 0x1) == 0){
-//      }
-//      joystickY=HAL_ADC_GetValue(&hadc1);  
-//      joystickY=HAL_ADC_GetValue(&hadc1);
-
-
-     
-                
     }
 
     if(flag100MsPassed){
       flag100MsPassed=false;
       
       //Every 100 ms Task:
-      
-      
-      
-//      writeRectangle(leftTopCorner[0],leftTopCorner[1],12,1,DISP_WHITE);
-//      leftTopCorner[1]++;
-//      testObject(angle, objType);
-//      SetCarArr();
-//      writeRectangle(prevPlace[0],prevPlace[1],12, 12, rgbColor32);
-//      setColumnRowRange(leftTopCorner[0],leftTopCorner[0]+11,leftTopCorner[1],leftTopCorner[1]+11);      
-//      writeColorArray(carRectColor,144);
-//      
-      
-      
-//      prevPlace[0]=leftTopCorner[0];
-//      prevPlace[1]=leftTopCorner[1];
                 
     }
     if(flag500MsPassed){
       flag500MsPassed=false;
       //Every 500 ms Task:
       
-      
                 
     }
     if(flag1000MsPassed){
       flag1000MsPassed=false;
-      //Every 1000 ms Task:
-      ranNum=getRandNum(20,163);
-      roverTime--;
-      DisplayTime();
-      
-//      leftTopCorner[1]++;
-//
-//      if(leftTopCorner[1]>=147)
-//        leftTopCorner[1]=0;
-      
-//      setColumnRowRange(80,80+14,80 ,80+9);
-//      SetSpiderArr();
-//      writeColorArray(spiderRectColor,150);
-      
-    
-        
-               
+      //Every 1000 ms Task:    
     }
     
     if(setDisplay){
       timeDisplayMS=0;
       runningTrue=true;
       setDisplay=false;
-      for(uint16_t i = 0; i<1000;i++){
-//          writeRectangle(leftTopCorner[0],leftTopCorner[1],12,12,DISP_WHITE);
-//          HAL_SPI_Transmit(&hspi1,line1,10,1000);
-//        writeRectangle(leftTopCorner[0],leftTopCorner[1],12,1,DISP_WHITE);
-//        writeRectangle(leftTopCorner[0]-3,leftTopCorner[1],1,12,DISP_WHITE);
-//        leftTopCorner[1]++;
-//        testObject(angle, objType);
+      for(uint16_t i = 0; i<20;i++){
+        
+        //Test
       }
-      
-//      testObject(angle, objType);
-      
-//      writeRectangle(prevPlace[0],prevPlace[1],12, 12, rgbColor32);
-//      setColumnRowRange(leftTopCorner[0],leftTopCorner[0]+11,leftTopCorner[1],leftTopCorner[1]+11);
-//      prevPlace[0]=leftTopCorner[0];
-//      prevPlace[1]=leftTopCorner[1];
-//      SetCarArr();
-//      writeColorArray(carRectColor,144);
-      
-      
-//      writeRectangle(0,0,128, 160, rgbColor32);
-//      setColumnRowRange(leftTopCorner[0],leftTopCorner[0]+11,leftTopCorner[1],leftTopCorner[1]+11);
-//      SetCarArr();
-//      writeColorArray(carRectColor,144);
-//      
-//      drawLine((int16_t) line1[0],(int16_t) line1[1],(int16_t) line1[2],(int16_t) line1[3],DISP_PURPLE);
-//      
-//      writeRectangle(leftTopCorner[0],leftTopCorner[1],width, height, rgbColor32);
-//      writePixel(leftTopCorner[0],leftTopCorner[1], 255<<16);
-      
-//      setColumnRowRange(colStart, colEnd, rowStart, rowEnd);
-//      setColor(rgbColor[0], rgbColor[1], rgbColor[2], (1+colEnd-colStart)*(1+rowEnd-rowStart));
       timeDisp = timeDisplayMS;
       runningTrue=false;
     }
@@ -338,13 +242,21 @@ void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
-  RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
 
-  /** Configure LSE Drive Capability 
+  /** Configure the main internal regulator output voltage
+  */
+  if (HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure LSE Drive Capability
   */
   HAL_PWR_EnableBkUpAccess();
   __HAL_RCC_LSEDRIVE_CONFIG(RCC_LSEDRIVE_LOW);
-  /** Initializes the CPU, AHB and APB busses clocks 
+
+  /** Initializes the RCC Oscillators according to the specified parameters
+  * in the RCC_OscInitTypeDef structure.
   */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSE|RCC_OSCILLATORTYPE_MSI;
   RCC_OscInitStruct.LSEState = RCC_LSE_ON;
@@ -362,7 +274,8 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  /** Initializes the CPU, AHB and APB busses clocks 
+
+  /** Initializes the CPU, AHB and APB buses clocks
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
@@ -375,27 +288,8 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART2|RCC_PERIPHCLK_ADC;
-  PeriphClkInit.Usart2ClockSelection = RCC_USART2CLKSOURCE_PCLK1;
-  PeriphClkInit.AdcClockSelection = RCC_ADCCLKSOURCE_PLLSAI1;
-  PeriphClkInit.PLLSAI1.PLLSAI1Source = RCC_PLLSOURCE_MSI;
-  PeriphClkInit.PLLSAI1.PLLSAI1M = 1;
-  PeriphClkInit.PLLSAI1.PLLSAI1N = 8;
-  PeriphClkInit.PLLSAI1.PLLSAI1P = RCC_PLLP_DIV7;
-  PeriphClkInit.PLLSAI1.PLLSAI1Q = RCC_PLLQ_DIV2;
-  PeriphClkInit.PLLSAI1.PLLSAI1R = RCC_PLLR_DIV2;
-  PeriphClkInit.PLLSAI1.PLLSAI1ClockOut = RCC_PLLSAI1_ADC1CLK;
-  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /** Configure the main internal regulator output voltage 
-  */
-  if (HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /** Enable MSI Auto calibration 
+
+  /** Enable MSI Auto calibration
   */
   HAL_RCCEx_EnableMSIPLLMode();
 }
@@ -417,7 +311,8 @@ static void MX_ADC1_Init(void)
   /* USER CODE BEGIN ADC1_Init 1 */
 
   /* USER CODE END ADC1_Init 1 */
-  /** Common config 
+
+  /** Common config
   */
   hadc1.Instance = ADC1;
   hadc1.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV1;
@@ -429,7 +324,6 @@ static void MX_ADC1_Init(void)
   hadc1.Init.ContinuousConvMode = DISABLE;
   hadc1.Init.NbrOfConversion = 2;
   hadc1.Init.DiscontinuousConvMode = DISABLE;
-  hadc1.Init.NbrOfDiscConversion = 1;
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
   hadc1.Init.DMAContinuousRequests = DISABLE;
@@ -439,7 +333,8 @@ static void MX_ADC1_Init(void)
   {
     Error_Handler();
   }
-  /** Configure Regular Channel 
+
+  /** Configure Regular Channel
   */
   sConfig.Channel = ADC_CHANNEL_9;
   sConfig.Rank = ADC_REGULAR_RANK_1;
@@ -451,7 +346,8 @@ static void MX_ADC1_Init(void)
   {
     Error_Handler();
   }
-  /** Configure Regular Channel 
+
+  /** Configure Regular Channel
   */
   sConfig.Channel = ADC_CHANNEL_15;
   sConfig.Rank = ADC_REGULAR_RANK_2;
@@ -540,10 +436,10 @@ static void MX_USART2_UART_Init(void)
 
 }
 
-/** 
+/**
   * Enable DMA controller clock
   */
-static void MX_DMA_Init(void) 
+static void MX_DMA_Init(void)
 {
 
   /* DMA controller clock enable */
@@ -564,6 +460,8 @@ static void MX_DMA_Init(void)
 static void MX_GPIO_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
+/* USER CODE BEGIN MX_GPIO_Init_1 */
+/* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOC_CLK_ENABLE();
@@ -571,15 +469,23 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : PB3 PB5 PB6 PB7 */
-  GPIO_InitStruct.Pin = GPIO_PIN_3|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7;
+  /*Configure GPIO pin : PB3 */
+  GPIO_InitStruct.Pin = GPIO_PIN_3;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PB5 PB6 PB7 */
+  GPIO_InitStruct.Pin = GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
+/* USER CODE BEGIN MX_GPIO_Init_2 */
+/* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
@@ -663,13 +569,11 @@ void Error_Handler(void)
   * @param  line: assert_param error line source number
   * @retval None
   */
-void assert_failed(char *file, uint32_t line)
-{ 
+void assert_failed(uint8_t *file, uint32_t line)
+{
   /* USER CODE BEGIN 6 */
   /* User can add his own implementation to report the file name and line number,
      tex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

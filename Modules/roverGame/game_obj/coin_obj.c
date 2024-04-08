@@ -1,6 +1,8 @@
 #include "coin_obj.h"
 #include "rover_math.h"
-
+#include "rover_game.h"
+//All objects:
+extern Game_Obj gameObjects[MAX_NUM_OBJ];
 uint8_t numActiveCoins = 0;
 uint32_t coinColors[13] = {0xF8F8F8,0xFC0000,0xFC7A00,0xFCFC00,0x7AFC00, 
                             0x00FC00,0x00FC7A,0x00FCFC,0x007AFC,
@@ -36,16 +38,29 @@ void CoinController(Game_Obj *gObj){
   if(gObj->active==true)
     return;
   //If not active, generate coin randomly (less coins->more likely new coin appears)
-  uint8_t makeActive = getRandNum(0,4000)<(6-numActiveCoins);
+  uint8_t makeActive = getRandNum(0,1000)<(MAX_NUM_COINS+1-numActiveCoins);
   //Then randomly place it in new position
   if(makeActive){
     gObj->active=true;
     numActiveCoins++;
-    gObj->dObj->xLoc=getRandNum(5, 105);
-    gObj->dObj->yLoc = getRandNum(5,135);
+    //Ensure the coin isn't placed where rover or another coin is
+    uint8_t noIntersection = false;
+    while(!noIntersection){
+      noIntersection=true;
+      gObj->dObj->xLoc=getRandNum(5, 105);
+      gObj->dObj->yLoc = getRandNum(10,135);
+      for(uint8_t i = 0; i<MAX_NUM_OBJ;i++){
+        //See if object is active and don't compare against itself
+        if(gameObjects[i].active==true && gObj!=&gameObjects[i]){
+          noIntersection = noIntersection  && !collisionThere(&gameObjects[i], gObj);
+        }
+      }
+    }
+    
     gObj->dObj->prevXLoc=gObj->dObj->xLoc;
     gObj->dObj->prevYLoc=gObj->dObj->yLoc;
     gObj->coinObj->currentColor=getRandNum(1,12);
+    gObj->coinObj->colorChangeCounter=0;
   } 
 }
 
