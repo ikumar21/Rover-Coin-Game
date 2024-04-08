@@ -31,7 +31,10 @@ uint32_t BackgroundColorPixel(uint16_t x,uint16_t y){
 
 
 uint32_t checkerBoard(uint16_t x, uint16_t y){
-  uint8_t c = (y/thickness)%2==0;
+  if(y<9){
+    return 0x7CBCFC;
+  }
+  uint8_t c = ((y-9)/thickness)%2==0;
   uint8_t r = (x/thickness)%2==0;
   uint8_t index = c^r;
   return checkerColors[index];

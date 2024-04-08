@@ -45,8 +45,8 @@ void RoverLimitLoc(int16_t *x, int16_t *y){
     *x=0;
   if(*x>11500)
     *x=11500;
-  if(*y<0)
-    *y=0;
+  if(*y<1000)
+    *y=1000;
   if(*y>14700)
     *y=14700;
 }

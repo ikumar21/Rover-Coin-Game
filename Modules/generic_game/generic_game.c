@@ -120,15 +120,6 @@ void SetObjectColor(uint32_t *destColorArr, Obj_Disp *obj){
     }
   
   }
-//  for (uint8_t i=0;i<width*height;i++){
-//    if(destColorArr[i]==0){
-//      destColorArr[i]=BackgroundColorPixel(obj->xLoc,
-//    }else{
-//      
-//      destColorArr[i]=obj->objColors[destColorArr[i]];
-//    }
-//  }
-
 }
 
 uint8_t collisionThere(Game_Obj *gObj1, Game_Obj *gObj2){

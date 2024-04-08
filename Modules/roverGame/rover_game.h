@@ -26,9 +26,6 @@ extern void SetObjectColor(uint32_t *destColorArr, Obj_Disp *obj);
 //Coin 
 extern void deactivateCoin(Game_Obj *gObj);
 
-//Rover Game:
-extern int16_t roverTime;
-
 void InitializeObjDisp(uint8_t numObjs);
 
 void RunGamePlay();

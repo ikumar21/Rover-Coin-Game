@@ -1,11 +1,8 @@
 #include "rover_game.h"
 #include "main.h"
 
-#define MAX_NUM_OBJ 15
+#define MAX_NUM_OBJ 60
 
-//COIN
-#define COIN_NUM_COLOR 12
-#define COIN_INTV 5
 //Rover starting Location
 #define ROVER_STRT_X 50
 #define ROVER_STRT_Y 50
@@ -27,7 +24,7 @@ uint32_t objPixelSpace[200];
 Game_Obj gameObjects[MAX_NUM_OBJ];
 Obj_Disp dispObjects[MAX_NUM_OBJ];
 Rover_Obj rov1Obj;
-Coin_Obj coinsObj[5];
+Coin_Obj coinsObj[MAX_NUM_COINS];
 
 //Joystick:
 int16_t joystickVal[2] = {0,0};
@@ -77,12 +74,9 @@ void InitializeObjDisp(uint8_t numObjs){
   //Width in pixels of each object-> {RoverStraight, roverAngled, spiderStraight, spiderAngled,.. }
   static uint16_t objPxWidth[14] = {14,14,5,5,5,5,5,5,5,5,5,5,3,3};
   static uint16_t objPxHeight[14] = {14,14,5,5,5,5,5,5,5,5,5,5,3,3};
-  writeRectangle(0, 8, 128,1, 0x0); //Display a bar underneath score and time
-  roverTime = -1; //-1 notes start of game
   //Init Rover:
   dispObjects[0].angle=0;
-  
-
+ 
   dispObjects[0].xLoc=ROVER_STRT_X;
   dispObjects[0].yLoc=ROVER_STRT_Y;
   dispObjects[0].objType=ROVER;
@@ -95,17 +89,12 @@ void InitializeObjDisp(uint8_t numObjs){
   gameObjects[0].rovObj->pT_G[1]=ROVER_STRT_Y*100;
   
   //Init Coins
-  for(uint8_t i = 1; i<6;i++){
-//    dispObjects[i].xLoc=i*20;
-//    dispObjects[i].yLoc=i*25+10;
+  for(uint8_t i = 1; i<=MAX_NUM_COINS;i++){
     gameObjects[i].dObj=&dispObjects[i];
     gameObjects[i].objType=COIN;
     dispObjects[i].objType=COIN;
     gameObjects[i].coinObj=&coinsObj[i-1];
-//    gameObjects[i].active=true;
-//    gameObjects[i].coinObj->colorChangeCounter=0;
-//    gameObjects[i].coinObj->currentColor=0;
-    
+    gameObjects[i].active=false;
   }
   
     //Initialize object data based on object type and angle
@@ -116,8 +105,6 @@ void InitializeObjDisp(uint8_t numObjs){
         //First correct angle (default to 0 if angle not (0-315); multiple of 45))
         if(obj->angle>315 || obj->angle %45 != 0)
             obj->angle = 0;
-        
-//        printf("%d\n",obj->angle);
 
         //Fix prev loc/angle 
         obj->prevXLoc=obj->xLoc;
@@ -269,11 +256,11 @@ void InitTitle(){
   writeText(&font8by8);
   
   //Draw Start Shape:
-  drawLine(X_LOC_START,Y_LOC_START,X_LOC_START+38, Y_LOC_START, DISP_BLACK); //Top Hor Line
-  drawLine(X_LOC_START,Y_LOC_START+10,X_LOC_START+38, Y_LOC_START+10, DISP_BLACK); //Bottom Hor Line
+  drawLine(X_LOC_START,Y_LOC_START,X_LOC_START+37, Y_LOC_START, DISP_BLACK); //Top Hor Line
+  drawLine(X_LOC_START,Y_LOC_START+10,X_LOC_START+37, Y_LOC_START+10, DISP_BLACK); //Bottom Hor Line
   drawLine(X_LOC_START,Y_LOC_START,X_LOC_START, Y_LOC_START+10, DISP_BLACK); //Left Vert. Line
-  drawLine(X_LOC_START+38,Y_LOC_START,X_LOC_START+43, Y_LOC_START+5, DISP_BLACK); //Top Slanted Line
-  drawLine(X_LOC_START+38,Y_LOC_START+10,X_LOC_START+43, Y_LOC_START+5, DISP_BLACK); //Bottom Slanted Line
+  drawLine(X_LOC_START+37,Y_LOC_START,X_LOC_START+42, Y_LOC_START+5, DISP_BLACK); //Top Slanted Line
+  drawLine(X_LOC_START+37,Y_LOC_START+10,X_LOC_START+42, Y_LOC_START+5, DISP_BLACK); //Bottom Slanted Line
   
 }
 
@@ -295,11 +282,10 @@ void InitRunning(){
   prevScore=999; 
   roverGameScore=0;
   
-  InitializeObjDisp(6);
+  InitializeObjDisp(MAX_NUM_COINS+1);
   
-  
-  
-  
+  writeRectangle(0, 8, 128,1, 0x0); //Display a bar underneath score and time
+  roverTime = -1; //-1 notes timer start
 }
 
 void InitFinished(){
@@ -338,7 +324,7 @@ void InitFinished(){
 
 void RunTitle(){
   const uint8_t *strtStr = "START"; 
-  static uint8_t changeColorCounter = 29;
+  static uint8_t changeColorCounter = 49;
   static uint32_t curColor = DISP_YELLOW;
   
   //Check if button pressed (user wants to start):
@@ -349,8 +335,8 @@ void RunTitle(){
     return;
   }
   
-  changeColorCounter=changeColorCounter>=29? 0: changeColorCounter+1; //Increment
-  if(changeColorCounter!=0) //Change color every 300 ms
+  changeColorCounter=changeColorCounter>=49? 0: changeColorCounter+1; //Increment
+  if(changeColorCounter!=0) //Change color every 500 ms
     return;
   
   //Alternate between yellow and white
@@ -401,7 +387,7 @@ void RunGamePlay(){
   DisplayScore();
   DisplayTime(&roverTime, 60, 36, 1);
   //Change state to finished if time is done:
-  if(roverTime==55){
+  if(roverTime==0){
     curState=FINISHED;
     
   }
