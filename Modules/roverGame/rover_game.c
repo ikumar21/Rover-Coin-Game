@@ -1,8 +1,6 @@
 #include "rover_game.h"
 #include "main.h"
 
-#define MAX_NUM_OBJ 60
-
 //Rover starting Location
 #define ROVER_STRT_X 50
 #define ROVER_STRT_Y 50
@@ -286,6 +284,7 @@ void InitRunning(){
   
   writeRectangle(0, 8, 128,1, 0x0); //Display a bar underneath score and time
   roverTime = -1; //-1 notes timer start
+  numActiveCoins = 0; //0 active coins at start
 }
 
 void InitFinished(){

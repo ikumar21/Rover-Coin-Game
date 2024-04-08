@@ -5,6 +5,7 @@
 #include "coin_obj.h"
 #include "rover_obj.h"
 
+#define MAX_NUM_OBJ 60
 //uint32_t objPixelSpace[200];
 //Game_Obj gameObjects[15];
 enum Game_Status{
