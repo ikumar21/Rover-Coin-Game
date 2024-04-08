@@ -89,6 +89,10 @@ extern uint32_t spiderRectColor[150];
 extern uint16_t timeDisplayMS;
 extern uint8_t runningTrue;
 uint16_t timeDisp = 0;
+uint32_t timeElasped[10];
+uint8_t timeCntr = 0;
+uint8_t iterCntr = 0;
+uint32_t timeHolder = 0;
 
 
 extern uint8_t adcFlag;
@@ -183,7 +187,10 @@ extern void RunRoverGame();
     if(flag10MsPassed){
       flag10MsPassed=false;
       //Every 10 ms Task:
+      timeHolder= HAL_GetTick();
       RunRoverGame();
+      timeElasped[timeCntr] = MAX(HAL_GetTick()-timeHolder, timeElasped[timeCntr]);
+      INCRE_CIRC_COUNTER(timeCntr, 10); 
                 
     }
     if(flag25MsPassed){
