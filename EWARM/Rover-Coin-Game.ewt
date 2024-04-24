@@ -1451,6 +1451,12 @@
                     </file>
                 </group>
                 <group>
+                    <name>EEPROM</name>
+                    <file>
+                        <name>$PROJ_DIR$\..\Modules\EEPROM\EEPROM.c</name>
+                    </file>
+                </group>
+                <group>
                     <name>generic_game</name>
                     <file>
                         <name>$PROJ_DIR$\..\Modules\generic_game\generic_game.c</name>
