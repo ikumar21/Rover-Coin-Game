@@ -16,8 +16,8 @@ uint32_t BackgroundColorPixel(uint16_t x,uint16_t y){
     case TITLE_SCREEN:
       return gradientVertical(x,y);
       break;
-    case SELECT_MODE:
-      return checkerBoard(x,y);
+    case SELECT_LEVEL:
+      return DISP_WHITE;
       break;
     case RUNNING_GAME:
       return checkerBoard(x,y);

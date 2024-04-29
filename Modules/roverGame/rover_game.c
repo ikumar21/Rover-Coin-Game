@@ -1,5 +1,6 @@
 #include "rover_game.h"
 #include "main.h"
+#include "EEPROM.h"
 
 //Rover starting Location
 #define ROVER_STRT_X 50
@@ -10,6 +11,11 @@
 //Location of Finish Box
 #define X_LOC_FINISH 14
 #define Y_LOC_FINISH 55
+
+//Location of EXIT Box LVL
+#define X_LOC_EXIT_LVL 6
+#define Y_LOC_EXIT_LVL Y_LOC_START
+
 
 //Score and Time
 uint16_t prevScore = 999;
@@ -39,17 +45,44 @@ Text_Info font8by8 = {0,0,NULL,0,'\0',DISP_BLACK, BackgroundColorPixel, 7,7,objP
 //Rover Game State
 enum Game_Status curState = TITLE_SCREEN;
 enum Game_Status prevState = FINISHED; //Should be different at start to signal state change
-uint8_t gameMode = 0; //0->easy, 1->medium, 2->hard
+
+
+//Game Level Data
+uint8_t gameLevel = 0;
+typedef struct{
+  uint8_t qckTimes[10];
+  uint32_t maxlvlDone;
+} Lvl_Data_E;
+union Lvl_E_U{
+  Lvl_Data_E lvlsData;
+  uint8_t dataArr[14];
+};
+union Lvl_E_U eepromLvlData;
+Obj_Disp lockObj;
+
+//Lock Info
+uint32_t lockColors[4] = {0xF8F8F8,0x0C0C0C,0x3C3C3C,DISP_BLACK};
+uint8_t lockColorType[9][8] = {
+{0,1,1,1,1,1,1,0},
+{1,1,0,0,0,0,1,1},
+{1,0,0,0,0,0,0,1},
+{1,0,0,0,0,0,0,1},
+{2,2,2,2,2,2,2,2},
+{2,2,2,3,3,2,2,2},
+{2,2,2,3,3,2,2,2},
+{2,2,2,3,3,2,2,2},
+{2,2,2,2,2,2,2,2}};
+uint8_t *lockColorTypes[2] = {(uint8_t *)lockColorType, (uint8_t *)lockColorType};
 
 //Init States:
 void InitTitle();
-void InitMode();
+void InitLevel();
 void InitRunning();
 void InitFinished();
 
 //Continuously running function for state:
 void RunTitle();
-void RunMode();
+void RunLevel();
 void RunGamePlay();
 void RunFinished();
 
@@ -254,15 +287,66 @@ void InitTitle(){
   writeText(&font8by8);
   
   //Draw Start Shape:
-  drawLine(X_LOC_START,Y_LOC_START,X_LOC_START+37, Y_LOC_START, DISP_BLACK); //Top Hor Line
-  drawLine(X_LOC_START,Y_LOC_START+10,X_LOC_START+37, Y_LOC_START+10, DISP_BLACK); //Bottom Hor Line
-  drawLine(X_LOC_START,Y_LOC_START,X_LOC_START, Y_LOC_START+10, DISP_BLACK); //Left Vert. Line
-  drawLine(X_LOC_START+37,Y_LOC_START,X_LOC_START+42, Y_LOC_START+5, DISP_BLACK); //Top Slanted Line
-  drawLine(X_LOC_START+37,Y_LOC_START+10,X_LOC_START+42, Y_LOC_START+5, DISP_BLACK); //Bottom Slanted Line
-  
+  writeRightArrowRecOutline(X_LOC_START, Y_LOC_START, 38, 43, 11, DISP_BLACK); 
 }
 
-void InitMode(){
+void InitLevel(){
+  const uint8_t *selLvlStr = "Select Level";
+  const uint8_t *exitStr = "EXIT";
+  setBackground();
+  
+  
+  
+  //Put Select Level String
+  font8by8.x=22; font8by8.y=5; font8by8.numChrs=12;
+  font8by8.msg= (uint8_t*)selLvlStr;
+  writeText(&font8by8);
+  
+  //Display a bar underneath Select Level
+  writeRectangle(22, 12, 84,1, 0x0); 
+  
+  //Draw EXIT string and its left arrow box
+  font8by8.x=X_LOC_EXIT_LVL+11; font8by8.y=Y_LOC_START+2; font8by8.numChrs=4;
+  font8by8.msg= (uint8_t*)exitStr;
+  writeText(&font8by8);
+  writeLeftArrowRecOutline(6, Y_LOC_START, 30, 40, 11, DISP_BLACK);
+  
+  //Read Level data in EEPROM
+  EReadData(eepromLvlData.dataArr, 14, 0);
+  
+  uint8_t curLvl =0;
+  
+  //Set up Lock
+  lockObj.width=8; lockObj.height=9;
+  lockObj.objColors=lockColors; lockObj.objColorTypes=lockColorTypes;
+  //Display rectangles and level number/locks
+  for(uint8_t row = 0; row<3; row++){
+    for(uint8_t col = 0; col<4;col++){
+      curLvl = row*4+col+1;
+      if(curLvl>=11){ //Skip if levels 11 and onwards
+        break;
+      }
+      //If level is less than max lvl done ->put number, otherwise put lock
+      if(curLvl <=eepromLvlData.lvlsData.maxlvlDone){
+        //Write Number
+        if(curLvl/10){ //Is it 2 digits
+          DisplayNumber(curLvl, 2, 9+col*32, 30+row*25 );
+        }else{
+          DisplayNumber(curLvl, 1, 13+col*32, 30+row*25 );
+        }
+        
+      }else{
+        SetObjectColor(objPixelSpace,&lockObj);
+        setColumnRowRange(12+col*32,12+col*32+lockObj.width-1,29+row*25 ,29+row*25+lockObj.height-1);
+        writeColorArray(objPixelSpace,lockObj.width*lockObj.height);
+
+      }
+      writeRectangleOutline(6+col*32, 27+row*25, 20, 13, DISP_BLACK);
+    }
+  }
+  
+  
+  
 }
 
 void InitRunning(){
@@ -330,12 +414,13 @@ void RunTitle(){
   UpdateButton();
   if(buttonPressed){
     buttonPressed=false;
-    curState=RUNNING_GAME;
+    curState=SELECT_LEVEL;
     return;
   }
   
+  //Change color every 500 ms
   changeColorCounter=changeColorCounter>=49? 0: changeColorCounter+1; //Increment
-  if(changeColorCounter!=0) //Change color every 500 ms
+  if(changeColorCounter!=0) 
     return;
   
   //Alternate between yellow and white
@@ -392,7 +477,15 @@ void RunGamePlay(){
   }
 }
 
-void RunMode(){
+void RunLevel(){
+  
+  //Check if button pressed (user wants to start):
+  UpdateButton();
+  if(buttonPressed){
+    buttonPressed=false;
+    curState=SELECT_LEVEL;
+    return;
+  }
 }
 
 void RunFinished(){
@@ -414,8 +507,8 @@ void InitializeStateChange(){
     case TITLE_SCREEN:
       InitTitle();
       break;
-    case SELECT_MODE:
-      InitMode();
+    case SELECT_LEVEL:
+      InitLevel();
       break;
     case RUNNING_GAME:
       InitRunning();
@@ -433,8 +526,8 @@ void RunRoverGame(){
     case TITLE_SCREEN:
       RunTitle();
       break;
-    case SELECT_MODE:
-      RunMode();
+    case SELECT_LEVEL:
+      RunLevel();
       break;
     case RUNNING_GAME:
       RunGamePlay();

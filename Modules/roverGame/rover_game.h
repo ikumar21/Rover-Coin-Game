@@ -10,7 +10,7 @@
 //Game_Obj gameObjects[15];
 enum Game_Status{
   TITLE_SCREEN,
-  SELECT_MODE,
+  SELECT_LEVEL,
   RUNNING_GAME,
   FINISHED,
 

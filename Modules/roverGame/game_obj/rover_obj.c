@@ -2,7 +2,7 @@
 #include "rover_math.h"
 
 //0xF8F8F8 is background color
-uint32_t roverColors[7] = {0xF8F8F8,0x040404,0x9C281C,0x00CC00,0x1C2828,0xFCFC00,0xA80000};
+uint32_t roverColors[7] = {0xF8F8F8,DISP_BLACK,0x9C281C,0x00CC00,0x1C2828,0xFCFC00,0xA80000};
 
 uint8_t roverStraightColorType[14][14] = {
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0},
