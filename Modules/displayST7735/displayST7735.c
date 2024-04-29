@@ -110,6 +110,40 @@ void writeRectangle(uint8_t leftX, uint8_t leftY, uint8_t width, uint8_t height,
   setColor(colorRGB,width*height);
 }
          
+void writeRectangleOutline(uint8_t leftX, uint8_t leftY, uint8_t width, uint8_t height, uint32_t colorRGB){
+  setColumnRowRange(leftX, leftX+width-1,leftY,leftY);
+  setColor(colorRGB,width);
+  setColumnRowRange(leftX, leftX+width-1,leftY+height-1,leftY+height-1);
+  setColor(colorRGB,width);
+  setColumnRowRange(leftX, leftX,leftY,leftY+height-1);
+  setColor(colorRGB,height);
+  setColumnRowRange(leftX+width-1, leftX+width-1,leftY,leftY+height-1);
+  setColor(colorRGB,height);
+  
+}
+
+void writeRightArrowRecOutline(uint8_t leftX, uint8_t leftY, uint8_t widthRec,uint8_t widthTotal, uint8_t height, uint32_t colorRGB){
+  //Draw Start Shape:
+  drawLine(leftX,leftY,leftX+widthRec-1, leftY, colorRGB); //Top Hor Line
+  drawLine(leftX,leftY+height-1,leftX+widthRec-1, leftY+height-1, colorRGB); //Bottom Hor Line
+  drawLine(leftX,leftY,leftX, leftY+height-1, colorRGB); //Left Vert. Line
+  drawLine(leftX+widthRec-1,leftY,leftX+widthTotal-1, leftY+(height-1)/2, colorRGB); //Top Slanted Line
+  drawLine(leftX+widthRec-1,leftY+height-1,leftX+widthTotal-1, leftY+(height-1)/2, colorRGB); //Bottom Slanted Line
+}
+
+
+void writeLeftArrowRecOutline(uint8_t leftX, uint8_t leftY, uint8_t widthRec,uint8_t widthTotal, uint8_t height, uint32_t colorRGB){
+  //Draw Start Shape:
+  drawLine(leftX+widthTotal-widthRec,leftY,leftX+widthTotal-1, leftY, colorRGB); //Top Hor Line
+  drawLine(leftX+widthTotal-widthRec,leftY+height-1,leftX+widthTotal-1, leftY+height-1, colorRGB); //Bottom Hor Line
+  drawLine(leftX+widthTotal-1,leftY,leftX+widthTotal-1, leftY+height-1, colorRGB); //Right Vert. Line
+  drawLine(leftX+widthTotal-widthRec,leftY,leftX, leftY+(height-1)/2, colorRGB); //Top Slanted Line
+  drawLine(leftX+widthTotal-widthRec,leftY+height-1,leftX, leftY+(height-1)/2, colorRGB); //Bottom Slanted Line
+}
+
+
+
+
 
 void writePixel(uint8_t xCoor, uint8_t yCoor, uint32_t colorRGB){
   setColumnRowRange(xCoor,xCoor,yCoor,yCoor);
