@@ -62,6 +62,11 @@ union Lvl_E_U{
 };
 union Lvl_E_U eepromLvlData;
 Obj_Disp lockObj;
+//Current Game Level parameters:
+uint16_t coinGenTime[2];
+uint8_t maxCoins;
+uint8_t maxGameTime;
+uint16_t targetScore;
 
 //Lock Info
 uint32_t lockColors[4] = {0xF8F8F8,0x0C0C0C,0x3C3C3C,DISP_BLACK};
@@ -179,11 +184,12 @@ void ObjectPositionCalc(Game_Obj *gObj){
   if(gObj->objType==ROVER){
     RoverController(gObj, joystickVal[0],joystickVal[1]);
   }else if (gObj->objType==COIN){
-    CoinController(gObj);
+    ;
   }else{
     INCRE_CIRC_COUNTER(dObj->yLoc,160-11);
     INCRE_CIRC_COUNTER(dObj->xLoc,128-11);
   }
+  CoinController(gameObjects);
 
 }
 
@@ -377,6 +383,13 @@ void InitRunning(){
   writeRectangle(0, 8, 128,1, 0x0); //Display a bar underneath score and time
   roverTime = -1; //-1 notes timer start
   numActiveCoins = 0; //0 active coins at start
+  timeToGen = 0; //Start game with one coin
+  //Update Level Parameters:
+  coinGenTime[0]=allLvlInfo[gameLevel-1]->coinGenTime[0];
+  coinGenTime[1]=allLvlInfo[gameLevel-1]->coinGenTime[1];
+  maxCoins = allLvlInfo[gameLevel-1]->maxCoins;
+  maxGameTime = allLvlInfo[gameLevel-1]->maxGameTime;
+  targetScore = allLvlInfo[gameLevel-1]->targetScore;
 }
 
 void InitFinished(){
@@ -477,11 +490,10 @@ void RunGamePlay(){
   }
   runJoystick(joystickVal);
   DisplayScore();
-  DisplayTime(&roverTime, 60, 36, 1);
-  //Change state to finished if time is done:
-  if(roverTime==0){
+  DisplayTime(&roverTime, maxGameTime, 36, 1);
+  //Change state to finished if time is done or target score reached:
+  if(roverTime==0 || roverGameScore==targetScore){
     curState=FINISHED;
-    
   }
 }
 
@@ -494,45 +506,42 @@ void RunLevel(){
   static uint8_t justChangedCrs = false;
   
   //Get Cursor movement; gives 0 if no movement
-  dirCrs=getJoyDirCom(); //Right-1, Up-2, Left-3, Down -4
+  dirCrs=getJoyDirCom(); //Right-1, Up-2, Left-3, Down-4
   
   //Change cursor loc if movement and not recently changed
-  if(!justChangedCrs && dirCrs!=0){
+  uint8_t legalMoveRight = (dirCrs==1) && crsLoc[0]!=3 && gameLevel+1<=eepromLvlData.lvlsData.maxlvlDone;
+  uint8_t legalMoveUp =  (dirCrs==2) && crsLoc[0]!=0;
+  uint8_t legalMoveLeft = (dirCrs==3) && crsLoc[0]!=3 && gameLevel!=1;
+  uint8_t legalMoveDown = (dirCrs==4) && crsLoc[0]!=3;
+  uint8_t legalMove = legalMoveRight || legalMoveUp || legalMoveLeft || legalMoveDown;
+  
+  if(!justChangedCrs && legalMove){
     justChangedCrs=true; updateCrsCounter=0;
     //Set color to yellow first:
     changeColorCounter=255;
     curColor=DISP_BLACK;
+    uint8_t atExit = crsLoc[0]==3 && crsLoc[1]==0;
+    uint8_t goExit = (gameLevel+4>eepromLvlData.lvlsData.maxlvlDone);
     switch (dirCrs){
       case 1://Joystick Right
-        if(crsLoc[0]!=3 && gameLevel+1<=eepromLvlData.lvlsData.maxlvlDone){
-          //Either go right one col or go next row, first col
-          crsLoc[0]=(gameLevel%4==0)*(1)+crsLoc[0];
-          crsLoc[1]=(gameLevel%4!=0)*(crsLoc[1]+1);
-        }
+        //Either go right one col or go next row, first col
+        crsLoc[0]=(gameLevel%4==0)*(1)+crsLoc[0];
+        crsLoc[1]=(gameLevel%4!=0)*(crsLoc[1]+1);
         break;
       case 2://Joystick Up
-        if(crsLoc[0]!=0){
-          //Go to max level done or up one row
-          uint8_t atExit = crsLoc[0]==3 && crsLoc[1]==0;
-          crsLoc[0]=atExit*(eepromLvlData.lvlsData.maxlvlDone-1)/4 +!atExit*(crsLoc[0]-1); 
-          crsLoc[1]=atExit*(eepromLvlData.lvlsData.maxlvlDone%4-1);
-        }
+        //Go to max level done or up one row
+        crsLoc[0]=atExit*(eepromLvlData.lvlsData.maxlvlDone-1)/4 +!atExit*(crsLoc[0]-1); 
+        crsLoc[1]=atExit*(eepromLvlData.lvlsData.maxlvlDone%4-1);
         break;
       case 3://Joystick Left
-        if(crsLoc[0]!=3 && gameLevel!=1){
-          //Either go left one col or go up one row, last col
-          crsLoc[0]=((gameLevel-1)%4==0)*(-1)+crsLoc[0];
-          crsLoc[1]=((gameLevel-1)%4!=0)*(crsLoc[1]-4)+3;
-        }
-        
+        //Either go left one col or go up one row, last col
+        crsLoc[0]=((gameLevel-1)%4==0)*(-1)+crsLoc[0];
+        crsLoc[1]=((gameLevel-1)%4!=0)*(crsLoc[1]-4)+3;
         break;
       case 4://Joystick Down
-        if(crsLoc[0]!=3){
-          //Go to EXIT or down one row 
-          uint8_t goExit = (gameLevel+4>eepromLvlData.lvlsData.maxlvlDone);
-          crsLoc[0]=!goExit*(crsLoc[0]+1)+goExit*3;
-          crsLoc[1]=!goExit*crsLoc[1];
-        }
+        //Go to EXIT or down one row 
+        crsLoc[0]=!goExit*(crsLoc[0]+1)+goExit*3;
+        crsLoc[1]=!goExit*crsLoc[1];
         break;
     }
   }
@@ -546,12 +555,12 @@ void RunLevel(){
     justChangedCrs=!(updateCrsCounter==0);
   }
   
+  uint8_t onExit = crsLoc[0] ==3;
   //Check if button pressed (user wants to exit or start):
   UpdateButton();
   if(buttonPressed){
     buttonPressed=false;
     //Either Exit or go run game at level
-    uint8_t onExit = crsLoc[0] ==3;
     curState= onExit*TITLE_SCREEN + !onExit*RUNNING_GAME;
     return;
   }
@@ -563,9 +572,9 @@ void RunLevel(){
 
   //Write num/exit to display
   //Alternate between yellow and Black
-  curColor=curColor==DISP_YELLOW? DISP_BLACK:DISP_YELLOW; 
+  curColor=curColor==DISP_GREEN? DISP_BLACK:DISP_GREEN; 
   font8by8.colorRGB=curColor;
-  if(crsLoc[0]==3){//Draw EXIT string 
+  if(onExit){//Draw EXIT string 
     font8by8.x=X_LOC_EXIT_LVL+11; font8by8.y=Y_LOC_START+2; font8by8.numChrs=4;
     font8by8.msg= (uint8_t*)exitStr;
     writeText(&font8by8);
@@ -594,9 +603,7 @@ void RunLevel(){
       DisplayNumber(prevGameLevel, 1, 13+prevCrsLoc[1]*32, 30+prevCrsLoc[0]*25 );
     }
   }
-    prevCrsLoc[0]=crsLoc[0]; prevCrsLoc[1]=crsLoc[1];
-    
-  
+    prevCrsLoc[0]=crsLoc[0]; prevCrsLoc[1]=crsLoc[1];  
   }
   
 }

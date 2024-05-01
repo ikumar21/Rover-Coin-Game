@@ -1486,6 +1486,9 @@
                         </file>
                     </group>
                     <file>
+                        <name>$PROJ_DIR$\..\Modules\roverGame\levels.h</name>
+                    </file>
+                    <file>
                         <name>$PROJ_DIR$\..\Modules\roverGame\rover_game.c</name>
                     </file>
                 </group>

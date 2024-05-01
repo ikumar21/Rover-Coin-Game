@@ -26,6 +26,7 @@ extern void SetObjectColor(uint32_t *destColorArr, Obj_Disp *obj);
 
 //Coin 
 extern void deactivateCoin(Game_Obj *gObj);
+extern uint16_t timeToGen;
 
 void InitializeObjDisp(uint8_t numObjs);
 
