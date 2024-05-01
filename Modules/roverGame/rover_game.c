@@ -2,7 +2,7 @@
 #include "main.h"
 #include "EEPROM.h"
 #include "joystick.h"
-
+#include "levels.h"
 //Rover starting Location
 #define ROVER_STRT_X 50
 #define ROVER_STRT_Y 50
@@ -16,7 +16,6 @@
 //Location of EXIT Box LVL
 #define X_LOC_EXIT_LVL 6
 #define Y_LOC_EXIT_LVL Y_LOC_START
-
 
 //Score and Time
 uint16_t prevScore = 999;
@@ -490,7 +489,7 @@ void RunLevel(){
   const uint8_t *exitStr = "EXIT";
   static uint8_t updateCrsCounter = 29;
   static uint8_t changeColorCounter = 39;
-  static uint32_t curColor = DISP_YELLOW;
+  static uint32_t curColor = DISP_BLACK;
   static uint8_t dirCrs = 0;
   static uint8_t justChangedCrs = false;
   
@@ -551,7 +550,9 @@ void RunLevel(){
   UpdateButton();
   if(buttonPressed){
     buttonPressed=false;
-    //curState=SELECT_LEVEL;
+    //Either Exit or go run game at level
+    uint8_t onExit = crsLoc[0] ==3;
+    curState= onExit*TITLE_SCREEN + !onExit*RUNNING_GAME;
     return;
   }
   
