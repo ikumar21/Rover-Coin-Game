@@ -1,6 +1,7 @@
 #include "rover_game.h"
 #include "main.h"
 #include "EEPROM.h"
+#include "joystick.h"
 
 //Rover starting Location
 #define ROVER_STRT_X 50
@@ -32,10 +33,13 @@ Coin_Obj coinsObj[MAX_NUM_COINS];
 
 //Joystick:
 int16_t joystickVal[2] = {0,0};
-extern void runJoystick(int16_t *joyVal);
 
 //Button:
 uint8_t buttonPressed = false;
+
+//Cursor Location [row, col]
+uint8_t crsLoc[2] = {0, 0};
+uint8_t prevCrsLoc[2]= {0, 0};
 
 //Font Text:
 extern uint8_t font8x8_basic[128][8];
@@ -345,6 +349,11 @@ void InitLevel(){
     }
   }
   
+  //set cursor location to 0,0 and gameLevel to 0
+  crsLoc[0]=0; crsLoc[1]=0; gameLevel=0;
+  
+  
+  
   
   
 }
@@ -478,14 +487,117 @@ void RunGamePlay(){
 }
 
 void RunLevel(){
+  const uint8_t *exitStr = "EXIT";
+  static uint8_t updateCrsCounter = 29;
+  static uint8_t changeColorCounter = 39;
+  static uint32_t curColor = DISP_YELLOW;
+  static uint8_t dirCrs = 0;
+  static uint8_t justChangedCrs = false;
   
-  //Check if button pressed (user wants to start):
+  //Get Cursor movement; gives 0 if no movement
+  dirCrs=getJoyDirCom(); //Right-1, Up-2, Left-3, Down -4
+  
+  //Change cursor loc if movement and not recently changed
+  if(!justChangedCrs && dirCrs!=0){
+    justChangedCrs=true; updateCrsCounter=0;
+    //Set color to yellow first:
+    changeColorCounter=255;
+    curColor=DISP_BLACK;
+    switch (dirCrs){
+      case 1://Joystick Right
+        if(crsLoc[0]!=3 && gameLevel+1<=eepromLvlData.lvlsData.maxlvlDone){
+          //Either go right one col or go next row, first col
+          crsLoc[0]=(gameLevel%4==0)*(1)+crsLoc[0];
+          crsLoc[1]=(gameLevel%4!=0)*(crsLoc[1]+1);
+        }
+        break;
+      case 2://Joystick Up
+        if(crsLoc[0]!=0){
+          //Go to max level done or up one row
+          uint8_t atExit = crsLoc[0]==3 && crsLoc[1]==0;
+          crsLoc[0]=atExit*(eepromLvlData.lvlsData.maxlvlDone-1)/4 +!atExit*(crsLoc[0]-1); 
+          crsLoc[1]=atExit*(eepromLvlData.lvlsData.maxlvlDone%4-1);
+        }
+        break;
+      case 3://Joystick Left
+        if(crsLoc[0]!=3 && gameLevel!=1){
+          //Either go left one col or go up one row, last col
+          crsLoc[0]=((gameLevel-1)%4==0)*(-1)+crsLoc[0];
+          crsLoc[1]=((gameLevel-1)%4!=0)*(crsLoc[1]-4)+3;
+        }
+        
+        break;
+      case 4://Joystick Down
+        if(crsLoc[0]!=3){
+          //Go to EXIT or down one row 
+          uint8_t goExit = (gameLevel+4>eepromLvlData.lvlsData.maxlvlDone);
+          crsLoc[0]=!goExit*(crsLoc[0]+1)+goExit*3;
+          crsLoc[1]=!goExit*crsLoc[1];
+        }
+        break;
+    }
+  }
+  //Update game level based on cursor location
+  gameLevel=crsLoc[0]*4+crsLoc[1]+1;
+  
+  
+  //Wait 300 ms before allowing a change in cursor location
+  if(justChangedCrs){
+    updateCrsCounter=updateCrsCounter>=29? 0: updateCrsCounter+1; //Increment
+    justChangedCrs=!(updateCrsCounter==0);
+  }
+  
+  //Check if button pressed (user wants to exit or start):
   UpdateButton();
   if(buttonPressed){
     buttonPressed=false;
-    curState=SELECT_LEVEL;
+    //curState=SELECT_LEVEL;
     return;
   }
+  
+  //Change color every 400 ms
+  changeColorCounter=changeColorCounter>=39? 0: changeColorCounter+1; //Increment
+  if(changeColorCounter!=0) 
+    return;
+
+  //Write num/exit to display
+  //Alternate between yellow and Black
+  curColor=curColor==DISP_YELLOW? DISP_BLACK:DISP_YELLOW; 
+  font8by8.colorRGB=curColor;
+  if(crsLoc[0]==3){//Draw EXIT string 
+    font8by8.x=X_LOC_EXIT_LVL+11; font8by8.y=Y_LOC_START+2; font8by8.numChrs=4;
+    font8by8.msg= (uint8_t*)exitStr;
+    writeText(&font8by8);
+  }else{//Draw number 
+    if(gameLevel/10){ //Is it 2 digits
+      DisplayNumber(gameLevel, 2, 9+crsLoc[1]*32, 30+crsLoc[0]*25 );
+    }else{
+      DisplayNumber(gameLevel, 1, 13+crsLoc[1]*32, 30+crsLoc[0]*25 );
+    }
+  }
+
+  //Change color back to black since most text is black
+  font8by8.colorRGB = DISP_BLACK;
+  
+  //Set previous string/number to black if cursor moved
+  if(prevCrsLoc[0]!=crsLoc[0] || prevCrsLoc[1]!=crsLoc[1]){
+    if(prevCrsLoc[0]==3){//Draw EXIT string 
+    font8by8.x=X_LOC_EXIT_LVL+11; font8by8.y=Y_LOC_START+2; font8by8.numChrs=4;
+    font8by8.msg= (uint8_t*)exitStr;
+    writeText(&font8by8);
+  }else{//Draw number 
+    uint8_t prevGameLevel = prevCrsLoc[0]*4+prevCrsLoc[1]+1;
+    if(prevGameLevel/10){ //Is it 2 digits
+      DisplayNumber(prevGameLevel, 2, 9+prevCrsLoc[1]*32, 30+prevCrsLoc[0]*25 );
+    }else{
+      DisplayNumber(prevGameLevel, 1, 13+prevCrsLoc[1]*32, 30+prevCrsLoc[0]*25 );
+    }
+  }
+    prevCrsLoc[0]=crsLoc[0]; prevCrsLoc[1]=crsLoc[1];
+    
+  
+  }
+  
 }
 
 void RunFinished(){
