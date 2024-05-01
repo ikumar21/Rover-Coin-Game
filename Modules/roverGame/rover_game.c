@@ -3,18 +3,20 @@
 #include "EEPROM.h"
 #include "joystick.h"
 #include "levels.h"
+
 //Rover starting Location
 #define ROVER_STRT_X 50
 #define ROVER_STRT_Y 50
+
+//Distance between point of edge and arrow:
+#define X_ARROW_DIST 2
 //Location of start
-#define X_LOC_START 85
 #define Y_LOC_START 127
 //Location of Finish Box
 #define X_LOC_FINISH 14
 #define Y_LOC_FINISH 55
 
 //Location of EXIT Box LVL
-#define X_LOC_EXIT_LVL 6
 #define Y_LOC_EXIT_LVL Y_LOC_START
 
 //Score and Time
@@ -62,6 +64,8 @@ union Lvl_E_U{
 };
 union Lvl_E_U eepromLvlData;
 Obj_Disp lockObj;
+uint8_t beatLevel;
+
 //Current Game Level parameters:
 uint16_t coinGenTime[2];
 uint8_t maxCoins;
@@ -296,7 +300,7 @@ void InitTitle(){
   writeText(&font8by8);
   
   //Draw Start Shape:
-  writeRightArrowRecOutline(X_LOC_START, Y_LOC_START, 38, 43, 11, DISP_BLACK); 
+  writeRightArrowRecOutline(127-X_ARROW_DIST-47, Y_LOC_START, 37, 47, 11, DISP_BLACK); 
 }
 
 void InitLevel(){
@@ -315,7 +319,7 @@ void InitLevel(){
   writeRectangle(22, 12, 84,1, 0x0); 
   
   //Draw EXIT string and its left arrow box
-  font8by8.x=X_LOC_EXIT_LVL+11; font8by8.y=Y_LOC_START+2; font8by8.numChrs=4;
+  font8by8.x=X_ARROW_DIST+11; font8by8.y=Y_LOC_START+2; font8by8.numChrs=4;
   font8by8.msg= (uint8_t*)exitStr;
   writeText(&font8by8);
   writeLeftArrowRecOutline(6, Y_LOC_START, 30, 40, 11, DISP_BLACK);
@@ -394,36 +398,69 @@ void InitRunning(){
 
 void InitFinished(){
   
-  const uint8_t finStr[15] = "Game Finished!";
-  const uint8_t urScore[12] = "Your Score:";
-  const uint8_t highStr[15] = "Highest Score:";
-  static uint8_t mainStr[13] = "Going Main:_";
-  uint8_t bWidth = 128-X_LOC_FINISH*2;
-  uint8_t bHeight = 60;
-  //Create White Box:
-  writeRectangle(X_LOC_FINISH, Y_LOC_FINISH,bWidth, bHeight, DISP_WHITE);
-  //Create black border:
-  drawLine(X_LOC_FINISH,Y_LOC_FINISH,X_LOC_FINISH+bWidth, Y_LOC_FINISH, DISP_BLACK); //Top Hor Line
-  drawLine(X_LOC_FINISH,Y_LOC_FINISH+bHeight,X_LOC_FINISH+bWidth, Y_LOC_FINISH+bHeight, DISP_BLACK); //Bottom Hor Line
-  drawLine(X_LOC_FINISH,Y_LOC_FINISH,X_LOC_FINISH, Y_LOC_FINISH+bHeight, DISP_BLACK); //Left Vert Line
-  drawLine(X_LOC_FINISH+bWidth,Y_LOC_FINISH,X_LOC_FINISH+bWidth, Y_LOC_FINISH+bHeight, DISP_BLACK); //Right Vert Line
+  setBackground();
   
-  //Write Text:
-  font8by8.x=X_LOC_FINISH+2; font8by8.y=Y_LOC_FINISH+2; font8by8.numChrs=14;font8by8.msg= (uint8_t*)finStr;
+  const uint8_t finStr[15] = "GAME FINISHED!";
+  const uint8_t urTimeStr[11] = "YOUR TIME:";
+  const uint8_t bestTimeStr[11] = "BEST TIME:";
+  const uint8_t urScoreStr[12] = "YOUR SCORE:";
+  const uint8_t targetStr[12] = "THE TARGET:";
+  const uint8_t failedStr[14] = "FAILED LEVEL!";
+  const uint8_t *exitStr = "EXIT";
+  const uint8_t *levelsStr = "LEVELS";
+  const uint8_t *retryStr = "RETRY";
+  const uint8_t *nextStr = "NEXT";
+  
+  beatLevel = targetScore <=roverGameScore;
+  beatLevel = true;
+
+  //Create White Box with black border:
+  writeRectangle(X_LOC_FINISH, Y_LOC_FINISH,128-X_LOC_FINISH*2, 40, DISP_WHITE);
+  writeRectangleOutline(X_LOC_FINISH, Y_LOC_FINISH, 128-X_LOC_FINISH*2+1,  40, DISP_BLACK);
+
+  //Write Text depending on if level is beat or not:
+  font8by8.x=X_LOC_FINISH+2; font8by8.y=Y_LOC_FINISH+2; font8by8.numChrs=14-!beatLevel;
+  font8by8.msg= beatLevel ? (uint8_t*)finStr : (uint8_t*)failedStr;
   writeText(&font8by8);
-  font8by8.x=X_LOC_FINISH+2; font8by8.y=Y_LOC_FINISH+2+9; font8by8.numChrs=11;font8by8.msg= (uint8_t*)urScore;
+  font8by8.x=X_LOC_FINISH+2; font8by8.y=Y_LOC_FINISH+2+9*2; font8by8.numChrs=10+!beatLevel;
+  font8by8.msg= beatLevel ? (uint8_t*)urTimeStr : (uint8_t*)urScoreStr;
   writeText(&font8by8);
-  font8by8.x=X_LOC_FINISH+2; font8by8.y=Y_LOC_FINISH+2+9*3; font8by8.numChrs=14;font8by8.msg= (uint8_t*)highStr;
-  writeText(&font8by8);
-  font8by8.x=X_LOC_FINISH+2; font8by8.y=Y_LOC_FINISH+2+9*5; font8by8.numChrs=12;font8by8.msg= (uint8_t*)mainStr;
+  font8by8.x=X_LOC_FINISH+2; font8by8.y=Y_LOC_FINISH+2+9*3; font8by8.numChrs=10+!beatLevel;
+  font8by8.msg= beatLevel ? (uint8_t*)bestTimeStr : (uint8_t*)targetStr;
   writeText(&font8by8);
   
-  //Write Scores:
-  highestScore=MAX(highestScore, roverGameScore);
-  DisplayNumber(roverGameScore, 3, X_LOC_FINISH+2, Y_LOC_FINISH+2+9*2);
-  DisplayNumber(highestScore, 3, X_LOC_FINISH+2, Y_LOC_FINISH+2+9*4);
+  uint8_t bestTime = MIN(roverTime, eepromLvlData.lvlsData.qckTimes[gameLevel-1]);
+  //Write Times:
+  DisplayNumber(roverTime, 3, X_LOC_FINISH+78-beatLevel*2, Y_LOC_FINISH+2+9*2);
+  DisplayNumber(bestTime, 3, X_LOC_FINISH+78-beatLevel*2, Y_LOC_FINISH+2+9*3);
+  
+  //Draw Level string and its left arrow box
+  font8by8.x=X_ARROW_DIST+11; font8by8.y=Y_LOC_EXIT_LVL-100; font8by8.numChrs=6;
+  font8by8.msg= (uint8_t*)levelsStr;
+  writeText(&font8by8);
+  writeLeftArrowRecOutline(X_ARROW_DIST, Y_LOC_EXIT_LVL-102, 44, 54, 11, DISP_BLACK);
+  
+  //Draw EXIT string and its left arrow box
+  font8by8.x=X_ARROW_DIST+11; font8by8.y=Y_LOC_EXIT_LVL+2; font8by8.numChrs=4;
+  font8by8.msg= (uint8_t*)exitStr;
+  writeText(&font8by8);
+  writeLeftArrowRecOutline(X_ARROW_DIST, Y_LOC_EXIT_LVL, 30, 40, 11, DISP_BLACK);
+  
+  //Draw Retry string and it box
+  font8by8.x=64-20+2; font8by8.y=Y_LOC_EXIT_LVL+2; font8by8.numChrs=5;
+  font8by8.msg= (uint8_t*)retryStr;
+  writeText(&font8by8);
+  writeRectangleOutline(64-20, Y_LOC_EXIT_LVL, 5*7+4, 11, DISP_BLACK);
+  
+  if(beatLevel){
+    //Draw Next str and its right arrow box:
+  writeRightArrowRecOutline(127-X_ARROW_DIST-40, Y_LOC_START, 30, 40, 11, DISP_BLACK); 
+  font8by8.x=127-X_ARROW_DIST-40+2; font8by8.y=Y_LOC_START+2; font8by8.numChrs=4;
+  font8by8.msg= (uint8_t*)nextStr;
+  writeText(&font8by8);
+  }
+  //Draw Next
   roverTime = -1;
-  
 }
 
 void RunTitle(){
@@ -435,7 +472,7 @@ void RunTitle(){
   UpdateButton();
   if(buttonPressed){
     buttonPressed=false;
-    curState=SELECT_LEVEL;
+    curState=FINISHED;
     return;
   }
   
@@ -448,7 +485,7 @@ void RunTitle(){
   curColor=curColor==DISP_YELLOW? DISP_BLACK:DISP_YELLOW; 
   font8by8.colorRGB=curColor;
   //Write START to display
-  font8by8.x=X_LOC_START+2; font8by8.y=Y_LOC_START+2; font8by8.numChrs=5;
+  font8by8.x=127-X_ARROW_DIST-47+2; font8by8.y=Y_LOC_START+2; font8by8.numChrs=5;
   font8by8.msg= (uint8_t*)strtStr;
   writeText(&font8by8);
   //Change color back to black since most text is black
@@ -575,7 +612,7 @@ void RunLevel(){
   curColor=curColor==DISP_GREEN? DISP_BLACK:DISP_GREEN; 
   font8by8.colorRGB=curColor;
   if(onExit){//Draw EXIT string 
-    font8by8.x=X_LOC_EXIT_LVL+11; font8by8.y=Y_LOC_START+2; font8by8.numChrs=4;
+    font8by8.x=X_ARROW_DIST+11; font8by8.y=Y_LOC_START+2; font8by8.numChrs=4;
     font8by8.msg= (uint8_t*)exitStr;
     writeText(&font8by8);
   }else{//Draw number 
@@ -592,7 +629,7 @@ void RunLevel(){
   //Set previous string/number to black if cursor moved
   if(prevCrsLoc[0]!=crsLoc[0] || prevCrsLoc[1]!=crsLoc[1]){
     if(prevCrsLoc[0]==3){//Draw EXIT string 
-    font8by8.x=X_LOC_EXIT_LVL+11; font8by8.y=Y_LOC_START+2; font8by8.numChrs=4;
+    font8by8.x=X_ARROW_DIST+11; font8by8.y=Y_LOC_START+2; font8by8.numChrs=4;
     font8by8.msg= (uint8_t*)exitStr;
     writeText(&font8by8);
   }else{//Draw number 
