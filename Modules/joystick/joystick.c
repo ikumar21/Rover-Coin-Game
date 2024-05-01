@@ -70,6 +70,24 @@ void runJoystick(int16_t *joyVal){
     joyVal[1]=0;
   
 }
+
+uint8_t getJoyDirCom(){
+  runADC(finalADCResults);
+  if(finalADCResults[0]>3000){
+    return 1;
+  }else if(finalADCResults[0]<1000){
+    return 3;
+  }else if(finalADCResults[1]>3000){
+    return 2;
+  }else if(finalADCResults[1]<1000){
+    return 4;
+  }else{
+    return 0;
+  }
+  
+  
+  
+}
 //  float angle = normalized_atan2((float) finalADCResults[1]-2048.0, (float) finalADCResults[0]-2048.0);
 //  *joyAngle = angle*90;
 //
