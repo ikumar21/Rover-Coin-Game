@@ -13,7 +13,7 @@
 //Location of start
 #define Y_LOC_START 127
 //Location of Finish Box
-#define X_LOC_FINISH 14
+#define X_LOC_FINISH 13
 #define Y_LOC_FINISH 55
 
 //Location of EXIT Box LVL
@@ -54,6 +54,7 @@ enum Game_Status prevState = FINISHED; //Should be different at start to signal 
 
 //Game Level Data
 uint8_t gameLevel = 0;
+uint8_t beatLevel;
 typedef struct{
   uint8_t qckTimes[10];
   uint32_t maxlvlDone;
@@ -63,8 +64,11 @@ union Lvl_E_U{
   uint8_t dataArr[14];
 };
 union Lvl_E_U eepromLvlData;
-Obj_Disp lockObj;
-uint8_t beatLevel;
+
+//Reset EEPROM to all levels locked (except 1) and all game times to MAX
+union Lvl_E_U resetEEPROMData = {.lvlsData = {{0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+                                               0xFF, 0xFF, 0xFF, 0xFF, 0xFF}, 1}};
+volatile uint8_t resetEEPROM = false;
 
 //Current Game Level parameters:
 uint16_t coinGenTime[2];
@@ -73,6 +77,7 @@ uint8_t maxGameTime;
 uint16_t targetScore;
 
 //Lock Info
+Obj_Disp lockObj;
 uint32_t lockColors[4] = {0xF8F8F8,0x0C0C0C,0x3C3C3C,DISP_BLACK};
 uint8_t lockColorType[9][8] = {
 {0,1,1,1,1,1,1,0},
@@ -301,6 +306,12 @@ void InitTitle(){
   
   //Draw Start Shape:
   writeRightArrowRecOutline(127-X_ARROW_DIST-47, Y_LOC_START, 37, 47, 11, DISP_BLACK); 
+  
+  //Reset EEPROM if wanted:
+  if(resetEEPROM){
+    resetEEPROM=false;
+    EWriteData(resetEEPROMData.dataArr, 14, 0);
+  }
 }
 
 void InitLevel(){
@@ -416,7 +427,7 @@ void InitFinished(){
 
   //Create White Box with black border:
   writeRectangle(X_LOC_FINISH, Y_LOC_FINISH,128-X_LOC_FINISH*2, 40, DISP_WHITE);
-  writeRectangleOutline(X_LOC_FINISH, Y_LOC_FINISH, 128-X_LOC_FINISH*2+1,  40, DISP_BLACK);
+  writeRectangleOutline(X_LOC_FINISH, Y_LOC_FINISH, 128-X_LOC_FINISH*2,  40, DISP_BLACK);
 
   //Write Text depending on if level is beat or not:
   font8by8.x=X_LOC_FINISH+2; font8by8.y=Y_LOC_FINISH+2; font8by8.numChrs=14-!beatLevel;
@@ -429,9 +440,9 @@ void InitFinished(){
   font8by8.msg= beatLevel ? (uint8_t*)bestTimeStr : (uint8_t*)targetStr;
   writeText(&font8by8);
   
-  uint8_t bestTime = MIN(roverTime, eepromLvlData.lvlsData.qckTimes[gameLevel-1]);
+  uint8_t bestTime = MIN(maxGameTime-roverTime, eepromLvlData.lvlsData.qckTimes[gameLevel-1]);
   //Write Times:
-  DisplayNumber(roverTime, 3, X_LOC_FINISH+78-beatLevel*2, Y_LOC_FINISH+2+9*2);
+  DisplayNumber(maxGameTime-roverTime, 3, X_LOC_FINISH+78-beatLevel*2, Y_LOC_FINISH+2+9*2);
   DisplayNumber(bestTime, 3, X_LOC_FINISH+78-beatLevel*2, Y_LOC_FINISH+2+9*3);
   
   //Draw Level string and its left arrow box
@@ -458,7 +469,17 @@ void InitFinished(){
   font8by8.x=127-X_ARROW_DIST-40+2; font8by8.y=Y_LOC_START+2; font8by8.numChrs=4;
   font8by8.msg= (uint8_t*)nextStr;
   writeText(&font8by8);
+  
+  //Update EEPROM if level beat
+  eepromLvlData.lvlsData.maxlvlDone = MAX(gameLevel, eepromLvlData.lvlsData.maxlvlDone);
+  eepromLvlData.lvlsData.qckTimes[gameLevel-1] = bestTime; 
+  EWriteData(eepromLvlData.dataArr, 14, 0);
   }
+
+  //Set crs Loc to either Next or Retry
+  crsLoc[0] = 1
+  crsLoc[1] = beatLevel + 1;
+  
   //Draw Next
   roverTime = -1;
 }
