@@ -477,11 +477,9 @@ void InitFinished(){
   }
 
   //Set crs Loc to either Next or Retry
-  crsLoc[0] = 1
+  crsLoc[0] = 1;
   crsLoc[1] = beatLevel + 1;
   
-  //Draw Next
-  roverTime = -1;
 }
 
 void RunTitle(){
@@ -667,10 +665,112 @@ void RunLevel(){
 }
 
 void RunFinished(){
-  DisplayTime(&roverTime, 5, X_LOC_FINISH+2+7*11, Y_LOC_FINISH+2+9*5);
-  //Change state to TITLE if time is done:
-  if(roverTime==0){
-    curState=TITLE_SCREEN;
+  const uint8_t *exitStr = "EXIT";
+  const uint8_t *levelsStr = "LEVELS";
+  const uint8_t *retryStr = "RETRY";
+  const uint8_t *nextStr = "NEXT";
+  static uint8_t updateCrsCounter = 29;
+  static uint8_t changeColorCounter = 39;
+  static uint32_t curColor = DISP_BLACK;
+  static uint8_t dirCrs = 0;
+  static uint8_t justChangedCrs = false;
+  
+  //Font prop of levels, exit, retry, next
+  static uint8_t fontX[4] = {X_ARROW_DIST+11, X_ARROW_DIST+11, 64-20+2, 127-X_ARROW_DIST-40+2};
+  static uint8_t fontY[4] = {Y_LOC_EXIT_LVL-100, Y_LOC_EXIT_LVL+2, Y_LOC_EXIT_LVL+2, Y_LOC_EXIT_LVL+2};
+  static uint8_t fontN[5] = {6, 4, 5, 4, 4};
+  uint8_t *fontM[4] = {(uint8_t *)levelsStr, (uint8_t *)exitStr, (uint8_t *)retryStr, (uint8_t *)nextStr};
+  
+  //Get Cursor movement; gives 0 if no movement
+  dirCrs=getJoyDirCom(); //Right-1, Up-2, Left-3, Down-4
+  
+  //Change cursor loc if movement and not recently changed
+  uint8_t legalMoveRight = (dirCrs==1) && crsLoc[1]!=2 && (beatLevel || crsLoc[1]!=1);
+  uint8_t legalMoveUp =  (dirCrs==2) && crsLoc[0]!=0;
+  uint8_t legalMoveLeft = (dirCrs==3) && !(crsLoc[0]==0 && crsLoc[1]==0);
+  uint8_t legalMoveDown = (dirCrs==4) && crsLoc[0]==0;
+  uint8_t legalMove = legalMoveRight || legalMoveUp || legalMoveLeft || legalMoveDown;
+  
+  if(!justChangedCrs && legalMove){
+    justChangedCrs=true; updateCrsCounter=0;
+    //Set color to yellow first:
+    changeColorCounter=255;
+    curColor=DISP_BLACK;
+    switch (dirCrs){
+      case 1://Joystick Right
+        //Either go right one col or go next row, first col
+        crsLoc[0]= crsLoc[0]==0 ? 1 : crsLoc[0];
+        crsLoc[1]= crsLoc[0]==0 ? 0 : crsLoc[1]+1;
+        break;
+      case 2://Joystick Up
+        //Go to levels
+        crsLoc[0]=0; 
+        crsLoc[1]=0;
+        break;
+      case 3://Joystick Left
+        //Either go left one col or go up one row, last col
+        crsLoc[0]=crsLoc[0]==1 && crsLoc[1]==0 ? 0 : crsLoc[0] ;
+        crsLoc[1]=crsLoc[0]==1 && crsLoc[1]==0 ? 0 : crsLoc[1]-1 ;
+        break;
+      case 4://Joystick Down
+        //Go to EXIT  
+        crsLoc[0]=1;
+        crsLoc[1]=0;
+        break;
+    }
+  }  
+  
+  //Wait 300 ms before allowing a change in cursor location
+  if(justChangedCrs){
+    updateCrsCounter=updateCrsCounter>=29? 0: updateCrsCounter+1; //Increment
+    justChangedCrs=!(updateCrsCounter==0);
+  }
+  
+  //Check if button pressed:
+  UpdateButton();
+  if(buttonPressed){
+    buttonPressed=false;
+    //Either Exit, go to select levels, or go run game at some level
+    if(crsLoc[0]==1 && crsLoc[1]==0){ //Exit
+      curState = TITLE_SCREEN;
+    
+    }else if (crsLoc[0]==0 && crsLoc[1]==0){ //Go to Select Level
+      curState = SELECT_LEVEL;
+    
+    }else{ //Retry or run game at next level
+      gameLevel = crsLoc[1]==1 ? gameLevel : gameLevel+1;
+      curState = RUNNING_GAME;
+    
+    }
+    
+    return;
+  }
+  
+  //Change color every 400 ms
+  changeColorCounter=changeColorCounter>=39? 0: changeColorCounter+1; //Increment
+  if(changeColorCounter!=0) 
+    return;
+
+  //Write num/exit to display
+  //Alternate between green and Black
+  curColor=curColor==DISP_GREEN? DISP_BLACK:DISP_GREEN; 
+  font8by8.colorRGB=curColor;
+  
+  uint8_t sIdx = crsLoc[0]+crsLoc[1];
+  font8by8.x = fontX[sIdx]; font8by8.y=fontY[sIdx]; font8by8.numChrs=fontN[sIdx];
+  font8by8.msg= fontM[sIdx];
+  writeText(&font8by8);
+
+  //Change color back to black since most text is black
+  font8by8.colorRGB = DISP_BLACK;
+  
+  //Set previous string/number to black if cursor moved
+  if(prevCrsLoc[0]!=crsLoc[0] || prevCrsLoc[1]!=crsLoc[1]){
+    sIdx = prevCrsLoc[0]+prevCrsLoc[1];
+    font8by8.x = fontX[sIdx]; font8by8.y=fontY[sIdx]; font8by8.numChrs=fontN[sIdx];
+    font8by8.msg= fontM[sIdx];
+    writeText(&font8by8);
+    prevCrsLoc[0]=crsLoc[0]; prevCrsLoc[1]=crsLoc[1];  
   }
 
 }

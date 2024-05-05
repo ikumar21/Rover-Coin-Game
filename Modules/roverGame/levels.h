@@ -7,7 +7,7 @@ typedef struct{
   
 }Level_Info;
 
-Level_Info lvl1Info = {{2000, 4000}, 20, 60, 25};
+Level_Info lvl1Info = {{2000, 4000}, 20, 3, 25};
 Level_Info lvl2Info = {{3000, 5000}, 10, 45, 50};
 Level_Info lvl3Info = {{3000, 5000}, 10, 60, 300};
 Level_Info lvl4Info = {{3000, 5000}, 8, 45, 200};
