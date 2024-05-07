@@ -6,9 +6,9 @@ uint32_t checkerColors[2]= {DISP_WHITE, 0xFC3C7C};
 uint32_t gradColors[2] = {DISP_BLUE, DISP_RED};
 
 
-uint32_t checkerBoard(uint16_t x, uint16_t y);
+uint32_t checkerBoard(uint16_t x, uint16_t y, uint8_t width);
 uint32_t gradientVertical(uint16_t x, uint16_t y);
-
+uint32_t runningBackGround(uint16_t x, uint16_t y); 
 extern enum Game_Status curState;
 
 uint32_t BackgroundColorPixel(uint16_t x,uint16_t y){ 
@@ -16,26 +16,39 @@ uint32_t BackgroundColorPixel(uint16_t x,uint16_t y){
     case TITLE_SCREEN:
       return gradientVertical(x,y);
       break;
-    case SELECT_MODE:
-      return checkerBoard(x,y);
+    case SELECT_LEVEL:
+      return DISP_WHITE;
       break;
     case RUNNING_GAME:
-      return checkerBoard(x,y);
+      return runningBackGround(x, y);
       break;
     case FINISHED:
+      if(y<50 || y>110)
+        return checkerBoard(x,y-9, thickness);
       return DISP_WHITE;
       break;
   }
   return 0;
 }
 
-
-uint32_t checkerBoard(uint16_t x, uint16_t y){
-  if(y<9){
+uint32_t runningBackGround(uint16_t x, uint16_t y){
+  if(y<9){ //Where current time and current score goes
     return 0x7CBCFC;
   }
-  uint8_t c = ((y-9)/thickness)%2==0;
-  uint8_t r = (x/thickness)%2==0;
+  
+  if(y>=152 && (x>=27 && x<99) ){ //Where Target score goes
+    return 0x7CBCFC;
+  }
+  
+  return checkerBoard(x, y, thickness);
+  
+  
+
+}
+
+uint32_t checkerBoard(uint16_t x, uint16_t y, uint8_t width){
+  uint8_t c = (y/width)%2==0;
+  uint8_t r = (x/width)%2==0;
   uint8_t index = c^r;
   return checkerColors[index];
   

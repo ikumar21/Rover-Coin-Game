@@ -67,8 +67,9 @@ void writePixel(uint8_t xCoor, uint8_t yCoor, uint32_t colorRGB);
 
 void drawLine(int16_t xCoor1, int16_t yCoor1, int16_t xCoor2, int16_t yCoor2, uint32_t colorRGB );
 
-
-
+void writeRectangleOutline(uint8_t leftX, uint8_t leftY, uint8_t width, uint8_t height, uint32_t colorRGB);
+void writeRightArrowRecOutline(uint8_t leftX, uint8_t leftY, uint8_t widthRec,uint8_t widthTotal, uint8_t height, uint32_t colorRGB);
+void writeLeftArrowRecOutline(uint8_t leftX, uint8_t leftY, uint8_t widthRec,uint8_t widthTotal, uint8_t height, uint32_t colorRGB);
 void writeColorArray(uint32_t *colorArr, uint16_t size);
 void writeText(Text_Info *tInfo);
 

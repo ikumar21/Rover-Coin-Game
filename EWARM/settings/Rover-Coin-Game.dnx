@@ -28,7 +28,7 @@
         <EnforceMemoryConfiguration>1</EnforceMemoryConfiguration>
     </ArmDriver>
     <DebugChecksum>
-        <Checksum>46549875</Checksum>
+        <Checksum>1550908693</Checksum>
     </DebugChecksum>
     <Exceptions>
         <StopOnUncaught>_ 0</StopOnUncaught>
@@ -63,13 +63,19 @@
         <ITMportsLogFile>0</ITMportsLogFile>
         <ITMlogFile>$PROJ_DIR$\ITM.log</ITMlogFile>
     </SWOTraceHWSettings>
+    <struct_types>
+        <Fmt0>Text_Info-colorRGB	4	0</Fmt0>
+    </struct_types>
     <array_types>
         <Fmt0>uint32_t[200]	4	0</Fmt0>
-        <Fmt1>uint8_t[20]	3	0</Fmt1>
-        <Fmt2>uint8_t[4]	3	0</Fmt2>
+        <Fmt1>uint8_t[10]	3	0</Fmt1>
+        <Fmt2>uint8_t[14]	3	0</Fmt2>
+        <Fmt3>uint8_t[20]	3	0</Fmt3>
+        <Fmt4>uint8_t[4]	3	0</Fmt4>
     </array_types>
     <watch_formats>
-        <Fmt0>{W}42:numActiveCoins	3	0</Fmt0>
+        <Fmt0>{W}42:maxGameTime	3	0</Fmt0>
+        <Fmt1>{W}42:numActiveCoins	3	0</Fmt1>
     </watch_formats>
     <Trace2>
         <Enabled>0</Enabled>
