@@ -380,32 +380,44 @@ void InitLevel(){
 }
 
 void InitRunning(){
-  const uint8_t *timeStr = "Time:";
-  const uint8_t *scoreStr = "Score:";
+  const uint8_t *timeStr = "TIME:";
+  const uint8_t *scoreStr = "SCORE:";
+  const uint8_t *targetStr = "TARGET:";
   
   setBackground();
-  
-  //Put Time, Score 
-  font8by8.x=1; font8by8.y=1; font8by8.numChrs=5;font8by8.msg= (uint8_t*)timeStr;
-  writeText(&font8by8);
-  font8by8.x=64; font8by8.y=1; font8by8.numChrs=6;font8by8.msg= (uint8_t*)scoreStr;
-  writeText(&font8by8);
   //Set score
   prevScore=999; 
   roverGameScore=0;
   
   InitializeObjDisp(MAX_NUM_COINS+1);
   
-  writeRectangle(0, 8, 128,1, 0x0); //Display a bar underneath score and time
   roverTime = -1; //-1 notes timer start
   numActiveCoins = 0; //0 active coins at start
   timeToGen = 0; //Start game with one coin
+  
   //Update Level Parameters:
   coinGenTime[0]=allLvlInfo[gameLevel-1]->coinGenTime[0];
   coinGenTime[1]=allLvlInfo[gameLevel-1]->coinGenTime[1];
   maxCoins = allLvlInfo[gameLevel-1]->maxCoins;
   maxGameTime = allLvlInfo[gameLevel-1]->maxGameTime;
   targetScore = allLvlInfo[gameLevel-1]->targetScore;
+  
+  //Display a bar underneath score and time
+  writeRectangle(0, 8, 128,1, 0x0); 
+  
+  //Put Time, Score, Target string
+  font8by8.x=1; font8by8.y=1; font8by8.numChrs=5;font8by8.msg= (uint8_t*)timeStr;
+  writeText(&font8by8);
+  font8by8.x=64; font8by8.y=1; font8by8.numChrs=6;font8by8.msg= (uint8_t*)scoreStr;
+  writeText(&font8by8);
+  font8by8.x=29; font8by8.y=153; font8by8.numChrs=7;font8by8.msg= (uint8_t*)targetStr;
+  writeText(&font8by8);
+  DisplayNumber(targetScore, 3, 77, 153);
+  
+  //Put Target Box
+  writeRectangle(27, 151, 1, 9,  DISP_BLACK );
+  writeRectangle(98, 151, 1, 9,  DISP_BLACK );
+  writeRectangle(27, 151, 72, 1,  DISP_BLACK );
 }
 
 void InitFinished(){
@@ -563,7 +575,7 @@ void RunGamePlay(){
   DisplayScore();
   DisplayTime(&roverTime, maxGameTime, 36, 1);
   //Change state to finished if time is done or target score reached:
-  if(roverTime==0 || roverGameScore==targetScore){
+  if(roverTime==0 || roverGameScore>=targetScore){
     curState=FINISHED;
   }
 }

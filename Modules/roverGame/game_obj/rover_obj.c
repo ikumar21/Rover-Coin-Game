@@ -41,14 +41,24 @@ uint8_t *roverColorTypes[2] = {(uint8_t *)roverStraightColorType, (uint8_t *)rov
 float roverJoyGain[2][2] = {{.002,0},{0,.03}};
 //float roverJoyGain[2][2] = {{.002,0},{0,.04}};
 void RoverLimitLoc(int16_t *x, int16_t *y){
+  //Limit within Screen
   if(*x<0)
     *x=0;
-  if(*x>11500)
-    *x=11500;
-  if(*y<1000)
-    *y=1000;
-  if(*y>14700)
-    *y=14700;
+  if(*x>11400)
+    *x=11400;
+  if(*y<900)
+    *y=900;
+  if(*y>14600)
+    *y=14600;
+  
+  //Limit from Target Score Area, push away from box
+  if(*y>13700 && (*x> 1300 && *x<9900)){
+    if(*y<= 13900){
+      *y= 13700;
+    }else{
+      *x = *x<5600 ? 1300 : 9900;
+    }
+  }
 }
 
 void RoverController(Game_Obj *gObj, int16_t joyX, int16_t joyY){
