@@ -189,6 +189,7 @@ void InitializeObjDisp(uint8_t numObjs){
 }
 
 void ObjectPositionCalc(Game_Obj *gObj){
+  uint8_t didCoinControl = true;
   Obj_Disp *dObj = gObj->dObj;
   if(gObj->objType==ROVER){
     RoverController(gObj, joystickVal[0],joystickVal[1]);
@@ -198,7 +199,7 @@ void ObjectPositionCalc(Game_Obj *gObj){
     INCRE_CIRC_COUNTER(dObj->yLoc,160-11);
     INCRE_CIRC_COUNTER(dObj->xLoc,128-11);
   }
-  CoinController(gameObjects);
+  
 
 }
 
@@ -333,7 +334,7 @@ void InitLevel(){
   font8by8.x=X_ARROW_DIST+11; font8by8.y=Y_LOC_START+2; font8by8.numChrs=4;
   font8by8.msg= (uint8_t*)exitStr;
   writeText(&font8by8);
-  writeLeftArrowRecOutline(6, Y_LOC_START, 30, 40, 11, DISP_BLACK);
+  writeLeftArrowRecOutline(X_ARROW_DIST, Y_LOC_START, 30, 40, 11, DISP_BLACK);
   
   //Read Level data in EEPROM
   EReadData(eepromLvlData.dataArr, 14, 0);
@@ -370,7 +371,7 @@ void InitLevel(){
   }
   
   //set cursor location to 0,0 and gameLevel to 0
-  crsLoc[0]=0; crsLoc[1]=0; gameLevel=0;
+  crsLoc[0]=0; crsLoc[1]=0; prevCrsLoc[0] = 0; prevCrsLoc[1]=0;gameLevel=0;
   
   
   
@@ -409,11 +410,12 @@ void InitRunning(){
 
 void InitFinished(){
   
-  setBackground();
-  
-  const uint8_t finStr[15] = "GAME FINISHED!";
+//  setBackground();
+   
+  const uint8_t finStr[15] = "!!LEVEL BEAT!!";
   const uint8_t urTimeStr[11] = "YOUR TIME:";
   const uint8_t bestTimeStr[11] = "BEST TIME:";
+  const uint8_t maxTimeStr[11] = "MAX  TIME:";
   const uint8_t urScoreStr[12] = "YOUR SCORE:";
   const uint8_t targetStr[12] = "THE TARGET:";
   const uint8_t failedStr[14] = "FAILED LEVEL!";
@@ -423,11 +425,10 @@ void InitFinished(){
   const uint8_t *nextStr = "NEXT";
   
   beatLevel = targetScore <=roverGameScore;
-  beatLevel = true;
 
   //Create White Box with black border:
-  writeRectangle(X_LOC_FINISH, Y_LOC_FINISH,128-X_LOC_FINISH*2, 40, DISP_WHITE);
-  writeRectangleOutline(X_LOC_FINISH, Y_LOC_FINISH, 128-X_LOC_FINISH*2,  40, DISP_BLACK);
+  writeRectangle(X_LOC_FINISH, Y_LOC_FINISH,128-X_LOC_FINISH*2, 40+10*beatLevel, DISP_WHITE);
+  writeRectangleOutline(X_LOC_FINISH, Y_LOC_FINISH, 128-X_LOC_FINISH*2, 40+10*beatLevel, DISP_BLACK);
 
   //Write Text depending on if level is beat or not:
   font8by8.x=X_LOC_FINISH+2; font8by8.y=Y_LOC_FINISH+2; font8by8.numChrs=14-!beatLevel;
@@ -441,9 +442,18 @@ void InitFinished(){
   writeText(&font8by8);
   
   uint8_t bestTime = MIN(maxGameTime-roverTime, eepromLvlData.lvlsData.qckTimes[gameLevel-1]);
-  //Write Times:
-  DisplayNumber(maxGameTime-roverTime, 3, X_LOC_FINISH+78-beatLevel*2, Y_LOC_FINISH+2+9*2);
-  DisplayNumber(bestTime, 3, X_LOC_FINISH+78-beatLevel*2, Y_LOC_FINISH+2+9*3);
+  //Write Times or scores:
+  if(beatLevel){
+    font8by8.x=X_LOC_FINISH+2; font8by8.y=Y_LOC_FINISH+2+9*4; font8by8.numChrs=10;
+    font8by8.msg= (uint8_t*)maxTimeStr;
+    writeText(&font8by8);
+    DisplayNumber(maxGameTime, 3, X_LOC_FINISH+78-beatLevel*2, Y_LOC_FINISH+2+9*4);
+    DisplayNumber(maxGameTime-roverTime, 3, X_LOC_FINISH+78-beatLevel*2, Y_LOC_FINISH+2+9*2);
+    DisplayNumber(bestTime, 3, X_LOC_FINISH+78-beatLevel*2, Y_LOC_FINISH+2+9*3);
+  }else{
+    DisplayNumber(roverGameScore, 3, X_LOC_FINISH+78-beatLevel*2, Y_LOC_FINISH+2+9*2);
+    DisplayNumber(targetScore, 3, X_LOC_FINISH+78-beatLevel*2, Y_LOC_FINISH+2+9*3);
+  }
   
   //Draw Level string and its left arrow box
   font8by8.x=X_ARROW_DIST+11; font8by8.y=Y_LOC_EXIT_LVL-100; font8by8.numChrs=6;
@@ -465,20 +475,22 @@ void InitFinished(){
   
   if(beatLevel){
     //Draw Next str and its right arrow box:
-  writeRightArrowRecOutline(127-X_ARROW_DIST-40, Y_LOC_START, 30, 40, 11, DISP_BLACK); 
-  font8by8.x=127-X_ARROW_DIST-40+2; font8by8.y=Y_LOC_START+2; font8by8.numChrs=4;
-  font8by8.msg= (uint8_t*)nextStr;
-  writeText(&font8by8);
-  
-  //Update EEPROM if level beat
-  eepromLvlData.lvlsData.maxlvlDone = MAX(gameLevel, eepromLvlData.lvlsData.maxlvlDone);
-  eepromLvlData.lvlsData.qckTimes[gameLevel-1] = bestTime; 
-  EWriteData(eepromLvlData.dataArr, 14, 0);
+    writeRightArrowRecOutline(127-X_ARROW_DIST-40, Y_LOC_START, 30, 40, 11, DISP_BLACK); 
+    font8by8.x=127-X_ARROW_DIST-40+2; font8by8.y=Y_LOC_START+2; font8by8.numChrs=4;
+    font8by8.msg= (uint8_t*)nextStr;
+    writeText(&font8by8);
+    
+    //Update EEPROM if level beat
+    eepromLvlData.lvlsData.maxlvlDone = MAX(gameLevel+1, eepromLvlData.lvlsData.maxlvlDone);
+    eepromLvlData.lvlsData.qckTimes[gameLevel-1] = bestTime; 
+    EWriteData(eepromLvlData.dataArr, 14, 0);
   }
 
   //Set crs Loc to either Next or Retry
   crsLoc[0] = 1;
   crsLoc[1] = beatLevel + 1;
+  prevCrsLoc[0] = crsLoc[0];
+  prevCrsLoc[1]= crsLoc[1];
   
 }
 
@@ -491,7 +503,7 @@ void RunTitle(){
   UpdateButton();
   if(buttonPressed){
     buttonPressed=false;
-    curState=FINISHED;
+    curState=SELECT_LEVEL;
     return;
   }
   
@@ -519,6 +531,9 @@ void RunGamePlay(){
 //    if(gObj->active)
       ObjectPositionCalc(gObj);
   }
+  //Set up Coins:
+  CoinController(gameObjects);
+  
   //See if any collisions 
   for(uint8_t i = 0; i<MAX_NUM_OBJ; i++){
     Game_Obj *gObj = &gameObjects[i];
@@ -699,8 +714,8 @@ void RunFinished(){
     switch (dirCrs){
       case 1://Joystick Right
         //Either go right one col or go next row, first col
-        crsLoc[0]= crsLoc[0]==0 ? 1 : crsLoc[0];
         crsLoc[1]= crsLoc[0]==0 ? 0 : crsLoc[1]+1;
+        crsLoc[0]= crsLoc[0]==0 ? 1 : crsLoc[0];
         break;
       case 2://Joystick Up
         //Go to levels
@@ -709,8 +724,8 @@ void RunFinished(){
         break;
       case 3://Joystick Left
         //Either go left one col or go up one row, last col
-        crsLoc[0]=crsLoc[0]==1 && crsLoc[1]==0 ? 0 : crsLoc[0] ;
-        crsLoc[1]=crsLoc[0]==1 && crsLoc[1]==0 ? 0 : crsLoc[1]-1 ;
+        crsLoc[0]=crsLoc[1]==0 ? 0 : crsLoc[0] ;
+        crsLoc[1]=crsLoc[1]==0 ? 0 : crsLoc[1]-1 ;
         break;
       case 4://Joystick Down
         //Go to EXIT  
