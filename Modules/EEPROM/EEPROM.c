@@ -58,6 +58,7 @@ void EWriteData(uint8_t *data, uint16_t numBytes, uint16_t addr){
   HAL_GPIO_WritePin(CS_EEPROM_PIN, true);
   
   //Send Write Instruction
+  HAL_Delay(1);
   HAL_GPIO_WritePin(CS_EEPROM_PIN, false);
   SendInstr(E_WRITE_INSTR);
   
