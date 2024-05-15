@@ -14,8 +14,8 @@ Level_Info lvl3Info = {{400, 600}, 20, 60, 75};
 Level_Info lvl4Info = {{300, 500}, 8, 45, 35};
 Level_Info lvl5Info = {{1000, 2000}, 7, 60, 30};
 Level_Info lvl6Info = {{1000, 1500}, 5, 60, 35};
-Level_Info lvl7Info = {{200, 300}, 20, 60, 125};
-Level_Info lvl8Info = {{50, 100}, 1, 15, 8};
+Level_Info lvl7Info = {{200, 300}, 20, 60, 100};
+Level_Info lvl8Info = {{50, 100}, 1, 15, 7};
 Level_Info lvl9Info = {{500, 600}, 2, 45, 15};
 Level_Info lvl10Info = {{50, 100}, 1, 30, 10}; 
 
