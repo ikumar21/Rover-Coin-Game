@@ -16,7 +16,7 @@
         <MemConfigValue>C:\Program Files\IAR Systems\Embedded Workbench 9.1\arm\CONFIG\debugger\ST\STM32L432KC.ddf</MemConfigValue>
     </PlDriver>
     <StLinkDriver>
-        <stlinkserialNo>0674FF535488524867144740</stlinkserialNo>
+        <stlinkserialNo>0672FF484971754867061029</stlinkserialNo>
         <stlinkfoundProbes />
         <stlinkResetStyle>0</stlinkResetStyle>
         <stlinkResetStrategy>2</stlinkResetStrategy>
@@ -24,11 +24,11 @@
         <CStepIntDis>_ 0</CStepIntDis>
     </StLinkDriver>
     <ArmDriver>
-        <EnableCache>0</EnableCache>
         <EnforceMemoryConfiguration>1</EnforceMemoryConfiguration>
+        <EnableCache>0</EnableCache>
     </ArmDriver>
     <DebugChecksum>
-        <Checksum>1550908693</Checksum>
+        <Checksum>305384154</Checksum>
     </DebugChecksum>
     <Exceptions>
         <StopOnUncaught>_ 0</StopOnUncaught>
@@ -74,8 +74,9 @@
         <Fmt4>uint8_t[4]	3	0</Fmt4>
     </array_types>
     <watch_formats>
-        <Fmt0>{W}42:maxGameTime	3	0</Fmt0>
-        <Fmt1>{W}42:numActiveCoins	3	0</Fmt1>
+        <Fmt0>{W}42:gameLevel	3	0</Fmt0>
+        <Fmt1>{W}42:maxGameTime	3	0</Fmt1>
+        <Fmt2>{W}42:numActiveCoins	3	0</Fmt2>
     </watch_formats>
     <Trace2>
         <Enabled>0</Enabled>

@@ -486,16 +486,17 @@ void InitFinished(){
   writeRectangleOutline(64-20, Y_LOC_EXIT_LVL, 5*7+4, 11, DISP_BLACK);
   
   if(beatLevel){
-    //Draw Next str and its right arrow box:
-    writeRightArrowRecOutline(127-X_ARROW_DIST-40, Y_LOC_START, 30, 40, 11, DISP_BLACK); 
-    font8by8.x=127-X_ARROW_DIST-40+2; font8by8.y=Y_LOC_START+2; font8by8.numChrs=4;
-    font8by8.msg= (uint8_t*)nextStr;
-    writeText(&font8by8);
-    
     //Update EEPROM if level beat
     eepromLvlData.lvlsData.maxlvlDone = MAX(gameLevel+1, eepromLvlData.lvlsData.maxlvlDone);
     eepromLvlData.lvlsData.qckTimes[gameLevel-1] = bestTime; 
     EWriteData(eepromLvlData.dataArr, 14, 0);
+  }
+  //Draw Next Str and its right arrow box if level available
+  if(eepromLvlData.lvlsData.maxlvlDone>=gameLevel+1){
+    writeRightArrowRecOutline(127-X_ARROW_DIST-40, Y_LOC_START, 30, 40, 11, DISP_BLACK); 
+    font8by8.x=127-X_ARROW_DIST-40+2; font8by8.y=Y_LOC_START+2; font8by8.numChrs=4;
+    font8by8.msg= (uint8_t*)nextStr;
+    writeText(&font8by8);
   }
 
   //Set crs Loc to either Next or Retry
@@ -613,8 +614,8 @@ void RunLevel(){
         break;
       case 2://Joystick Up
         //Go to max level done or up one row
-        crsLoc[0]=atExit*(eepromLvlData.lvlsData.maxlvlDone-1)/4 +!atExit*(crsLoc[0]-1); 
-        crsLoc[1]=atExit*(eepromLvlData.lvlsData.maxlvlDone%4-1);
+        crsLoc[0]=atExit ? (eepromLvlData.lvlsData.maxlvlDone-1)/4 : (crsLoc[0]-1); 
+        crsLoc[1]=atExit ? ((eepromLvlData.lvlsData.maxlvlDone-1)%4): crsLoc[1];
         break;
       case 3://Joystick Left
         //Either go left one col or go up one row, last col
@@ -712,7 +713,8 @@ void RunFinished(){
   dirCrs=getJoyDirCom(); //Right-1, Up-2, Left-3, Down-4
   
   //Change cursor loc if movement and not recently changed
-  uint8_t legalMoveRight = (dirCrs==1) && crsLoc[1]!=2 && (beatLevel || crsLoc[1]!=1);
+  uint8_t nextLvlAval = eepromLvlData.lvlsData.maxlvlDone>=gameLevel+1;
+  uint8_t legalMoveRight = (dirCrs==1) && crsLoc[1]!=2 && (nextLvlAval || crsLoc[1]!=1);
   uint8_t legalMoveUp =  (dirCrs==2) && crsLoc[0]!=0;
   uint8_t legalMoveLeft = (dirCrs==3) && !(crsLoc[0]==0 && crsLoc[1]==0);
   uint8_t legalMoveDown = (dirCrs==4) && crsLoc[0]==0;
