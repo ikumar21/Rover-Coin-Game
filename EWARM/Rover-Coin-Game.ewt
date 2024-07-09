@@ -1463,6 +1463,12 @@
                     </file>
                 </group>
                 <group>
+                    <name>hardware_drivers</name>
+                    <file>
+                        <name>$PROJ_DIR$\..\Modules\hardware_drivers\stm32l4xx_spi.c</name>
+                    </file>
+                </group>
+                <group>
                     <name>joystick</name>
                     <file>
                         <name>$PROJ_DIR$\..\Modules\joystick\joystick.c</name>

@@ -1,8 +1,9 @@
 #include "displayST7735.h"
 #include "font8x8_basic.h"
-
+#include "stm32l4xx_spi.h"
 #define MIN(a,b) a>b? b:a;
-extern SPI_HandleTypeDef hspi1;
+//extern SPI_HandleTypeDef hspi1;
+extern SPI_HandleData spi1Handle;
 
 uint8_t zeroNum = 0;
 
@@ -28,7 +29,7 @@ void setColumnRowRange(uint8_t columnStart, uint8_t columnEnd, uint8_t rowStart,
   transmitArr[1] = columnStart;
   transmitArr[2] = zeroNum;
   transmitArr[3] = columnEnd;
-  HAL_SPI_Transmit(&hspi1,transmitArr,4,1000);
+  SPI_Transmit_Poll(&spi1Handle, transmitArr, 4);
 
   //Send RASET Command(Setting column ranges)
   writeDisplayCommand(DISP_COM_RASET); 
@@ -38,7 +39,7 @@ void setColumnRowRange(uint8_t columnStart, uint8_t columnEnd, uint8_t rowStart,
   transmitArr[1] = rowStart;
   transmitArr[2] = zeroNum;
   transmitArr[3] = rowEnd;
-  HAL_SPI_Transmit(&hspi1,transmitArr,4,1000);
+  SPI_Transmit_Poll(&spi1Handle, transmitArr, 4);
 
 }
 
@@ -62,11 +63,11 @@ void setColor(uint32_t colorRGB, uint16_t pixelCount){
   
   //Send out pixel color every 160 pixels
   for (uint8_t i =0; i<pixelCount/200;i++){
-    HAL_SPI_Transmit(&hspi1,speedColorArr,200*3,1000);
+    SPI_Transmit_Poll(&spi1Handle, speedColorArr, 200*3);
   }
   
   //Send out the rest of the pixel colors <160 pixels
-  HAL_SPI_Transmit(&hspi1,speedColorArr,(pixelCount%200)*3,1000);
+  SPI_Transmit_Poll(&spi1Handle, speedColorArr, (pixelCount%200)*3);
   
 }
 
@@ -74,7 +75,7 @@ void writeDisplayCommand(uint8_t displayCommand){
   //Set DC Pin to Low to signal command
   HAL_GPIO_WritePin(DC_PIN, GPIO_PIN_RESET);
   //Send Command
-  HAL_SPI_Transmit(&hspi1,&displayCommand,1,1000);
+  SPI_Transmit_Poll(&spi1Handle, &displayCommand, 1);
   
   //Set DC Pin to High for possible parameters
   HAL_GPIO_WritePin(DC_PIN, GPIO_PIN_SET);
@@ -100,7 +101,7 @@ void initDisplay(){
   //Make (0,0) left corner display
   writeDisplayCommand(DISP_COM_MADCTL);
   uint8_t madctlPara = 0xC0;
-  HAL_SPI_Transmit(&hspi1,&madctlPara,1,1000);
+  SPI_Transmit_Poll(&spi1Handle, &madctlPara, 1);
 }
 
 
@@ -208,11 +209,11 @@ void writeColorArray(uint32_t *colorArr, uint16_t pixelCount){
   
   //Send out pixel color every 160 pixels
   for (uint8_t i =0; i<pixelCount/200;i++){
-    HAL_SPI_Transmit(&hspi1,speedColorArr,200*3,1000);
+    SPI_Transmit_Poll(&spi1Handle, speedColorArr, 200*3);
   }
   
   //Send out the rest of the pixel colors <160 pixels
-  HAL_SPI_Transmit(&hspi1,speedColorArr,(pixelCount%200)*3,1000);
+  SPI_Transmit_Poll(&spi1Handle, speedColorArr, (pixelCount%200)*3);
   
 }
 
