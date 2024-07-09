@@ -37,6 +37,8 @@ C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\..\Modules\roverGame\rover_ma
 -I
 C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\..\Modules\EEPROM
 -I
+C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\EWARM\..\Modules\hardware_drivers
+-I
 C:\Program Files\IAR Systems\Embedded Workbench 9.1\arm\inc\c\aarch32
 -I
 C:\Program Files\IAR Systems\Embedded Workbench 9.1\arm\inc
@@ -68,6 +70,8 @@ C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\Modules\roverGame\game_obj
 C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\Modules\roverGame\rover_math
 -I
 C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\Modules\EEPROM
+-I
+C:\Users\Ishan\Desktop\STM32\Rover-Coin-Game\Modules\hardware_drivers
 -D__CHAR_BITS__=8
 -D__CHAR_MAX__=0xff
 -D__CHAR_MIN__=0
